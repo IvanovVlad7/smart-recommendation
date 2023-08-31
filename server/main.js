@@ -5,6 +5,15 @@ const mysql = require("mysql2")
 const cors = require('cors');
 
 
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+app.listen(3001,() => {
+  console.log("server running on port 3001")
+});
+
+
 const db = mysql.createPool({
   host:"localhost",
   user:"root",
@@ -29,39 +38,6 @@ db.query(`
     console.log("Ошибка при создании таблицы reviews:", error);
   } else {
     console.log("Таблица reviews создана");
-  }
-});
-
-db.query(`
-  CREATE TABLE IF NOT EXISTS likes (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    reviewID INT,
-    userID INT,
-    FOREIGN KEY (reviewID) REFERENCES reviews(ID),
-    FOREIGN KEY (userID) REFERENCES users(ID)
-  )
-`, (error, result) => {
-  if (error) {
-    console.log("Ошибка при создании таблицы likes:", error);
-  } else {
-    console.log("Таблица likes создана");
-  }
-});
-
-db.query(`
-  CREATE TABLE IF NOT EXISTS comments (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    reviewID INT,
-    commentText TEXT,
-    userID INT,
-    FOREIGN KEY (reviewID) REFERENCES reviews(ID),
-    FOREIGN KEY (userID) REFERENCES users(ID)
-  )
-`, (error, result) => {
-  if (error) {
-    console.log("Ошибка при создании таблицы comments:", error);
-  } else {
-    console.log("Таблица comments создана");
   }
 });
 
@@ -96,13 +72,37 @@ db.query(`
   }
 });
 
+db.query(`
+  CREATE TABLE IF NOT EXISTS comments (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    reviewID INT,
+    commentText TEXT,
+    userID INT,
+    FOREIGN KEY (reviewID) REFERENCES reviews(ID),
+    FOREIGN KEY (userID) REFERENCES users(ID)
+  )
+`, (error, result) => {
+  if (error) {
+    console.log("Ошибка при создании таблицы comments:", error);
+  } else {
+    console.log("Таблица comments создана");
+  }
+});
 
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({extended:true}));
-
-app.listen(3001,() => {
-  console.log("server running on port 3001")
+db.query(`
+  CREATE TABLE IF NOT EXISTS likes (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    reviewID INT,
+    userID INT,
+    FOREIGN KEY (reviewID) REFERENCES reviews(ID),
+    FOREIGN KEY (userID) REFERENCES users(ID)
+  )
+`, (error, result) => {
+  if (error) {
+    console.log("Ошибка при создании таблицы likes:", error);
+  } else {
+    console.log("Таблица likes создана");
+  }
 });
 
 app.post("/register", (req, res) => {
@@ -149,9 +149,9 @@ app.post("/login", (req, res) => {
 }); 
 
 app.post("/reviews", (req, res) => {
-  const { reviewName, targetName, category, reviewText , imageSource, rating, authorID } = req.body;
+  const { reviewName, targetName, category, reviewText , imageSource, rating, userID } = req.body;
   const sqlInsert = "INSERT INTO reviews (reviewName, targetName, category, reviewText, imageSource, rating, userID) VALUES (?,?,?,?,?,?,?)";
-  db.query(sqlInsert, [reviewName, targetName, category, reviewText , imageSource, rating, authorID], (error, result) => {
+  db.query(sqlInsert, [reviewName, targetName, category, reviewText , imageSource, rating, userID], (error, result) => {
     if (error) {
       console.log("Error:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -175,12 +175,10 @@ app.get("/reviews", (req, res) => {
   });
 });
 
-
-
 app.post("/comments", (req, res) => {
-  const { reviewID, commentText, authorID } = req.body;
+  const { reviewID, commentText,  userID } = req.body;
   const sqlInsert = "INSERT INTO comments (reviewID, commentText, userID) VALUES (?, ?, ?)";
-  db.query(sqlInsert, [reviewID, commentText, authorID], (error, result) => {
+  db.query(sqlInsert, [reviewID, commentText,  userID], (error, result) => {
     if (error) {
       console.log("Error:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -193,9 +191,9 @@ app.post("/comments", (req, res) => {
 
 
 app.post("/likes", (req, res) => {
-  const { reviewID, userID } = req.body;
-  const sqlInsert = "INSERT INTO likes (reviewID, userID) VALUES (?, ?)";
-  db.query(sqlInsert, [reviewID, userID], (error, result) => {
+  const { reviewID,  userID } = req.body;
+  const sqlInsert = "INSERT INTO likes (reviewID,  userID) VALUES (?, ?)";
+  db.query(sqlInsert, [reviewID,  userID], (error, result) => {
     if (error) {
       console.log("Error:", error);
       res.status(500).json({ error: "Internal Server Error" });

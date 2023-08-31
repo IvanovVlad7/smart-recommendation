@@ -11,7 +11,7 @@ const handleMockReview = async () => {
       reviewText: "This is a review about sports.",
       imageSource: "some_image_url",
       rating: '5',
-      authorID: '1'
+      userID: '1'
     }
     try {
       const response = await axios.post("http://localhost:3001/reviews", mockReview);
@@ -35,7 +35,7 @@ const handleMockReview = async () => {
     const mockComment = {
       reviewID: '3',
       commentText: 'Text',
-      authorID: '3', 
+      userID: '1'
     };
 
     try {
@@ -48,8 +48,8 @@ const handleMockReview = async () => {
 
   const handleMockLike = async () => {
     const mockLike = {
-      reviewID: '2', 
-      userID: '2', 
+      reviewID: '3', 
+      userID: '1'
     };
 
     try {
@@ -63,7 +63,7 @@ const handleMockReview = async () => {
 
   const handleAddTag = async () => {
     const tagData = {
-      reviewID: 1, 
+      reviewID: 3, 
       tagText:'detective'
     };
 
