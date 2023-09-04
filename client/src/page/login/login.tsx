@@ -24,9 +24,13 @@ const Login = () => {
         password,
       });
 
-      console.log(response.data); 
+  if (response.data.error) {
+        alert(response.data.error);
+      } else {
+        console.log(response.data);
+      }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Ошибка:", error);
     }
   };
   
@@ -78,7 +82,7 @@ const Login = () => {
       Log In
     </Button>
     <div>
-      Don't have an account? <Link to="/register">Register</Link>
+      Don't have an account? <Link to="/registration">Register</Link>
     </div>
   </form>
 </div>

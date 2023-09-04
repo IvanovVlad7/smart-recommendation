@@ -108,26 +108,28 @@ db.query(`
 app.post("/register", (req, res) => {
   const { name, email, password } = req.body;
   const sqlCheckUser = "SELECT * FROM users WHERE email = ?";
-  db.query(sqlCheckUser, [email],(error,result) => {
-  if(error){
-    console.log("Error:",error);
-    res.status(500).json({error: "Internal Server Error" });
-  } else {
-    if(result.length > 0){
-      res.status(400).json({error:"User with the same email already exists" });
-    } else {
-      const sqlInsert = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-      db.query(sqlInsert, [name, email, password], (error, result) => {
+  db.query(sqlCheckUser, [email], (error, result) => {
     if (error) {
       console.log("Error:", error);
       res.status(500).json({ error: "Internal Server Error" });
     } else {
-      console.log("Registered:", result);
-      res.status(200).json({ message: "Registration successful" });
+      if (result.length > 0) {
+        res.status(400).json({ message: "User already exists" });
+      } else {
+        const sqlInsert =
+          "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+        db.query(sqlInsert, [name, email, password], (error, result) => {
+          if (error) {
+            console.log("Error:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+          } else {
+            console.log("Registered:", result);
+            res.status(200).json({ message: "Registration successful" });
+          }
+        });
+      }
     }
   });
-  }}
-  })
 });
 
 app.post("/login", (req, res) => {
@@ -234,13 +236,10 @@ app.get("/tags", (req, res) => {
 });
 
 
-// 1. Create tables when there are none at first launch; +
-// 2. Handle comments (table, + endpoint (POST)); +
-// 3. Handle likes (table + endpoints (POST)); +
-// --- Up to 30th of August ---
-// MAKE A COMMIT !!!!
-// 4. Handle tags (table + endpoints (POST + GET))
-// //// UI ///// //
+
+
+
+
 // 1. Main Page (accessable for every user (authed and not authed))
 //  1.1 Input (for getting reviews GET /reviews)
 //  1.2 Create component for Review (ReviewCard);
