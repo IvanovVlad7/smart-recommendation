@@ -4,26 +4,45 @@ import Button from "@mui/material/Button";
 import * as React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { registerUrl  } from "../../constans/constans";
+import { MAIN_ENDPOINT}  from "../../constans/constans";
 
 const Registration = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleRegister = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
+
+    if (!name || !email || !password) {
+      if (!name) setNameError(true);
+      if (!email) setEmailError(true);
+      if (!password) setPasswordError(true);
+      return;
+    }
+
     try {
-      const response = await axios.post("http://localhost:3001/register", {
+      const response = await axios.post(registerUrl ,{
         name,
         email,
         password,
       });
-
-      if (response.data.message) {
-        console.log(response.data.message);
+      // TODO: BE should return ID, name of a user
+      if (response.data.error) {
+        alert(response.data.error);
       } else {
-        alert("User already exists"); 
+        // TODO: store user's ID, name in session storage
+        sessionStorage.setItem("userData", JSON.stringify(response.data));
+        console.log(response.data);
+        navigate(MAIN_ENDPOINT);
       }
     } catch (error) {
       console.error("Ошибка:", error);
@@ -42,7 +61,13 @@ const Registration = () => {
           margin="normal"
           className="auth-form__input"
           fullWidth={true}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => {
+            setName(e.target.value);
+            setNameError(false);
+          }}
+          required
+          error={nameError}
+          helperText={nameError ? "Name is required" : ""}
         />
         <TextField
           label="Email"
@@ -50,7 +75,13 @@ const Registration = () => {
           margin="normal"
           className="auth-form__input"
           fullWidth={true}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setEmailError(false);
+          }}
+          required
+          error={emailError}
+          helperText={emailError ? "Email is required" : ""}
         />
         <TextField
           label="Password"
@@ -59,7 +90,13 @@ const Registration = () => {
           margin="normal"
           className="auth-form__input"
           fullWidth={true}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setPasswordError(false);
+          }}
+          required
+          error={passwordError}
+          helperText={passwordError ? "Password is required" : ""}
         />
         <Button
           type="submit"
@@ -77,8 +114,7 @@ const Registration = () => {
           Already have an account? <a href="/login">Login</a>
         </div>
       </form>
-    </div>
-  );
+    </div>)
 };
 
 export default Registration;

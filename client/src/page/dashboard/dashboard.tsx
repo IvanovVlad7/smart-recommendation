@@ -11,7 +11,7 @@ const handleMockReview = async () => {
       reviewText: "This is a review about sports.",
       imageSource: "some_image_url",
       rating: '5',
-      userID: '1'
+      userID: '1',
     }
     try {
       const response = await axios.post("http://localhost:3001/reviews", mockReview);
@@ -64,8 +64,9 @@ const handleMockReview = async () => {
   const handleAddTag = async () => {
     const tagData = {
       reviewID: 3, 
-      tagText:'detective'
+      tagText:'book',   
     };
+    
 
     try {
       const response = await axios.post("http://localhost:3001/tags", tagData);

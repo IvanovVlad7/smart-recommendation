@@ -1,24 +1,41 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import ReviewCard from "../../components/review-cards/review-card";
 import TextField from "@mui/material/TextField";
 import { Box, Grid, Container} from "@mui/material";
+import axios from "axios";
 import "./main.css"; 
 import Tags from "../../components/tags/tags";
 
+type Review = {
+  reviewName: string;
+  targetName: string;
+  category: string;
+  tags: string[];
+  reviewText: string;
+  imageSource: string;
+  rating: number;
+  userID: number;
+  ID: number;
+};
+
 const MainPage = () => {
-  const reviews = [
-    {
-      reviewName: "book",
-      targetName: "Office",
-      category: "Cinema",
-      tags: ['fantastic'],
-      reviewText: "2131232423548753284ehskhjzfhkjdshkjfkjhskjdhzkjhfjhkhkjsdhfkjhdkjhfgkjhdkjh",
-      imageSource: "dsadas",
-      rating: 8, 
-    },
-  ];
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const getReviewsData = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/reviews");
+      console.log(response.data)
+      // setReviews(response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+  
 
-
+  useEffect(() => {
+    getReviewsData()
+  }, []);
+  
+  
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredReviews = reviews.filter((review) =>
@@ -37,7 +54,7 @@ const MainPage = () => {
         />
       </Box>
       <Grid container spacing={2}>
-        {filteredReviews.map((review, index) => (
+        {filteredReviews?.map((review, index) => (
           <Grid item xs={12} md={6} lg={4} key={index}>
             <ReviewCard review={review} />
             <Tags tags={review.tags} />   
@@ -49,3 +66,5 @@ const MainPage = () => {
 };
 
 export default MainPage
+
+// TODO !important: use real back-end data instead of local reviews

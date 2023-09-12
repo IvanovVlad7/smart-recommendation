@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import {
   Card,
   CardContent,
@@ -20,7 +20,11 @@ type Review = {
 
 interface ReviewCardProps {
   review: Review;
+   // sendCommentToServer: (commentText: string, reviewID: number, userID: number) => void;
+   // sendLikeToServer: (reviewID: number, userID: number) => void;
 }
+
+const LOCAL_STORAGE_KEY = "reviewData";
 
 const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   const [liked, setLiked] = useState(false);
@@ -29,6 +33,23 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   const [editingCommentIndex, setEditingCommentIndex] = useState<number | null>(
     null
   );
+
+  useEffect(() => {
+    const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+    // TODO: in localstorage only user id and name; 
+
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setLiked(parsedData.liked);
+      setComments(parsedData.comments);
+    }
+  }, []);
+
+  useEffect(() => {
+    const dataToStore = { liked, comments };
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataToStore));
+  }, [liked, comments]);
+
 
   const toggleLike = () => {
     setLiked(!liked);

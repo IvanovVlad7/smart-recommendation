@@ -105,6 +105,81 @@ db.query(`
   }
 });
 
+app.get("/reviews", async (req, res) => {
+  try {
+    const resultReviews = await queryDatabase("SELECT * FROM reviews");
+    const resultTags = await queryDatabase("SELECT * FROM tags");
+    const resultComments = await queryDatabase("SELECT * FROM comments");
+    const resultLikes = await queryDatabase("SELECT * FROM likes");
+
+    
+    res.status(200).json({
+      reviews: resultReviews,
+      tags: resultTags,
+      comments: resultComments,
+      likes: resultLikes
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+function queryDatabase(sqlQuery) {
+  return new Promise((resolve, reject) => {
+    db.query(sqlQuery, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
+
+function addTags(reviews, tags) {
+  const arr = []
+  reviews.forEach((g) => {
+    const review = { ...g, tags: [] };
+    tags.forEach((s) => {
+      if (s.reviewID === g.ID) {
+        review.tags.push(s);
+      }
+    });
+
+    arr.push(review)
+  });
+
+  return arr
+}
+
+function addComments(reviews, comments) {
+  const reviewsWithComments = reviews.map((review) => {
+    const reviewCopy = { ...review, comments: [] };
+    comments.forEach((comment) => {
+      if (comment.reviewID === review.ID) {
+        reviewCopy.comments.push(comment);
+      }
+    });
+    return reviewCopy;
+  });
+  return reviewsWithComments;
+}
+
+function addLikes(reviews, likes) {
+  const reviewsWithLikes = reviews.map((review) => {
+    const reviewCopy = { ...review, likes: [] };
+    likes.forEach((like) => {
+      if (like.reviewID === review.ID) {
+        reviewCopy.likes.push(like);
+      }
+    });
+    return reviewCopy;
+  });
+  return reviewsWithLikes;
+}
+
+
 app.post("/register", (req, res) => {
   const { name, email, password } = req.body;
   const sqlCheckUser = "SELECT * FROM users WHERE email = ?";
@@ -124,7 +199,7 @@ app.post("/register", (req, res) => {
             res.status(500).json({ error: "Internal Server Error" });
           } else {
             console.log("Registered:", result);
-            res.status(200).json({ message: "Registration successful" });
+            res.status(200).json({ id: result.insertId, name, message: "Registration successful" });
           }
         });
       }
@@ -144,7 +219,7 @@ app.post("/login", (req, res) => {
         res.status(401).json({ error: "Invalid credentials" });
       } else {
         console.log("Logged in:", result);
-        res.status(200).json({ message: "Login successful" });
+        res.status(200).json({ id: result.insertId, name, message: "Login successful" });
       }
     }
   });
@@ -234,17 +309,3 @@ app.get("/tags", (req, res) => {
     }
   });
 });
-
-
-
-
-
-
-// 1. Main Page (accessable for every user (authed and not authed))
-//  1.1 Input (for getting reviews GET /reviews)
-//  1.2 Create component for Review (ReviewCard);
-//    1.2.1 Create component Tag;
-//    1.2.2 Likes;
-//    1.2.3 Comments; (create another small component);
-//  1.3 Show reviews pretty;
-// --- Up to 31th of August ---
