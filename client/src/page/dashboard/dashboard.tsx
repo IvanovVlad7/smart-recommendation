@@ -1,27 +1,26 @@
 import axios from "axios";
 import React from "react";
-
+import { ReviewForm } from '../../components/review-form';
 
 const Dashboard = () => {
-const handleMockReview = async () => {
-    const mockReview = {
-      reviewName: "Sport Review",
-      targetName: "Sport in My Life",
-      category: "Sport",
-      reviewText: "This is a review about sports.",
-      imageSource: "some_image_url",
-      rating: '5',
-      userID: '1',
-    }
-    try {
-      const response = await axios.post("http://localhost:3001/reviews", mockReview);
-      console.log(response.data.message);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+  const handleMockReview = async () => {
+      const mockReview = {
+        reviewName: "Sport Review",
+        targetName: "Sport in My Life",
+        category: "Sport",
+        reviewText: "This is a review about sports.",
+        imageSource: "some_image_url",
+        rating: '5',
+        userID: '1',
+      }
+      try {
+        const response = await axios.post("http://localhost:3001/reviews", mockReview);
+        console.log(response.data.message);
+      } catch (error) {
+        console.error("Error:", error);
+      }
   };
   
-
   const handleTest = async () => {
     try {
       const response = await axios.get("http://localhost:3001/reviews");
@@ -31,7 +30,7 @@ const handleMockReview = async () => {
     }
   };
 
-    const handleMockComment = async () => {
+  const handleMockComment = async () => {
     const mockComment = {
       reviewID: '3',
       commentText: 'Text',
@@ -60,7 +59,6 @@ const handleMockReview = async () => {
     }
   };
 
-
   const handleAddTag = async () => {
     const tagData = {
       reviewID: 3, 
@@ -76,7 +74,6 @@ const handleMockReview = async () => {
     }
   };
 
-
   const handleGetTags = async () => {
     try {
       const response = await axios.get("http://localhost:3001/tags");
@@ -85,8 +82,10 @@ const handleMockReview = async () => {
       console.error("Error:", error);
     }
   };
+
   return(
     <div>
+      <ReviewForm />
       <button onClick={handleTest}>GET-Reviews</button>
       <button onClick={handleMockReview}>POST-Review</button>
       <button onClick={handleMockComment}>POST-Comment</button>

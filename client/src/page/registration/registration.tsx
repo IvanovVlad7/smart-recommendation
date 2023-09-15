@@ -9,6 +9,7 @@ import { registerUrl  } from "../../constans/constans";
 import { MAIN_ENDPOINT}  from "../../constans/constans";
 
 const Registration = () => {
+  // TODO: refactor registration the same as it is in login
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

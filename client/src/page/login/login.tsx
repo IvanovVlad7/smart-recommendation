@@ -1,5 +1,4 @@
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import * as React from "react";
@@ -9,28 +8,36 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { loginUrl } from "../../constans/constans";
 import { MAIN_ENDPOINT}  from "../../constans/constans";
-
-
+import { FormField } from '../../components/form-field';
+import { emailForm, nameForm, passwordForm } from '../../constans/form-values';
 
 const Login = () => {
-    const [name, setName] = useState("");
-    const [password, setPassword] = useState("");
-    const [email,setEmail] = useState("");
-    const [nameError, setNameError] = useState(false);
-    const [emailError, setEmailError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
+  const navigate = useNavigate();
+  const [formValues, setFormValues] = useState({
+    [emailForm.name]: "",
+    [nameForm.name]: "",
+    [passwordForm.name]: ""
+  });
+  const [formErrors, setFormErrors] = useState({
+    [emailForm.name]: false,
+    [nameForm.name]: false,
+    [passwordForm.name]: false,
+  });
 
-    const navigate = useNavigate();
+  const handleFormFieldChange = ({ e, name }: any) => {
+    setFormValues(prev => ({ ...prev, [name]: e.target.value }));
+    setFormErrors(prev => ({ ...prev, [name]: false }))
+  }
 
-    const handleLogin = async (e: React.SyntheticEvent) => {
+  const handleLogin = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if (!name ||!email || !password) {
-      if (!name) setNameError(true);
-      if (!email) setEmailError(true);
-      if (!password) setPasswordError(true);
-      return;
-    }
+    const { email, name, password } = formValues;
+    
+    if (!email) setFormErrors(prev => ({ ...prev, email: true }))
+    if (!name) setFormErrors(prev => ({ ...prev, name: true }))
+    if (!password) setFormErrors(prev => ({ ...prev, password: true }))
+    if (Object.values(formValues).includes("")) return;
 
     try {
       const response = await axios.post(loginUrl, { 
@@ -52,82 +59,56 @@ const Login = () => {
     }
   };
 
-  
-
   // TODO: likes should be stored in DB (after page was reloaded, added likes should be applied)
   // TODO: comments should be stored in DB (after page was reloaded, added comments should be applied)
   
   return(
     <div className="auth-form">
-  <Typography variant="h3" component="div">
-    Log In
-  </Typography>
-  <form className="auth-form__form">
-<TextField
-      label="Name"
-      size="small"
-      margin="normal"
-      className="auth-form__input"
-      fullWidth={true}
-      value={name}
-      onChange={(e) => {
-            setName(e.target.value);
-            setNameError(false);
+      <Typography variant="h3" component="div">
+        Log In
+      </Typography>
+      <form className="auth-form__form">
+        <FormField 
+          label={nameForm.label}
+          value={formValues.name}
+          name={nameForm.name}
+          onChange={handleFormFieldChange}
+          error={formErrors.name}
+          customErrorMessage={nameForm.required}
+        />
+        <FormField 
+          label={emailForm.label}
+          value={formValues.email}
+          name={emailForm.name}
+          onChange={handleFormFieldChange}
+          error={formErrors.email}
+          customErrorMessage={emailForm.required}
+        />
+        <FormField 
+          label={passwordForm.label}
+          value={formValues.password}
+          name={passwordForm.name}
+          onChange={handleFormFieldChange}
+          error={formErrors.error}
+          customErrorMessage={passwordForm.required}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth={true}
+          disableElevation={true}
+          sx={{
+            marginTop: 2,
           }}
-          required
-          error={nameError}
-          helperText={nameError ? "Name is required" : ""}
-    />
-    <TextField
-      label="Email"
-      size="small"
-      margin="normal"
-      className="auth-form__input"
-      fullWidth={true}
-      value={email}
-      onChange={(e) => {
-            setEmail(e.target.value);
-            setEmailError(false);
-          }}
-          required
-          error={emailError}
-          helperText={emailError ? "Email is required" : ""}
-    />
-    <TextField      
-      label="Password"
-      type="password"
-      size="small"
-      margin="normal"
-      className="auth-form__input"
-      fullWidth={true}
-      value={password}
-      onChange={(e) => {
-            setPassword(e.target.value);
-            setPasswordError(false);
-          }}
-          required
-          error={passwordError}
-          helperText={
-            passwordError ? "Password is required" : ""
-          }
-    />
-    <Button
-      type="submit"
-      variant="contained"
-      fullWidth={true}
-      disableElevation={true}
-      sx={{
-        marginTop: 2,
-      }}
-      onClick={ handleLogin}
-    >
-      Log In
-    </Button>
-    <div>
-      Don't have an account? <Link to="/registration">Register</Link>
+          onClick={ handleLogin}
+        >
+          Log In
+        </Button>
+        <div>
+          Don't have an account? <Link to="/registration">Register</Link>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
   )
 }
 

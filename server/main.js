@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const mysql = require("mysql2")
 const cors = require('cors');
 
-
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -13,11 +12,9 @@ app.listen(3001,() => {
   console.log("server running on port 3001")
 });
 
-
 const db = mysql.createPool({
   host:"localhost",
   user:"root",
-  password:"4321",
   database:"db",
 })
 
