@@ -5,8 +5,9 @@ import * as React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { registerUrl  } from "../../constans/constans";
-import { MAIN_ENDPOINT}  from "../../constans/constans";
+import { registerUrl  } from "../../constans/api";
+import { MAIN_ENDPOINT}  from "../../constans/api";
+import { storage } from "../../constans/storage";
 
 const Registration = () => {
   // TODO: refactor registration the same as it is in login
@@ -41,7 +42,7 @@ const Registration = () => {
         alert(response.data.error);
       } else {
         // TODO: store user's ID, name in session storage
-        sessionStorage.setItem("userData", JSON.stringify(response.data));
+        sessionStorage.setItem(storage.userData, JSON.stringify(response.data));
         console.log(response.data);
         navigate(MAIN_ENDPOINT);
       }

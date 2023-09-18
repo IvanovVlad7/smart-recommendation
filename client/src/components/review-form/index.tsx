@@ -7,9 +7,9 @@ import { Container } from "@mui/material";
 import { Grid } from "@mui/material";
 import { reviewNameForm, targetNameForm, categoryForm, reviewTextForm, reviewRatingForm } from '../../constans/form-values';
 import axios from 'axios';
-import { reviewCreateUrl } from '../../constans/constans';
+import { reviewCreateUrl } from '../../constans/api';
 
-const ReviewForm = () => {
+export const ReviewForm = () => {
   const [formValues, setFormValues] = useState({
     [reviewNameForm.name]: "",
     [targetNameForm.name]: "",
@@ -65,58 +65,58 @@ const ReviewForm = () => {
           Create a Review
         </Typography>
         <form onSubmit={handleReviewCreation}>
-        <Grid container spacing={3}>
-    <Grid item xs={12} sm={6}>
-      <FormField
-      label={reviewNameForm.label}
-      value={formValues.reviewName}
-      name={reviewNameForm.name}
-      onChange={handleFormFieldChange}
-      error={formErrors.reviewName}
-      customErrorMessage={reviewNameForm.required}
-      />
-    </Grid>
-    <Grid item xs={12} sm={6}>
-      <FormField
-      label={targetNameForm.label}
-      value={formValues.targetName}
-      name={targetNameForm.name}
-      onChange={handleFormFieldChange}
-      error={formErrors.targetName}
-      customErrorMessage={targetNameForm.required}
-    />
-    </Grid>
-    <Grid item xs={12}>
-      <FormField
-      label={categoryForm.label}
-      value={formValues.category}
-      name={categoryForm.name}
-      onChange={handleFormFieldChange}
-      error={formErrors.category}
-      customErrorMessage={categoryForm.required}
-    />
-    </Grid>
-    <Grid item xs={12}>
-      <FormField
-      label={reviewTextForm.label}
-      value={formValues.reviewText}
-      name={reviewTextForm.name}
-      onChange={handleFormFieldChange}
-      error={formErrors.reviewText}
-      customErrorMessage={reviewTextForm.required}
-    />
-    </Grid>
-    <Grid item xs={12} sm={6}>
-      <FormField
-      label={reviewRatingForm.label}
-      value={formValues.reviewRating}
-      name={reviewRatingForm.name}
-      onChange={handleFormFieldChange}
-      error={formErrors.reviewRating}
-      customErrorMessage={reviewRatingForm.required}
-    />
-    </Grid>
-    </Grid>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <FormField
+                label={reviewNameForm.label}
+                value={formValues.reviewName}
+                name={reviewNameForm.name}
+                onChange={handleFormFieldChange}
+                error={formErrors.reviewName}
+                customErrorMessage={reviewNameForm.required}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormField
+                label={targetNameForm.label}
+                value={formValues.targetName}
+                name={targetNameForm.name}
+                onChange={handleFormFieldChange}
+                error={formErrors.targetName}
+                customErrorMessage={targetNameForm.required}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormField
+                label={categoryForm.label}
+                value={formValues.category}
+                name={categoryForm.name}
+                onChange={handleFormFieldChange}
+                error={formErrors.category}
+                customErrorMessage={categoryForm.required}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormField
+                label={reviewTextForm.label}
+                value={formValues.reviewText}
+                name={reviewTextForm.name}
+                onChange={handleFormFieldChange}
+                error={formErrors.reviewText}
+                customErrorMessage={reviewTextForm.required}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormField
+                label={reviewRatingForm.label}
+                value={formValues.reviewRating}
+                name={reviewRatingForm.name}
+                onChange={handleFormFieldChange}
+                error={formErrors.reviewRating}
+                customErrorMessage={reviewRatingForm.required}
+              />
+            </Grid>
+          </Grid>
           <Button
             type="submit"
             variant="contained"
@@ -131,5 +131,3 @@ const ReviewForm = () => {
     </Container>
   );
 };
-
-export default ReviewForm;
