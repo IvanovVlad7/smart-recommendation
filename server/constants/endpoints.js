@@ -5,6 +5,7 @@ const endpoints = {
     comments: '/comments',
     likes: '/likes',
     tags: '/tags',
+    users: '/users',
 }
 
 module.exports = {

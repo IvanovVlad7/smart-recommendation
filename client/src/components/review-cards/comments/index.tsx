@@ -1,4 +1,4 @@
-import { useIsLoggedIn } from "../../../helpers/useIsLoggedIn";
+import { useCurrentUserData } from "../../../helpers/useCurrentUserData";
 import {
     Button,
     TextField,
@@ -6,43 +6,40 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
+import axios from "axios";
 
-export const Comments = () => {
-    const [comments, setComments] = useState<string[]>([]);
+export const Comments = ({ review, oldComments, users }: any) => {
     const [newComment, setNewComment] = useState("");
-    const { isLoggedIn } = useIsLoggedIn();
-    const [editingCommentIndex, setEditingCommentIndex] = useState<number | null>(
-        null
-    );
-
-    const handleCommentSubmit = () => {
-        if (newComment.trim() !== "") {
-            if (editingCommentIndex !== null) {
-                const updatedComments = [...comments];
-                updatedComments[editingCommentIndex] = newComment;
-                setComments(updatedComments);
-                setEditingCommentIndex(null);
-            } else {
-                setComments([...comments, newComment]);
-            }
-            setNewComment("");
+    const { isAdmin, userId } = useCurrentUserData();
+    console.log('users:', users)
+    const handleCommentSubmit = async () => {
+        console.log('Submit: ', newComment, review);
+        try {
+            if (!newComment || !userId || !review.ID) return; 
+            const response = await axios.post('http://localhost:3001/comments', {
+                reviewID: review.ID,
+                commentText: newComment,
+                userID: userId
+            });
+            console.log('response: ', response);
+            
+        } catch (error) {
+            console.error('Error:', error);
         }
     };
 
     const handleCommentEdit = (index: number) => {
-        setEditingCommentIndex(index);
-        setNewComment(comments[index]);
     };
 
     const handleCommentDelete = (index: number) => {
-        const updatedComments = [...comments];
-        updatedComments.splice(index, 1);
-        setComments(updatedComments);
     };
-
+    console.log('oldComments: ', oldComments)
     return (
         <>
-            {comments.map((c, index) => (
+            {oldComments.map((oldComments: any) => {
+                <div key={oldComments.ID} className="newComment"></div>
+            })}
+            {/* {oldComments.map((c: any, index) => (
                 <div key={index} className="newComment">
                     {index === editingCommentIndex ? (
                         <div>
@@ -85,8 +82,8 @@ export const Comments = () => {
                         </div>
                     )}
                 </div>
-            ))}
-            {isLoggedIn ? (
+            ))} */}
+            {isAdmin ? (
                 <TextField
                     label="Add a newComment"
                     value={newComment}

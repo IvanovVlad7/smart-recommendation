@@ -75,6 +75,16 @@ app.get(endpoints.reviews, async (req, res) => {
   }
 });
 
+app.get(endpoints.users, (req, res) => {
+  db.query(users.getAll, (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json(result);
+    }
+  })
+})
+
 function queryDatabase(sqlQuery) {
   return new Promise((resolve, reject) => {
     db.query(sqlQuery, (error, result) => {
@@ -129,9 +139,9 @@ function addLikes(reviews, likes) {
   return reviewsWithLikes;
 }
 
-
 app.post(endpoints.register, (req, res) => {
   const { name, email, password } = req.body;
+
   db.query(users.getByEmail, [email], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
@@ -163,7 +173,12 @@ app.post(endpoints.login, (req, res) => {
       if (result.length === 0) {
         res.status(401).json({ error: errorMessages.invalidCreds });
       } else {
-        res.status(200).json({ id: result.insertId, name, message: successMessages.login });
+        res.status(200).json({
+          id: result[0].ID,
+          name,
+          role: result[0].role,
+          message: successMessages.login
+        });
       }
     }
   });
@@ -190,8 +205,19 @@ app.get(endpoints.reviews, (req, res) => {
   });
 });
 
+app.get(endpoints.comments, (req, res) => {
+  db.query(comments.getAll, (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json(result);
+    }
+  })
+});
+
 app.post(endpoints.comments, (req, res) => {
   const { reviewID, commentText,  userID } = req.body;
+  
   db.query(comments.insert, [reviewID, commentText, userID], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
