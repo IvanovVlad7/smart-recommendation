@@ -40,10 +40,14 @@ const lightTheme = createTheme({
 
 const Dashboard = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [language, setLanguage] = useState('ru');
 
 
   const toggleTheme = () => {
     setIsDarkTheme((prev) => !prev);
+  };
+  const toggleLanguage = () => {
+    setLanguage(language === 'ru' ? 'en' : 'ru');
   };
 
   return (
@@ -60,11 +64,14 @@ const Dashboard = () => {
               </Button>
             </Box>
             <Button color='secondary' variant='contained' className="SignUpButton">
-              Sign UP
+              Sign Up
             </Button>
-            <IconButton color="inherit" onClick={toggleTheme}>
+            <IconButton color="inherit" onClick={toggleTheme} style={{ marginLeft: '10px' }} >
               {isDarkTheme ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
+            <Button color='inherit' onClick={toggleLanguage} style={{ marginLeft: '10px' }}>
+              {language === 'ru' ? 'EN' : 'RU'}
+            </Button>
           </Toolbar>
         </Container>
       </AppBar>
