@@ -11,12 +11,11 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7"; 
 import './dashboard.css';
 import MainPage from "../main/main";
-import ReviewForm from "../../components/review-form"; 
-
+import { ReviewForm } from "../../components/review-form"; 
 
 const darkTheme = createTheme({
   palette: {
-    type: 'dark',
+    // type: 'dark',
     primary: {
       main: '#000',
     },
@@ -28,7 +27,7 @@ const darkTheme = createTheme({
 
 const lightTheme = createTheme({
   palette: {
-    type: 'light',
+    // type: 'light',
     primary: {
       main: '#fff',
     },
@@ -42,7 +41,6 @@ const Dashboard = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [language, setLanguage] = useState('ru');
 
-
   const toggleTheme = () => {
     setIsDarkTheme((prev) => !prev);
   };
@@ -50,7 +48,7 @@ const Dashboard = () => {
     setLanguage(language === 'ru' ? 'en' : 'ru');
   };
 
-  return (
+  return(
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <AppBar position='fixed'>
         <Container fixed>
@@ -76,11 +74,12 @@ const Dashboard = () => {
         </Container>
       </AppBar>
       <main>
-        <MainPage className ='main'/>
+        <MainPage />
         <ReviewForm />
       </main>
     </ThemeProvider>
-  );
+  )
 }
 
-export default Dashboard;
+
+export default Dashboard

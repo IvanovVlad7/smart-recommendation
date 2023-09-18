@@ -7,27 +7,16 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import "./review-card.css";
-
-type Review = {
-  reviewName: string;
-  targetName: string;
-  reviewText: string;
-};
-
-interface ReviewCardProps {
-  review: Review;
-   // sendCommentToServer: (commentText: string, reviewID: number, userID: number) => void;
-   // sendLikeToServer: (reviewID: number, userID: number) => void;
-}
+import { Likes } from "./likes";
+import { ReviewCardProps } from './review-card-interface';
+import { Comments } from "./comments";
 
 const LOCAL_STORAGE_KEY = "reviewData";
 
 const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
-  const [liked, setLiked] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<string[]>([]);
   const [editingCommentIndex, setEditingCommentIndex] = useState<number | null>(
@@ -40,45 +29,9 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
 
     if (storedData) {
       const parsedData = JSON.parse(storedData);
-      setLiked(parsedData.liked);
       setComments(parsedData.comments);
     }
   }, []);
-
-  useEffect(() => {
-    const dataToStore = { liked, comments };
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataToStore));
-  }, [liked, comments]);
-
-
-  const toggleLike = () => {
-    setLiked(!liked);
-  };
-
-  const handleCommentSubmit = () => {
-    if (comment.trim() !== "") {
-      if (editingCommentIndex !== null) {
-        const updatedComments = [...comments];
-        updatedComments[editingCommentIndex] = comment;
-        setComments(updatedComments);
-        setEditingCommentIndex(null);
-      } else {
-        setComments([...comments, comment]);
-      }
-      setComment("");
-    }
-  };
-
-  const handleCommentEdit = (index: number) => {
-    setEditingCommentIndex(index);
-    setComment(comments[index]);
-  };
-
-  const handleCommentDelete = (index: number) => {
-    const updatedComments = [...comments];
-    updatedComments.splice(index, 1);
-    setComments(updatedComments);
-  };
 
   return (
     <Card className="review-card">
@@ -104,82 +57,10 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
         <Typography variant="body2">{review.reviewText}</Typography>
       </CardContent>
       <CardActions className="review-card-actions">
-        <Button
-          className={`review-card-button ${liked ? "liked" : ""}`}
-          size="small"
-          onClick={toggleLike}
-        >
-          <FavoriteIcon color={liked ? "error" : "inherit"} />
-        </Button>
-        <Button className="review-card-button" size="small">
-        
-        </Button>
+        <Likes />
       </CardActions>
       <div className="comment-section">
-        {comments.map((c, index) => (
-          <div key={index} className="comment">
-            {index === editingCommentIndex ? (
-              <div>
-                <TextField
-                  label="Edit comment"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  onClick={() => handleCommentSubmit()}
-                >
-                  Save
-                </Button>
-              </div>
-            ) : (
-              <div>
-                <span>{c}</span>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  startIcon={<EditIcon />}
-                  onClick={() => handleCommentEdit(index)}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  startIcon={<DeleteIcon />}
-                  onClick={() => handleCommentDelete(index)}
-                >
-                  Delete
-                </Button>
-              </div>
-            )}
-          </div>
-        ))}
-        <TextField
-          label="Add a comment"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          fullWidth
-          variant="outlined"
-          size="small"
-          InputProps={{
-            endAdornment: (
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={handleCommentSubmit}
-              >
-                Comment
-              </Button>
-            ),
-          }}
-        />
+        <Comments />
       </div>
     </Card>
   );
