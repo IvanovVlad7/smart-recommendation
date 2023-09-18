@@ -11,6 +11,7 @@ import { MAIN_ENDPOINT}  from "../../constans/constans";
 import { FormField } from '../../components/form-field';
 import { emailForm, nameForm, passwordForm } from '../../constans/form-values';
 
+
 const Login = () => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
@@ -105,7 +106,7 @@ const Login = () => {
           Log In
         </Button>
         <div>
-          Don't have an account? <Link to="/registration">Register</Link>
+          Don't have an account?&& <Link to="/registration">Register</Link>
         </div>
       </form>
     </div>
