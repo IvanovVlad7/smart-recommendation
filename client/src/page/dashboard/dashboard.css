@@ -1,0 +1,12 @@
+.title {
+  flex-grow: 1;
+}
+
+.num{
+  padding-top: 64px;
+}
+
+
+.main{
+  margin-top: 100px;
+}
