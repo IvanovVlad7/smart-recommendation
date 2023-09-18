@@ -66,15 +66,9 @@ db.query(likes.create, (error, result) => {
 app.get(endpoints.reviews, async (req, res) => {
   try {
     const resultReviews = await queryDatabase(reviews.getAll);
-    const resultTags = await queryDatabase(tags.getAll);
-    const resultComments = await queryDatabase(comments.getAll);
-    const resultLikes = await queryDatabase(likes.getAll);
     
     res.status(200).json({
-      reviews: resultReviews,
-      tags: resultTags,
-      comments: resultComments,
-      likes: resultLikes
+      reviews: resultReviews
     });
   } catch (error) {
     res.status(500).json({ error: errorMessages.internal });

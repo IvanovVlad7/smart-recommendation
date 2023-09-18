@@ -3,7 +3,7 @@ import { FormField } from '../form-field';
 import Button from "@mui/material/Button";
 import { reviewNameForm, targetNameForm, categoryForm, reviewTextForm, reviewRatingForm } from '../../constans/form-values';
 import axios from 'axios';
-import { reviewCreateUrl } from '../../constans/constans';
+import { reviewCreateUrl } from '../../constans/api';
 
 export const ReviewForm = () => {
     const [formValues, setFormValues] = useState({

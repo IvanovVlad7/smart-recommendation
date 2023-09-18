@@ -6,10 +6,11 @@ import './login.css';
 import  { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { loginUrl } from "../../constans/constans";
-import { MAIN_ENDPOINT}  from "../../constans/constans";
+import { loginUrl } from "../../constans/api";
+import { MAIN_ENDPOINT}  from "../../constans/api";
 import { FormField } from '../../components/form-field';
 import { emailForm, nameForm, passwordForm } from '../../constans/form-values';
+import { storage } from "../../constans/storage";
 
 
 const Login = () => {
@@ -51,7 +52,7 @@ const Login = () => {
         alert(response.data.error);
       } else {
         // TODO: store user's ID, name in session storage
-        sessionStorage.setItem("userData", JSON.stringify(response.data));
+        sessionStorage.setItem(storage.userData, JSON.stringify(response.data));
         console.log(response.data);
         navigate(MAIN_ENDPOINT);
       }
