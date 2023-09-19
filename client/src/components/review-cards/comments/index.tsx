@@ -5,84 +5,49 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { UserComment } from "./user-comment";
 
 export const Comments = ({ review, oldComments, users }: any) => {
+    const exactReviewCommentAuthor = users.find((user: any) => user.ID === review.userID)
     const [newComment, setNewComment] = useState("");
+    const [relevantComments, setRelevantComments] = useState([]);
     const { isAdmin, userId } = useCurrentUserData();
-    console.log('users:', users)
+
     const handleCommentSubmit = async () => {
         console.log('Submit: ', newComment, review);
         try {
-            if (!newComment || !userId || !review.ID) return; 
-            const response = await axios.post('http://localhost:3001/comments', {
+            if (!newComment || !userId || !review.ID) return;
+            await axios.post('http://localhost:3001/comments', {
                 reviewID: review.ID,
                 commentText: newComment,
                 userID: userId
             });
-            console.log('response: ', response);
-            
+            const responseComments = await axios.get("http://localhost:3001/comments");
+            setRelevantComments(responseComments.data);
         } catch (error) {
             console.error('Error:', error);
         }
     };
 
-    const handleCommentEdit = (index: number) => {
-    };
-
-    const handleCommentDelete = (index: number) => {
-    };
-    console.log('oldComments: ', oldComments)
+    useEffect(() => {
+        if (review.ID && oldComments.length) {
+            setRelevantComments(oldComments.filter((comment: any) => comment.reviewID === review.ID))
+        }
+    }, [review.ID, oldComments]);
+    
     return (
         <>
-            {oldComments.map((oldComments: any) => {
-                <div key={oldComments.ID} className="newComment"></div>
-            })}
-            {/* {oldComments.map((c: any, index) => (
-                <div key={index} className="newComment">
-                    {index === editingCommentIndex ? (
-                        <div>
-                            <TextField
-                                label="Edit newComment"
-                                value={newComment}
-                                onChange={(e) => setNewComment(e.target.value)}
-                                fullWidth
-                                variant="outlined"
-                                size="small"
-                            />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                size="small"
-                                onClick={() => handleCommentSubmit()}
-                            >
-                            Save
-                            </Button>
-                        </div>
-                    ) : (
-                        <div>
-                            <span>{c}</span>
-                            <Button
-                                variant="outlined"
-                                size="small"
-                                startIcon={<EditIcon />}
-                                onClick={() => handleCommentEdit(index)}
-                            >
-                                Edit
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                size="small"
-                                startIcon={<DeleteIcon />}
-                                onClick={() => handleCommentDelete(index)}
-                            >
-                                Delete
-                            </Button>
-                        </div>
-                    )}
-                </div>
-            ))} */}
+            {relevantComments.map((comment: any) => <div key={comment.ID} className="newComment">
+                <UserComment
+                    isChangeable={isAdmin || exactReviewCommentAuthor.ID === userId}
+                    userName={exactReviewCommentAuthor.name}
+                    userEmail={exactReviewCommentAuthor.email}
+                    comment={comment.commentText}
+                    commentID={comment.ID}
+                />
+            </div>)}
             {isAdmin ? (
                 <TextField
                     label="Add a newComment"
