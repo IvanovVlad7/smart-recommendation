@@ -18,7 +18,13 @@ type Review = {
   ID: number;
 };
 
-const MainPage = () => {
+
+interface MainProps {
+  isDarkTheme: boolean; 
+}
+
+
+const MainPage: React.FC<MainProps> = ({ isDarkTheme }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const getReviewsData = async () => {
     try {
@@ -46,12 +52,24 @@ const MainPage = () => {
     <Container className="page-container"> 
       <Box className="search-input"> 
         <TextField
-          label="Search Reviews"
-          variant="outlined"
-          fullWidth
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+            label="Search Reviews"
+            variant="outlined"
+            fullWidth
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            InputProps={{
+          style: {
+            color: isDarkTheme ? 'white' : 'black',
+            borderColor: isDarkTheme ? 'white' : 'rgba(0, 0, 0, 0.42)', 
+            backgroundColor: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'white',
+    },
+  }}
+  InputLabelProps={{
+    style: {
+      color: isDarkTheme ? 'white' : 'black', 
+    },
+  }}
+          />
       </Box>
       <Grid container spacing={2}>
         {filteredReviews?.map((review, index) => (
