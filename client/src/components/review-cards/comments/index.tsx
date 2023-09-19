@@ -9,8 +9,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { UserComment } from "./user-comment";
 
-export const Comments = ({ review, oldComments, users }: any) => {
-    const exactReviewCommentAuthor = users.find((user: any) => user.ID === review.userID)
+export const Comments = ({ review, oldComments, isReviewAuthor }: any) => {
     const [newComment, setNewComment] = useState("");
     const [relevantComments, setRelevantComments] = useState([]);
     const { isAdmin, userId } = useCurrentUserData();
@@ -41,9 +40,9 @@ export const Comments = ({ review, oldComments, users }: any) => {
         <>
             {relevantComments.map((comment: any) => <div key={comment.ID} className="newComment">
                 <UserComment
-                    isChangeable={isAdmin || exactReviewCommentAuthor.ID === userId}
-                    userName={exactReviewCommentAuthor.name}
-                    userEmail={exactReviewCommentAuthor.email}
+                    isChangeable={isAdmin || isReviewAuthor.ID === userId}
+                    userName={isReviewAuthor.name}
+                    userEmail={isReviewAuthor.email}
                     comment={comment.commentText}
                     commentID={comment.ID}
                 />
