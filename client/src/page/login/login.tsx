@@ -13,7 +13,13 @@ import { emailForm, nameForm, passwordForm } from '../../constans/form-values';
 import { storage } from "../../constans/storage";
 
 
-const Login = () => {
+
+interface LoginProps {
+  isDarkTheme: boolean; 
+}
+
+
+const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     [emailForm.name]: "",
@@ -36,9 +42,9 @@ const Login = () => {
 
     const { email, name, password } = formValues;
     
-    if (!email) setFormErrors(prev => ({ ...prev, email: true }))
-    if (!name) setFormErrors(prev => ({ ...prev, name: true }))
-    if (!password) setFormErrors(prev => ({ ...prev, password: true }))
+    if (!email) setFormErrors(prev => ({ ...prev, email: true }));
+    if (!name) setFormErrors(prev => ({ ...prev, name: true }));
+    if (!password) setFormErrors(prev => ({ ...prev, password: true }));
     if (Object.values(formValues).includes("")) return;
 
     try {
@@ -60,16 +66,16 @@ const Login = () => {
       console.error("Ошибка:", error);
     }
   };
-
+  
   // TODO: likes should be stored in DB (after page was reloaded, added likes should be applied)
   // TODO: comments should be stored in DB (after page was reloaded, added comments should be applied)
-  
+
   return(
-    <div className="auth-form">
+    <div className="auth-form" style={{ backgroundColor: isDarkTheme ? 'grey' : '#fff' }}>
       <Typography variant="h3" component="div">
         Log In
       </Typography>
-      <form className="auth-form__form">
+      <form className="auth-form__form" >
         <FormField 
           label={nameForm.label}
           value={formValues.name}
@@ -77,6 +83,8 @@ const Login = () => {
           onChange={handleFormFieldChange}
           error={formErrors.name}
           customErrorMessage={nameForm.required}
+          
+            
         />
         <FormField 
           label={emailForm.label}
@@ -85,6 +93,7 @@ const Login = () => {
           onChange={handleFormFieldChange}
           error={formErrors.email}
           customErrorMessage={emailForm.required}
+          
         />
         <FormField 
           label={passwordForm.label}
@@ -107,7 +116,7 @@ const Login = () => {
           Log In
         </Button>
         <div>
-          Don't have an account?&& <Link to="/registration">Register</Link>
+          Don't have an account? <Link to="/registration" style={{ color: isDarkTheme ? '#fff' : 'black', textDecoration: 'none'}}>Register</Link>
         </div>
       </form>
     </div>
