@@ -48,18 +48,15 @@ const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
     if (Object.values(formValues).includes("")) return;
 
     try {
-      const response = await axios.post(loginUrl, { 
+      const response = await axios.post(loginUrl, {
         name,
         email,
         password,
       });
-      // TODO: BE should return ID, name of a user
       if (response.data.error) {
         alert(response.data.error);
       } else {
-        // TODO: store user's ID, name in session storage
         sessionStorage.setItem(storage.userData, JSON.stringify(response.data));
-        console.log(response.data);
         navigate(MAIN_ENDPOINT);
       }
     } catch (error) {
@@ -67,9 +64,6 @@ const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
     }
   };
   
-  // TODO: likes should be stored in DB (after page was reloaded, added likes should be applied)
-  // TODO: comments should be stored in DB (after page was reloaded, added comments should be applied)
-
   return(
     <div className="auth-form" style={{ backgroundColor: isDarkTheme ? 'grey' : '#fff' }}>
       <Typography variant="h3" component="div">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useIsLoggedIn } from "../../../helpers/useIsLoggedIn";
+import { useCurrentUserData } from "../../../helpers/useCurrentUserData";
 import {
     CardActions,
     Button,
@@ -8,7 +8,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export const Likes = () => {
     const [liked, setLiked] = useState(false);
-    const { isLoggedIn } = useIsLoggedIn();
+    const { isAdmin } = useCurrentUserData();
 
     const handleLikeToggle = () => {
         setLiked(!liked)
@@ -16,7 +16,7 @@ export const Likes = () => {
     
     return (
         <CardActions className="review-card-actions">
-            {isLoggedIn ? (
+            {isAdmin ? (
                 <Button
                     className={`review-card-button ${liked ? "liked" : ""}`}
                     size="small"
@@ -25,7 +25,7 @@ export const Likes = () => {
                     <FavoriteIcon color={liked ? "error" : "inherit"} />
                 </Button>
             ) : (
-                <FavoriteIcon color={"inherit"} />
+                <FavoriteIcon color="inherit" />
             )}
         </CardActions>
     )

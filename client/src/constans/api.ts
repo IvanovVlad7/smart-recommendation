@@ -7,3 +7,8 @@ export const MAIN_ENDPOINT = '/';
 export const loginUrl = `${API_HOST}${LOGIN_ENDPOINT}`;
 export const registerUrl =  `${API_HOST}${REGISTER_ENDPOINT}`;
 export const reviewCreateUrl = `${API_HOST}${REVIEWS_ENDPOINT}`;
+
+export const roles = {
+    user: 'user',
+    admin: 'admin'
+}

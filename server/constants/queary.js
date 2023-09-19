@@ -64,6 +64,8 @@ const query = {
         `,
         getAll: "SELECT * FROM comments",
         insert: "INSERT INTO comments (reviewID, commentText, userID) VALUES (?, ?, ?)",
+        updateById: "UPDATE comments SET commentText = ? WHERE ID = ?",
+        deleteById: "DELETE FROM comments WHERE ID = ?"
     },
     [tableNames.likes]: {
         create: `

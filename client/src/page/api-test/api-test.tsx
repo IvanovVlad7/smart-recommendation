@@ -2,17 +2,29 @@ import axios from "axios";
 import React, { useState } from "react";
 import {ReviewForm} from "../../components/review-form/ReviewForm";
 import ReviewCard from "../../components/review-cards/review-card";
+import { useCurrentUserData } from "../../helpers/useCurrentUserData";
 
 const ApiTest = () => {
-    const [reviews, setReviews] = useState([]);
+    const { isAdmin } = useCurrentUserData();
+    const [reviews, setReviews] = useState<any[]>([]);
+    const [oldComments, setOldComments] = useState<any[]>([]);
+    const [users, setUsers] = useState<any[]>([]);
 
     const handleGetReviews = async () => {
         try {
-            const response = await axios.get("http://localhost:3001/reviews");
-            setReviews(response.data?.reviews)
-            console.log("Reviews data:", response.data);
+            const responseReviews = await axios.get("http://localhost:3001/reviews");
+            const responseComments = await axios.get("http://localhost:3001/comments");
+            const responseUsers = await axios.get("http://localhost:3001/users");
+            setReviews(responseReviews.data?.reviews);
+            setOldComments(responseComments.data);
+            setUsers(responseUsers.data)
+            console.log("Reviews data:", responseReviews.data);
+            console.log("Comments data:", responseComments.data);
+            console.log("Users data:", responseUsers.data);
         } catch (error) {
-            setReviews([])
+            setReviews([]);
+            setOldComments([]);
+            setUsers([]);
             console.error("Error:", error);
         }
     };
@@ -80,7 +92,7 @@ const ApiTest = () => {
                 <button onClick={handleGetTags}>GET-Tags</button>
             </>
             <ReviewForm />
-            {reviews?.map((review: any) => <ReviewCard review={review} />)}
+            {reviews?.map((review: any) => <ReviewCard review={review} oldComments={oldComments} users={users} />)}
         </div>
     )
 }
