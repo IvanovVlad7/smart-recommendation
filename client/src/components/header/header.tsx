@@ -10,37 +10,18 @@ import IconButton from "@mui/material/IconButton";
 import Brightness4Icon from "@mui/icons-material/Brightness4"; 
 import Brightness7Icon from "@mui/icons-material/Brightness7"; 
 import { Link } from "react-router-dom";
-import './appBar.css';
+import './header.css';
+import { darkTheme, lightTheme } from '../themes/themes';
 
-const darkTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#000',
-    },
-    secondary: {
-      main: '#ff0000', 
-    },
-  },
-});
 
-const lightTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#fff',
-    },
-    secondary: {
-      main: '#ff0000', 
-    },
-  },
-});
 
-interface AppBarProps {
+interface HeaderProps {
   isDarkTheme: boolean;
   toggleTheme: () => void;
-  toggleLanguage: () => void; 
+  toggleLanguage: () => void;
 }
 
-export const AppBarComponents: React.FC<AppBarProps> = ({ isDarkTheme, toggleTheme,toggleLanguage }) => {
+export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme,toggleLanguage }) => {
   const [language, setLanguage] = useState('ru');
   
   const handleToggleLanguage = () => {

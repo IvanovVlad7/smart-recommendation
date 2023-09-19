@@ -7,32 +7,13 @@ import Login from './page/login/login';
 import ApiTest from './page/api-test/api-test';
 import MainPage from './page/main/main';
 import { ReviewForm } from './components/review-form/ReviewForm';
-import { AppBarComponents } from './app-bar/appBar';
+import {Header } from './components/header/header';
+import { RUSSIAN, ENGLISH } from './constans/languages';
+import { darkTheme, lightTheme } from './components/themes/themes';
 
 
 
-const darkTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#000',
-    },
-    secondary: {
-      main: '#ff0000', 
-    },
 
-  },
-});
-
-const lightTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#fff',
-    },
-    secondary: {
-      main: '#ff0000', 
-    },
-  },
-});
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -42,8 +23,8 @@ const App = () => {
     setIsDarkTheme((prev) => !prev);
   };
 
- const toggleLanguage = () => {
-    setLanguage(language === 'ru' ? 'en' : 'ru');
+const toggleLanguage = () => {
+    setLanguage(language === RUSSIAN ? ENGLISH : RUSSIAN);
   };
 
   const pageStyle = {
@@ -58,7 +39,7 @@ const App = () => {
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <div style={pageStyle}>  
         <BrowserRouter>
-        <AppBarComponents isDarkTheme={isDarkTheme} toggleTheme={toggleTheme}  toggleLanguage={toggleLanguage} /> 
+          <Header isDarkTheme={isDarkTheme} toggleTheme={toggleTheme}  toggleLanguage={toggleLanguage}/> 
           <Routes>
             <Route path="/registration" element={<Registration isDarkTheme={isDarkTheme} />} />
             <Route path="/login" element={<Login isDarkTheme={isDarkTheme} />} />

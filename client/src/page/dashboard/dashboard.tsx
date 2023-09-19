@@ -7,11 +7,9 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({isDarkTheme}) => {
   return(
-    <>
         <main >      
           <MainPage isDarkTheme={isDarkTheme} />
         </main>
-    </>
 
   )
 }
