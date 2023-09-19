@@ -5,4 +5,5 @@ export interface IFormField {
     error: boolean,
     customErrorMessage?: string,
     name: string,
+    style?: React.CSSProperties,
 }

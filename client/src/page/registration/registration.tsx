@@ -9,7 +9,14 @@ import { registerUrl  } from "../../constans/api";
 import { MAIN_ENDPOINT}  from "../../constans/api";
 import { storage } from "../../constans/storage";
 
-const Registration = () => {
+
+
+interface RegistrationProps {
+  isDarkTheme: boolean; 
+}
+
+
+const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
   // TODO: refactor registration the same as it is in login
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -52,7 +59,7 @@ const Registration = () => {
   };
 
   return (
-    <div className="auth-form">
+    <div className="auth-form" style={{ backgroundColor: isDarkTheme ? 'grey' : '#fff' }}>
       <Typography variant="h3" component="div">
         Register
       </Typography>
@@ -70,6 +77,18 @@ const Registration = () => {
           required
           error={nameError}
           helperText={nameError ? "Name is required" : ""}
+          InputProps={{
+          style: {
+            color: isDarkTheme ? 'white' : 'black',
+            borderColor: isDarkTheme ? 'white' : 'rgba(0, 0, 0, 0.42)', 
+            backgroundColor: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'white',
+    },
+  }}
+  InputLabelProps={{
+    style: {
+      color: isDarkTheme ? 'white' : 'black', 
+    },
+  }}
         />
         <TextField
           label="Email"
@@ -84,6 +103,18 @@ const Registration = () => {
           required
           error={emailError}
           helperText={emailError ? "Email is required" : ""}
+          InputProps={{
+          style: {
+            color: isDarkTheme ? 'white' : 'black',
+            borderColor: isDarkTheme ? 'white' : 'rgba(0, 0, 0, 0.42)', 
+            backgroundColor: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'white',
+    },
+  }}
+  InputLabelProps={{
+    style: {
+      color: isDarkTheme ? 'white' : 'black', 
+    },
+  }}
         />
         <TextField
           label="Password"
@@ -99,6 +130,18 @@ const Registration = () => {
           required
           error={passwordError}
           helperText={passwordError ? "Password is required" : ""}
+          InputProps={{
+          style: {
+            color: isDarkTheme ? 'white' : 'black',
+            borderColor: isDarkTheme ? 'white' : 'rgba(0, 0, 0, 0.42)', 
+            backgroundColor: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'white',
+    },
+  }}
+  InputLabelProps={{
+    style: {
+      color: isDarkTheme ? 'white' : 'black', 
+    },
+  }}
         />
         <Button
           type="submit"
@@ -112,8 +155,8 @@ const Registration = () => {
         >
           Register
         </Button>
-        <div>
-          Already have an account? <a href="/login">Login</a>
+        <div >
+          Already have an account? <a href="/login" style={{ color: isDarkTheme ? '#fff' : 'black', textDecoration: 'none'}} >Login</a>
         </div>
       </form>
     </div>)
