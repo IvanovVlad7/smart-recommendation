@@ -10,7 +10,9 @@ import { Likes } from "./likes";
 import { ReviewCardProps } from './review-card-interface';
 import { Comments } from "./comments";
 
-const ReviewCard = ({ review, oldComments, users }: any) => {
+const ReviewCard = ({ review, oldComments, users, likes }: any) => {
+  const exactReviewCommentAuthor = users.find((user: any) => user.ID === review.userID)
+  
   return (
     <Card className="review-card">
       <div className="review-card-header">
@@ -35,10 +37,10 @@ const ReviewCard = ({ review, oldComments, users }: any) => {
         <Typography variant="body2">{review.reviewText}</Typography>
       </CardContent>
       <CardActions className="review-card-actions">
-        <Likes />
+        <Likes review={review} isReviewAuthor={exactReviewCommentAuthor} likes={likes} />
       </CardActions>
       <div className="comment-section">
-        <Comments review={review} oldComments={oldComments} users={users} />
+        <Comments review={review} oldComments={oldComments} isReviewAuthor={exactReviewCommentAuthor} />
       </div>
     </Card>
   );
