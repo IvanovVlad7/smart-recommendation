@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { registerUrl  } from "../../constans/api";
 import { MAIN_ENDPOINT}  from "../../constans/api";
 import { storage } from "../../constans/storage";
+import { useTranslation } from 'react-i18next';
+
 
 
 
@@ -26,6 +28,7 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
   const [passwordError, setPasswordError] = useState(false);
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleRegister = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -61,11 +64,11 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
   return (
     <div className="auth-form" style={{ backgroundColor: isDarkTheme ? 'grey' : '#fff' }}>
       <Typography variant="h3" component="div">
-        Register
+        {t('registerButton')}
       </Typography>
       <form className="auth-form__form">
         <TextField
-          label="Name"
+          label={t('nameField')}
           size="small"
           margin="normal"
           className="auth-form__input"
@@ -76,7 +79,7 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
           }}
           required
           error={nameError}
-          helperText={nameError ? "Name is required" : ""}
+          helperText={nameError ? t('nameRequiredError') : ""}
           InputProps={{
           style: {
             color: isDarkTheme ? 'white' : 'black',
@@ -91,7 +94,7 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
   }}
         />
         <TextField
-          label="Email"
+          label={t('emailField')}
           size="small"
           margin="normal"
           className="auth-form__input"
@@ -102,7 +105,7 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
           }}
           required
           error={emailError}
-          helperText={emailError ? "Email is required" : ""}
+          helperText={emailError ? t('emailRequiredError') : ""}
           InputProps={{
           style: {
             color: isDarkTheme ? 'white' : 'black',
@@ -117,7 +120,7 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
   }}
         />
         <TextField
-          label="Password"
+          label={t('passwordField')}
           type="password"
           size="small"
           margin="normal"
@@ -129,7 +132,7 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
           }}
           required
           error={passwordError}
-          helperText={passwordError ? "Password is required" : ""}
+          helperText={passwordError ? t('passwordRequiredError') : ""}
           InputProps={{
           style: {
             color: isDarkTheme ? 'white' : 'black',
@@ -153,10 +156,10 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
           }}
           onClick={handleRegister}
         >
-          Register
+          {t('registerButton')}
         </Button>
         <div >
-          Already have an account? <a href="/login" style={{ color: isDarkTheme ? '#fff' : 'black', textDecoration: 'none'}} >Login</a>
+          {t('alreadyHaveAccount')} <a href="/login" style={{ color: isDarkTheme ? '#fff' : 'black', textDecoration: 'none'}} >{t('loginLink')}</a>
         </div>
       </form>
     </div>)

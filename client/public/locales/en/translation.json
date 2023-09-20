@@ -1,0 +1,23 @@
+{
+    "webBlock": "Web Block",
+    "logIn": "Log In",
+    "signUp": "Sign Up",
+    "loginTitle": "Log In",
+    "register": "Don't have an account?",
+    "registerLink": "Register",
+    "nameField": "Name",
+    "emailField": "Email",
+    "passwordField": "Password",
+    "nameRequiredError": "Name is required",
+    "emailRequiredError": "Email is required",
+    "passwordRequiredError": "Password is required",
+    "registerButton": "Register",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginLink": "Login",
+    "ReviewName": "Review Name",
+    "TargetName": "Target Name",
+    "Category": "Category",
+    "ReviewText": "Review Text",
+    "Rating":"Rating",
+    "CreateReview":"Create Review"
+}

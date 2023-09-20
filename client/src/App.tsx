@@ -1,15 +1,16 @@
 import React, {useState}  from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import Dashboard from './page/dashboard/dashboard';
 import Registration from './page/registration/registration';
 import Login from './page/login/login';
 import ApiTest from './page/api-test/api-test';
 import MainPage from './page/main/main';
-import { ReviewForm } from './components/review-form/ReviewForm';
+import { ReviewForm } from './page/review-form/ReviewForm';
 import {Header } from './components/header/header';
-import { RUSSIAN, ENGLISH } from './constans/languages';
+import { RUSSIAN, ENGLISH } from './constans/languages';   
 import { darkTheme, lightTheme } from './components/themes/themes';
+
 
 
 
@@ -34,7 +35,7 @@ const toggleLanguage = () => {
     color: isDarkTheme ? '#fff' : '#000', 
   };
 
-
+  
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <div style={pageStyle}>  
