@@ -6,6 +6,7 @@ const endpoints = {
     likes: '/likes',
     tags: '/tags',
     users: '/users',
+    categories: '/categories',
 }
 
 module.exports = {

@@ -45,7 +45,11 @@ const ReviewCard = ({ review, oldComments, users, likes }: any) => {
         <Likes review={review} isReviewAuthor={exactReviewCommentAuthor} likes={likes} />
       </CardActions>
       <div className="comment-section">
-        <Comments review={review} oldComments={oldComments} isReviewAuthor={exactReviewCommentAuthor} />
+        <Comments
+          review={review}
+          oldComments={oldComments}
+          isReviewAuthor={exactReviewCommentAuthor}
+        />
       </div>
     </Card>
   );

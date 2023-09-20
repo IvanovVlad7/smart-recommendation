@@ -7,11 +7,14 @@ const app = express();
 const bodyParser = require('body-parser');
 const mysql = require("mysql2")
 const cors = require('cors');
-const { reviews, users, tags, comments, likes } = query;
+const { reviews, users, tags, comments, likes, categories } = query;
 
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended:true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// TODO: store default categories and use them at UI
+// TODO: store default categories and use them at UI
 
 app.listen(3001,() => {
   console.log("server running on port 3001")
@@ -44,6 +47,13 @@ db.query(tags.create, (error, result) => {
     console.log(errorMessages.tableCreation(tableNames.tags), error);
   } else {
     console.log(successMessages.tableCreation(tableNames.tags));
+    db.query(tags.insert, (error, result) => {
+      if (error) {
+        console.log(errorMessages.internal(tableNames.tags), error);
+      } else {
+        console.log(successMessages.entityAdded(tableNames.tags));
+      }
+    });
   }
 });
 
@@ -60,6 +70,22 @@ db.query(likes.create, (error, result) => {
     console.log(errorMessages.tableCreation(tableNames.likes), error);
   } else {
     console.log(successMessages.tableCreation(tableNames.likes));
+  }
+});
+
+db.query(categories.create, (error, result) => {
+  if (error) {
+    console.log(errorMessages.tableCreation(tableNames.categories), error);
+  } else {
+    console.log(successMessages.tableCreation(tableNames.categories));
+
+    db.query(categories.insert, (error, result) => {
+      if (error) {
+        console.log(errorMessages.internal(tableNames.categories), error);
+      } else {
+        console.log(successMessages.entityAdded(tableNames.categories));
+      }
+    });
   }
 });
 
@@ -96,7 +122,7 @@ function queryDatabase(sqlQuery) {
     });
   });
 }
-
+// Register //
 app.post(endpoints.register, (req, res) => {
   const { name, email, password } = req.body;
 
@@ -121,7 +147,9 @@ app.post(endpoints.register, (req, res) => {
     }
   });
 });
+// --- //
 
+// Login //
 app.post(endpoints.login, (req, res) => {
   const { name, email,password } = req.body;
   db.query(users.getByAllKeys, [name, email, password], (error, result) => {
@@ -140,8 +168,9 @@ app.post(endpoints.login, (req, res) => {
       }
     }
   });
-}); 
-
+});
+// --- //
+// Reviews //
 app.post(endpoints.reviews, (req, res) => {
   const { reviewName, targetName, category, reviewText , imageSource, rating, userID } = req.body;
   db.query(reviews.insert, [reviewName, targetName, category, reviewText , imageSource, rating, userID], (error, result) => {
@@ -162,6 +191,7 @@ app.get(endpoints.reviews, (req, res) => {
     }
   });
 });
+// --- //
 // Comments //
 app.get(endpoints.comments, (req, res) => {
   db.query(comments.getAll, (error, result) => {
@@ -242,19 +272,7 @@ app.delete(endpoints.likes, (req, res) => {
   });
 });
 // --- //
-
-app.post(endpoints.tags, (req, res) => {
-  const { reviewID, tagText} = req.body;
-  db.query(tags.insert, [reviewID, tagText], (error, result) => {
-    if (error) {
-      res.status(500).json({ error: errorMessages.internal });
-    } else {
-      res.status(200).json({ message: successMessages.entityAdded('Tag') });
-    }
-  });
-});
-
-
+// Tags //
 app.get(endpoints.tags, (req, res) => {
   db.query(tags.getAll, (error, result) => {
     if (error) {
@@ -264,3 +282,15 @@ app.get(endpoints.tags, (req, res) => {
     }
   });
 });
+// --- ///
+// Categories //
+app.get(endpoints.categories, (req, res) => {
+  db.query(categories.getAll, (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json(result);
+    }
+  });
+});
+// --- //
