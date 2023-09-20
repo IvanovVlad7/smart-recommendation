@@ -7,11 +7,11 @@ const app = express();
 const bodyParser = require('body-parser');
 const mysql = require("mysql2")
 const cors = require('cors');
-const { reviews, users, tags, comments, likes } = query;
+const { reviews, users, tags, comments, likes, categories } = query;
 
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended:true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // TODO: store default categories and use them at UI
 // TODO: store default categories and use them at UI
@@ -26,11 +26,11 @@ const db = mysql.createPool({
   database: "db",
 })
 
-db.query(tags.create, (error, result) => {
+db.query(reviews.create, (error, result) => {
   if (error) {
-    console.log(errorMessages.tableCreation(tableNames.tags), error);
+    console.log(errorMessages.tableCreation(tableNames.reviews), error);
   } else {
-    console.log(successMessages.tableCreation(tableNames.tags));
+    console.log(successMessages.tableCreation(tableNames.reviews));
   }
 });
 
@@ -42,11 +42,18 @@ db.query(users.create, (error, result) => {
   }
 });
 
-db.query(reviews.create, (error, result) => {
+db.query(tags.create, (error, result) => {
   if (error) {
-    console.log(errorMessages.tableCreation(tableNames.reviews), error);
+    console.log(errorMessages.tableCreation(tableNames.tags), error);
   } else {
-    console.log(successMessages.tableCreation(tableNames.reviews));
+    console.log(successMessages.tableCreation(tableNames.tags));
+    db.query(tags.insert, (error, result) => {
+      if (error) {
+        console.log(errorMessages.internal(tableNames.tags), error);
+      } else {
+        console.log(successMessages.entityAdded(tableNames.tags));
+      }
+    });
   }
 });
 
@@ -63,6 +70,22 @@ db.query(likes.create, (error, result) => {
     console.log(errorMessages.tableCreation(tableNames.likes), error);
   } else {
     console.log(successMessages.tableCreation(tableNames.likes));
+  }
+});
+
+db.query(categories.create, (error, result) => {
+  if (error) {
+    console.log(errorMessages.tableCreation(tableNames.categories), error);
+  } else {
+    console.log(successMessages.tableCreation(tableNames.categories));
+
+    db.query(categories.insert, (error, result) => {
+      if (error) {
+        console.log(errorMessages.internal(tableNames.categories), error);
+      } else {
+        console.log(successMessages.entityAdded(tableNames.categories));
+      }
+    });
   }
 });
 
@@ -250,16 +273,16 @@ app.delete(endpoints.likes, (req, res) => {
 });
 // --- //
 // Tags //
-app.post(endpoints.tags, (req, res) => {
-  const { reviewID, tagText} = req.body;
-  db.query(tags.insert, [reviewID, tagText], (error, result) => {
-    if (error) {
-      res.status(500).json({ error: errorMessages.internal });
-    } else {
-      res.status(200).json({ message: successMessages.entityAdded('Tag') });
-    }
-  });
-});
+// app.post(endpoints.tags, (req, res) => {
+//   const { reviewID, tagText} = req.body;
+//   db.query(tags.insert, [reviewID, tagText], (error, result) => {
+//     if (error) {
+//       res.status(500).json({ error: errorMessages.internal });
+//     } else {
+//       res.status(200).json({ message: successMessages.entityAdded('Tag') });
+//     }
+//   });
+// });
 
 app.get(endpoints.tags, (req, res) => {
   db.query(tags.getAll, (error, result) => {

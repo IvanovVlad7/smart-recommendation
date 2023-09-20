@@ -4,6 +4,7 @@ const tableNames = {
     tags: 'tags',
     comments: 'comments',
     likes: 'likes',
+    categories: 'categories'
 };
 
 const query = {
@@ -43,13 +44,11 @@ const query = {
         create: `
             CREATE TABLE IF NOT EXISTS tags (
                 ID INT AUTO_INCREMENT PRIMARY KEY,
-                reviewID INT,
-                tagText TEXT,
-                FOREIGN KEY (reviewID) REFERENCES reviews(ID)
+                tagText TEXT
             )
         `,
         getAll: "SELECT * FROM tags",
-        insert: "INSERT INTO tags (reviewID, tagText) VALUES (?, ?)",
+        insert: "INSERT INTO tags (tagText) VALUES ('Books'),('Film'),('Game')",
     },
     [tableNames.comments]: {
         create: `
@@ -80,6 +79,16 @@ const query = {
         getAll: "SELECT * FROM likes",
         insert: "INSERT INTO likes (reviewID, userID) VALUES (?, ?)",
         deleteById: "DELETE FROM comments WHERE ID = ?"
+    },
+    [tableNames.categories]: {
+        create: `
+            CREATE TABLE IF NOT EXISTS categories (
+                ID INT AUTO_INCREMENT PRIMARY KEY,
+                categoryText TEXT
+            )
+        `,
+        getAll: "SELECT * FROM categories",
+        insert: "INSERT INTO categories (categoryText) VALUES ('Fantasy'),('Action'),('Horror'),('Thriller'),('Comedy'),('History')"
     }
 };
 
