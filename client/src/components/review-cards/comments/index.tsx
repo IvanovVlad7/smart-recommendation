@@ -1,92 +1,53 @@
-import { useIsLoggedIn } from "../../../helpers/useIsLoggedIn";
+import { useCurrentUserData } from "../../../helpers/useCurrentUserData";
 import {
     Button,
     TextField,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { UserComment } from "./user-comment";
 
-export const Comments = () => {
-    const [comments, setComments] = useState<string[]>([]);
+export const Comments = ({ review, oldComments, isReviewAuthor }: any) => {
     const [newComment, setNewComment] = useState("");
-    const { isLoggedIn } = useIsLoggedIn();
-    const [editingCommentIndex, setEditingCommentIndex] = useState<number | null>(
-        null
-    );
+    const [relevantComments, setRelevantComments] = useState([]);
+    const { isAdmin, userId } = useCurrentUserData();
 
-    const handleCommentSubmit = () => {
-        if (newComment.trim() !== "") {
-            if (editingCommentIndex !== null) {
-                const updatedComments = [...comments];
-                updatedComments[editingCommentIndex] = newComment;
-                setComments(updatedComments);
-                setEditingCommentIndex(null);
-            } else {
-                setComments([...comments, newComment]);
-            }
-            setNewComment("");
+    const handleCommentSubmit = async () => {
+        console.log('Submit: ', newComment, review);
+        try {
+            if (!newComment || !userId || !review.ID) return;
+            await axios.post('http://localhost:3001/comments', {
+                reviewID: review.ID,
+                commentText: newComment,
+                userID: userId
+            });
+            const responseComments = await axios.get("http://localhost:3001/comments");
+            setRelevantComments(responseComments.data);
+        } catch (error) {
+            console.error('Error:', error);
         }
     };
 
-    const handleCommentEdit = (index: number) => {
-        setEditingCommentIndex(index);
-        setNewComment(comments[index]);
-    };
-
-    const handleCommentDelete = (index: number) => {
-        const updatedComments = [...comments];
-        updatedComments.splice(index, 1);
-        setComments(updatedComments);
-    };
-
+    useEffect(() => {
+        if (review.ID && oldComments.length) {
+            setRelevantComments(oldComments.filter((comment: any) => comment.reviewID === review.ID))
+        }
+    }, [review.ID, oldComments]);
+    
     return (
         <>
-            {comments.map((c, index) => (
-                <div key={index} className="newComment">
-                    {index === editingCommentIndex ? (
-                        <div>
-                            <TextField
-                                label="Edit newComment"
-                                value={newComment}
-                                onChange={(e) => setNewComment(e.target.value)}
-                                fullWidth
-                                variant="outlined"
-                                size="small"
-                            />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                size="small"
-                                onClick={() => handleCommentSubmit()}
-                            >
-                            Save
-                            </Button>
-                        </div>
-                    ) : (
-                        <div>
-                            <span>{c}</span>
-                            <Button
-                                variant="outlined"
-                                size="small"
-                                startIcon={<EditIcon />}
-                                onClick={() => handleCommentEdit(index)}
-                            >
-                                Edit
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                size="small"
-                                startIcon={<DeleteIcon />}
-                                onClick={() => handleCommentDelete(index)}
-                            >
-                                Delete
-                            </Button>
-                        </div>
-                    )}
-                </div>
-            ))}
-            {isLoggedIn ? (
+            {relevantComments.map((comment: any) => <div key={comment.ID} className="newComment">
+                <UserComment
+                    isChangeable={isAdmin || isReviewAuthor.ID === userId}
+                    userName={isReviewAuthor.name}
+                    userEmail={isReviewAuthor.email}
+                    comment={comment.commentText}
+                    commentID={comment.ID}
+                />
+            </div>)}
+            {isAdmin ? (
                 <TextField
                     label="Add a newComment"
                     value={newComment}

@@ -75,6 +75,16 @@ app.get(endpoints.reviews, async (req, res) => {
   }
 });
 
+app.get(endpoints.users, (req, res) => {
+  db.query(users.getAll, (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json(result);
+    }
+  })
+})
+
 function queryDatabase(sqlQuery) {
   return new Promise((resolve, reject) => {
     db.query(sqlQuery, (error, result) => {
@@ -87,51 +97,9 @@ function queryDatabase(sqlQuery) {
   });
 }
 
-function addTags(reviews, tags) {
-  const arr = []
-  reviews.forEach((g) => {
-    const review = { ...g, tags: [] };
-    tags.forEach((s) => {
-      if (s.reviewID === g.ID) {
-        review.tags.push(s);
-      }
-    });
-
-    arr.push(review)
-  });
-
-  return arr
-}
-
-function addComments(reviews, comments) {
-  const reviewsWithComments = reviews.map((review) => {
-    const reviewCopy = { ...review, comments: [] };
-    comments.forEach((comment) => {
-      if (comment.reviewID === review.ID) {
-        reviewCopy.comments.push(comment);
-      }
-    });
-    return reviewCopy;
-  });
-  return reviewsWithComments;
-}
-
-function addLikes(reviews, likes) {
-  const reviewsWithLikes = reviews.map((review) => {
-    const reviewCopy = { ...review, likes: [] };
-    likes.forEach((like) => {
-      if (like.reviewID === review.ID) {
-        reviewCopy.likes.push(like);
-      }
-    });
-    return reviewCopy;
-  });
-  return reviewsWithLikes;
-}
-
-
 app.post(endpoints.register, (req, res) => {
   const { name, email, password } = req.body;
+
   db.query(users.getByEmail, [email], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
@@ -163,7 +131,12 @@ app.post(endpoints.login, (req, res) => {
       if (result.length === 0) {
         res.status(401).json({ error: errorMessages.invalidCreds });
       } else {
-        res.status(200).json({ id: result.insertId, name, message: successMessages.login });
+        res.status(200).json({
+          id: result[0].ID,
+          name,
+          role: result[0].role,
+          message: successMessages.login
+        });
       }
     }
   });
@@ -189,9 +162,20 @@ app.get(endpoints.reviews, (req, res) => {
     }
   });
 });
+// Comments //
+app.get(endpoints.comments, (req, res) => {
+  db.query(comments.getAll, (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json(result);
+    }
+  })
+});
 
 app.post(endpoints.comments, (req, res) => {
   const { reviewID, commentText,  userID } = req.body;
+  
   db.query(comments.insert, [reviewID, commentText, userID], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
@@ -201,7 +185,30 @@ app.post(endpoints.comments, (req, res) => {
   });
 });
 
+app.put(endpoints.comments, (req, res) => {
+  const { commentID, comment } = req.body;
+  db.query(comments.updateById, [comment, commentID], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json({ message: successMessages.entityUpdated('Comment') });
+    }
+  });
+});
 
+app.delete(endpoints.comments, (req, res) => {
+  const { commentID } = req.body;
+  db.query(comments.deleteById, [commentID], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json({ message: successMessages.entityDeleted('Comment') });
+    }
+  });
+});
+// --- //
+
+// Likes //
 app.post(endpoints.likes, (req, res) => {
   const { reviewID,  userID } = req.body;
   db.query(likes.insert, [reviewID,  userID], (error, result) => {
@@ -213,6 +220,28 @@ app.post(endpoints.likes, (req, res) => {
   });
 });
 
+app.get(endpoints.likes, (req, res) => {
+  db.query(likes.getAll, (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json(result);
+    }
+  })
+});
+
+app.delete(endpoints.likes, (req, res) => {
+  const { likeID } = req.body;
+  console.log('body:', req.body)
+  db.query(likes.deleteById, [likeID], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json({ message: successMessages.entityDeleted('Like') });
+    }
+  });
+});
+// --- //
 
 app.post(endpoints.tags, (req, res) => {
   const { reviewID, tagText} = req.body;
