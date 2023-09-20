@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormField } from '../form-field';
+import { FormField } from '../../components/form-field';
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/material";
@@ -7,12 +7,13 @@ import { Container } from "@mui/material";
 import { Grid } from "@mui/material";
 import { reviewNameForm, targetNameForm, categoryForm, reviewTextForm, reviewRatingForm } from '../../constans/form-values';
 import axios from 'axios';
+import './ReviewForm.css';
 import { reviewCreateUrl } from '../../constans/api';
+import { useTranslation } from 'react-i18next';
 
 
 
-
-export const ReviewForm = () => {
+export const ReviewForm: React.FC = () => {
   const [formValues, setFormValues] = useState({
     [reviewNameForm.name]: "",
     [targetNameForm.name]: "",
@@ -60,10 +61,14 @@ export const ReviewForm = () => {
       console.error("Ошибка:", error);
     }
   };
+  
+  
+
+  const { t } = useTranslation();
 
   return (
-    <Container maxWidth="md">
-      <Box mt={4}>
+    <Container maxWidth="md" >
+      <Box mt={4} >
         <Typography variant="h5" gutterBottom>
           Create a Review
         </Typography>
@@ -71,7 +76,7 @@ export const ReviewForm = () => {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <FormField
-                label={reviewNameForm.label}
+                label={t('ReviewName')}  
                 value={formValues.reviewName}
                 name={reviewNameForm.name}
                 onChange={handleFormFieldChange}
@@ -79,19 +84,20 @@ export const ReviewForm = () => {
                 customErrorMessage={reviewNameForm.required}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6} >
               <FormField
-                label={targetNameForm.label}
+                label={t('TargetName')}
                 value={formValues.targetName}
                 name={targetNameForm.name}
                 onChange={handleFormFieldChange}
                 error={formErrors.targetName}
                 customErrorMessage={targetNameForm.required}
+                
               />
             </Grid>
             <Grid item xs={12}>
               <FormField
-                label={categoryForm.label}
+                label={t('Category')}
                 value={formValues.category}
                 name={categoryForm.name}
                 onChange={handleFormFieldChange}
@@ -101,7 +107,7 @@ export const ReviewForm = () => {
             </Grid>
             <Grid item xs={12}>
               <FormField
-                label={reviewTextForm.label}
+                label={t('ReviewText')}
                 value={formValues.reviewText}
                 name={reviewTextForm.name}
                 onChange={handleFormFieldChange}
@@ -111,7 +117,7 @@ export const ReviewForm = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormField
-                label={reviewRatingForm.label}
+                label={t('Rating')}
                 value={formValues.reviewRating}
                 name={reviewRatingForm.name}
                 onChange={handleFormFieldChange}
@@ -127,7 +133,7 @@ export const ReviewForm = () => {
             fullWidth
             sx={{ mt: 2 }}
           >
-            Create Review
+            {t('CreateReview')}
           </Button>
         </form>
       </Box>

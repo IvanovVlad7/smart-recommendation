@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import {ReviewForm} from "../../components/review-form/ReviewForm";
+import {ReviewForm} from "../review-form/ReviewForm";
 import ReviewCard from "../../components/review-cards/review-card";
 import { useCurrentUserData } from "../../helpers/useCurrentUserData";
 

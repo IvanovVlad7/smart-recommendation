@@ -6,13 +6,18 @@ import {
   CardActions,
 } from "@mui/material";
 import "./review-card.css";
-import { Likes } from "./likes";
-import { ReviewCardProps } from './review-card-interface';
-import { Comments } from "./comments";
+import { Likes } from "./likes/likes";
+import { ReviewCardProps } from './review-card-interface'; 
+import { Comments } from "./comments/comments";
 
 const ReviewCard = ({ review, oldComments, users, likes }: any) => {
-  const exactReviewCommentAuthor = users.find((user: any) => user.ID === review.userID)
+
+  console.log("users:", users);
+  console.log("review.userID:", review.userID);
   
+  const exactReviewCommentAuthor = users && users.find((user: any) => user.ID === review.userID);
+  
+
   return (
     <Card className="review-card">
       <div className="review-card-header">
