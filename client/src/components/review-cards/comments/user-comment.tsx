@@ -15,10 +15,6 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-// 1 создать страницу где я создаю review 
-// 2 ui карточки 
-
-
 
 export const UserComment = ({ userName, userEmail, comment, isChangeable, commentID }: any) => {
     const [showEditField, setShowEditField] = useState(false);

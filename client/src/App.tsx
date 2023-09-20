@@ -1,6 +1,6 @@
 import React, {useState}  from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import Dashboard from './page/dashboard/dashboard';
 import Registration from './page/registration/registration';
 import Login from './page/login/login';
@@ -8,11 +8,8 @@ import ApiTest from './page/api-test/api-test';
 import MainPage from './page/main/main';
 import { ReviewForm } from './page/review-form/ReviewForm';
 import {Header } from './components/header/header';
-import { RUSSIAN, ENGLISH } from './constans/languages';
+import { RUSSIAN, ENGLISH } from './constans/languages';   
 import { darkTheme, lightTheme } from './components/themes/themes';
-import ReviewCard from './components/review-cards/review-card';
-import { UserComment } from './components/review-cards/comments/user-comment';
-import { Comments } from './components/review-cards/comments/comments';
 
 
 
@@ -50,9 +47,7 @@ const toggleLanguage = () => {
             <Route path="/" element={<Dashboard isDarkTheme={isDarkTheme}/>} />
             <Route path="/test" element={<ApiTest />} />
             <Route path="/main" element={<MainPage isDarkTheme={isDarkTheme} />} />
-            <Route path="/reviewForm" element={<ReviewForm isDarkTheme={isDarkTheme} />} />
-            {/* <Route path="/comment" element={<UserComment/>} />
-            <Route path="/c" element={<Comments/>} /> */}
+            <Route path="/reviewForm" element={<ReviewForm />} />
           </Routes>
         </BrowserRouter>
       </div>

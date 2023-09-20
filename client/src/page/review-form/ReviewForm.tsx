@@ -13,11 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 
 
-interface RiviewProps {
-  isDarkTheme: boolean; 
-}
-
-export const ReviewForm: React.FC<RiviewProps> = ({ isDarkTheme }) => {
+export const ReviewForm: React.FC = () => {
   const [formValues, setFormValues] = useState({
     [reviewNameForm.name]: "",
     [targetNameForm.name]: "",
@@ -66,17 +62,12 @@ export const ReviewForm: React.FC<RiviewProps> = ({ isDarkTheme }) => {
     }
   };
   
-  const pageStyle = {
-  backgroundColor: isDarkTheme ? '#333' : '#fff',
-  minHeight: '100vh',
-  transition: 'background-color 0.3s ease',
-  color: isDarkTheme ? '#fff' : '#000',
-};
+  
 
   const { t } = useTranslation();
 
   return (
-    <Container maxWidth="md" sx={pageStyle} >
+    <Container maxWidth="md" >
       <Box mt={4} >
         <Typography variant="h5" gutterBottom>
           Create a Review
@@ -93,7 +84,7 @@ export const ReviewForm: React.FC<RiviewProps> = ({ isDarkTheme }) => {
                 customErrorMessage={reviewNameForm.required}
               />
             </Grid>
-            <Grid item xs={12} sm={6}  className={isDarkTheme ? 'form-field-dark' : 'form-field-light'}>
+            <Grid item xs={12} sm={6} >
               <FormField
                 label={t('TargetName')}
                 value={formValues.targetName}

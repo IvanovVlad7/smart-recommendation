@@ -96,7 +96,7 @@ const ApiTest = () => {
                 <button onClick={handleAddTag}>POST-Tags</button>
                 <button onClick={handleGetTags}>GET-Tags</button>
             </>
-            {/* <ReviewForm /> */}
+            <ReviewForm />
             {reviews?.map((review: any) => <ReviewCard review={review} oldComments={oldComments} users={users} likes={likes} />)}
         </div>
     )

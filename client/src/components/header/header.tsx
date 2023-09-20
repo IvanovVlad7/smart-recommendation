@@ -14,6 +14,7 @@ import './header.css';
 import { darkTheme, lightTheme } from '../themes/themes';
 import i18n from 'i18next'
 import { useTranslation } from 'react-i18next';
+import { RUSSIAN,ENGLISH } from '../../constans/languages';
 
 
 
@@ -24,12 +25,12 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme,toggleLanguage }) => {
-  const [language, setLanguage] = useState('ru');
+  const [language, setLanguage] = useState(RUSSIAN);
   
   const { t } = useTranslation();
 
   const handleToggleLanguage = () => {
-    const newLanguage = language === 'ru' ? 'en' : 'ru';
+    const newLanguage = language === RUSSIAN ? ENGLISH  : RUSSIAN;
     setLanguage(newLanguage); 
     i18n.changeLanguage(newLanguage);
     toggleLanguage();
@@ -68,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme,toggleL
               {isDarkTheme ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
             <Button color='inherit' onClick={handleToggleLanguage} style={{ marginLeft: '10px' }}>
-              {language === 'ru' ? 'EN' : 'RU'}
+              {language === RUSSIAN ? ENGLISH : RUSSIAN}
             </Button>
           </Toolbar>
         </Container>

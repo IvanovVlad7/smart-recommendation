@@ -18,8 +18,6 @@ import { useTranslation } from 'react-i18next';
 interface LoginProps {
   isDarkTheme: boolean; 
 }
-
-
 const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
@@ -65,8 +63,6 @@ const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
     }
   };
   
-  // TODO: likes should be stored in DB (after page was reloaded, added likes should be applied)
-  // TODO: comments should be stored in DB (after page was reloaded, added comments should be applied)
   const { t } = useTranslation();
   return(
     <div className="auth-form" style={{ backgroundColor: isDarkTheme ? 'grey' : '#fff' }}>
