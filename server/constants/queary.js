@@ -3,7 +3,7 @@ const tableNames = {
     users: 'users',
     tags: 'tags',
     comments: 'comments',
-    likes: 'likes'
+    likes: 'likes',
 };
 
 const query = {

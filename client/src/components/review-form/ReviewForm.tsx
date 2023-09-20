@@ -5,12 +5,12 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { Container } from "@mui/material";
 import { Grid } from "@mui/material";
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 import { reviewNameForm, targetNameForm, categoryForm, reviewTextForm, reviewRatingForm } from '../../constans/form-values';
 import axios from 'axios';
 import { reviewCreateUrl } from '../../constans/api';
-
-
-
 
 export const ReviewForm = () => {
   const [formValues, setFormValues] = useState({
@@ -61,6 +61,12 @@ export const ReviewForm = () => {
     }
   };
 
+  const [age, setAge] = React.useState('');
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value as string);
+  };
+
   return (
     <Container maxWidth="md">
       <Box mt={4}>
@@ -99,6 +105,20 @@ export const ReviewForm = () => {
                 customErrorMessage={categoryForm.required}
               />
             </Grid>
+            {/* <Grid item xs={12}>
+              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={age}
+                label="Age"
+                onChange={handleChange}
+              >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </Grid> */}
             <Grid item xs={12}>
               <FormField
                 label={reviewTextForm.label}
