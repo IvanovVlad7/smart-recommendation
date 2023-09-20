@@ -13,5 +13,11 @@
     "passwordRequiredError": "Password is required",
     "registerButton": "Register",
     "alreadyHaveAccount": "Already have an account?",
-    "loginLink": "Login"
+    "loginLink": "Login",
+    "ReviewName": "Review Name",
+    "TargetName": "Target Name",
+    "Category": "Category",
+    "ReviewText": "Review Text",
+    "Rating":"Rating",
+    "CreateReview":"Create Review"
 }

@@ -65,12 +65,9 @@ const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
     }
   };
   
-<<<<<<< HEAD
   // TODO: likes should be stored in DB (after page was reloaded, added likes should be applied)
   // TODO: comments should be stored in DB (after page was reloaded, added comments should be applied)
   const { t } = useTranslation();
-=======
->>>>>>> develop
   return(
     <div className="auth-form" style={{ backgroundColor: isDarkTheme ? 'grey' : '#fff' }}>
       <Typography variant="h3" component="div">

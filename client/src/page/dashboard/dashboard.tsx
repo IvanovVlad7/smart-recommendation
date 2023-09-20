@@ -2,6 +2,7 @@ import './dashboard.css';
 import MainPage from "../main/main";
 
 
+
 interface DashboardProps {
   isDarkTheme: boolean; 
 }

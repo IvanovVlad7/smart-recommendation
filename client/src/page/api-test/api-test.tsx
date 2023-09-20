@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import {ReviewForm} from "../../components/review-form/ReviewForm";
+import {ReviewForm} from "../review-form/ReviewForm";
 import ReviewCard from "../../components/review-cards/review-card";
 import { useCurrentUserData } from "../../helpers/useCurrentUserData";
 
@@ -96,7 +96,7 @@ const ApiTest = () => {
                 <button onClick={handleAddTag}>POST-Tags</button>
                 <button onClick={handleGetTags}>GET-Tags</button>
             </>
-            <ReviewForm />
+            {/* <ReviewForm /> */}
             {reviews?.map((review: any) => <ReviewCard review={review} oldComments={oldComments} users={users} likes={likes} />)}
         </div>
     )
