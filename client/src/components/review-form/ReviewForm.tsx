@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormField } from '../form-field';
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
@@ -13,6 +13,9 @@ import axios from 'axios';
 import { reviewCreateUrl } from '../../constans/api';
 
 export const ReviewForm = () => {
+  const [categories, setCategories] = useState<any[]>([]);
+  const [tags, setTags] = useState<any[]>([]);
+
   const [formValues, setFormValues] = useState({
     [reviewNameForm.name]: "",
     [targetNameForm.name]: "",
@@ -61,11 +64,16 @@ export const ReviewForm = () => {
     }
   };
 
-  const [age, setAge] = React.useState('');
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
-  };
+  useEffect(() => {
+    const fetchLastData = async () => {
+      const responseCategories = await axios.get("http://localhost:3001/categories");
+      const responseTags = await axios.get("http://localhost:3001/tags");
+      console.log('responseCategories.data: ', responseCategories.data)
+      setCategories(responseCategories.data);
+      setTags(responseTags.data);
+    };
+    fetchLastData()
+  }, []);
 
   return (
     <Container maxWidth="md">
@@ -105,20 +113,26 @@ export const ReviewForm = () => {
                 customErrorMessage={categoryForm.required}
               />
             </Grid>
-            {/* <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <Grid item xs={12}>
+              <InputLabel id="demo-simple-select-label">Categories</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={age}
-                label="Age"
-                onChange={handleChange}
+                label="Categories"
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {categories.map((category: any) => <MenuItem value={category.categoryText}>{category.categoryText}</MenuItem>)}
               </Select>
-            </Grid> */}
+            </Grid>
+            <Grid item xs={12}>
+              <InputLabel id="demo-simple-select-label">Tags</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Tags"
+              >
+                {tags.map((category: any) => <MenuItem value={category.tagText}>{category.tagText}</MenuItem>)}
+              </Select>
+            </Grid>
             <Grid item xs={12}>
               <FormField
                 label={reviewTextForm.label}

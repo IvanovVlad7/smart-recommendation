@@ -273,17 +273,6 @@ app.delete(endpoints.likes, (req, res) => {
 });
 // --- //
 // Tags //
-// app.post(endpoints.tags, (req, res) => {
-//   const { reviewID, tagText} = req.body;
-//   db.query(tags.insert, [reviewID, tagText], (error, result) => {
-//     if (error) {
-//       res.status(500).json({ error: errorMessages.internal });
-//     } else {
-//       res.status(200).json({ message: successMessages.entityAdded('Tag') });
-//     }
-//   });
-// });
-
 app.get(endpoints.tags, (req, res) => {
   db.query(tags.getAll, (error, result) => {
     if (error) {
@@ -294,3 +283,14 @@ app.get(endpoints.tags, (req, res) => {
   });
 });
 // --- ///
+// Categories //
+app.get(endpoints.categories, (req, res) => {
+  db.query(categories.getAll, (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json(result);
+    }
+  });
+});
+// --- //
