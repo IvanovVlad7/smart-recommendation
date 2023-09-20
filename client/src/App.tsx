@@ -34,7 +34,7 @@ const toggleLanguage = () => {
     color: isDarkTheme ? '#fff' : '#000', 
   };
 
-
+  
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <div style={pageStyle}>  

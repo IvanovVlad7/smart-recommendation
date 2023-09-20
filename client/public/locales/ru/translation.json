@@ -1,0 +1,18 @@
+{
+    "webBlock": "Веб-Блок",
+    "logIn": "Войти",
+    "signUp": "Регистрация",
+    "loginTitle": "Войти",
+    "register": "У вас нет учетной записи?",
+    "registerLink": "Зарегистрируйтесь",
+    "nameField": "Имя",
+    "emailField": "Электронная почта",
+    "passwordField": "Пароль",
+    "nameRequiredError": "Имя обязательно",
+    "emailRequiredError": "Электронная почта обязательно",
+    "passwordRequiredError": "Пароль обязателен",
+    "registerButton": "Зарегистрироваться",
+    "alreadyHaveAccount": "Уже есть аккаунт?",
+    "loginLink": "Войти"
+}
+

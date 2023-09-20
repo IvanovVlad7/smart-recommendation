@@ -12,6 +12,8 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Link } from "react-router-dom";
 import './header.css';
 import { darkTheme, lightTheme } from '../themes/themes';
+import i18n from 'i18next'
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -24,8 +26,12 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme,toggleLanguage }) => {
   const [language, setLanguage] = useState('ru');
   
+  const { t } = useTranslation();
+
   const handleToggleLanguage = () => {
-    setLanguage(language === 'ru' ? 'en' : 'ru');
+    const newLanguage = language === 'ru' ? 'en' : 'ru';
+    setLanguage(newLanguage); 
+    i18n.changeLanguage(newLanguage);
     toggleLanguage();
   };
 
@@ -36,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme,toggleL
         <Container fixed>
           <Toolbar className="container">
             <Typography variant='h6' className="title">
-              Web-Block
+              {t('webBlock')}
             </Typography>
             <Box mr={2}>
               <Button
@@ -46,7 +52,7 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme,toggleL
                 color='inherit'
                 variant='outlined'
               >
-                Log In
+                {t('logIn')}
               </Button>
             </Box>
             <Button
@@ -56,7 +62,7 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme,toggleL
               variant='contained'
               className="SignUpButton"
             >
-              Sign Up
+              {t('signUp')}
             </Button>
             <IconButton color="inherit" onClick={toggleTheme} style={{ marginLeft: '10px' }} >
               {isDarkTheme ? <Brightness7Icon /> : <Brightness4Icon />}

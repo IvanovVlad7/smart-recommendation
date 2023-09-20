@@ -1,0 +1,17 @@
+{
+    "webBlock": "Web Block",
+    "logIn": "Log In",
+    "signUp": "Sign Up",
+    "loginTitle": "Log In",
+    "register": "Don't have an account?",
+    "registerLink": "Register",
+    "nameField": "Name",
+    "emailField": "Email",
+    "passwordField": "Password",
+    "nameRequiredError": "Name is required",
+    "emailRequiredError": "Email is required",
+    "passwordRequiredError": "Password is required",
+    "registerButton": "Register",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginLink": "Login"
+}

@@ -11,6 +11,7 @@ import { MAIN_ENDPOINT}  from "../../constans/api";
 import { FormField } from '../../components/form-field';
 import { emailForm, nameForm, passwordForm } from '../../constans/form-values';
 import { storage } from "../../constans/storage";
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -69,39 +70,39 @@ const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
   
   // TODO: likes should be stored in DB (after page was reloaded, added likes should be applied)
   // TODO: comments should be stored in DB (after page was reloaded, added comments should be applied)
-
+  const { t } = useTranslation();
   return(
     <div className="auth-form" style={{ backgroundColor: isDarkTheme ? 'grey' : '#fff' }}>
       <Typography variant="h3" component="div">
-        Log In
+        {t('loginTitle')}
       </Typography>
       <form className="auth-form__form" >
         <FormField 
-          label={nameForm.label}
+          label={t('nameField')}
           value={formValues.name}
           name={nameForm.name}
           onChange={handleFormFieldChange}
           error={formErrors.name}
-          customErrorMessage={nameForm.required}
+          customErrorMessage={formErrors.name ? t('nameRequiredError') : undefined}
           
             
         />
         <FormField 
-          label={emailForm.label}
+          label={t('emailField')}
           value={formValues.email}
           name={emailForm.name}
           onChange={handleFormFieldChange}
           error={formErrors.email}
-          customErrorMessage={emailForm.required}
+          customErrorMessage={formErrors.email ? t('emailRequiredError') : undefined}
           
         />
         <FormField 
-          label={passwordForm.label}
+          label={t('passwordField')}
           value={formValues.password}
           name={passwordForm.name}
           onChange={handleFormFieldChange}
-          error={formErrors.error}
-          customErrorMessage={passwordForm.required}
+          error={formErrors.password}
+          customErrorMessage={formErrors.password ? t('passwordRequiredError') : undefined}
         />
         <Button
           type="submit"
@@ -113,10 +114,10 @@ const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
           }}
           onClick={ handleLogin}
         >
-          Log In
+          {t('loginTitle')}
         </Button>
         <div>
-          Don't have an account? <Link to="/registration" style={{ color: isDarkTheme ? '#fff' : 'black', textDecoration: 'none'}}>Register</Link>
+          {t('register')}<Link to="/registration" style={{ color: isDarkTheme ? '#fff' : 'black', textDecoration: 'none'}}>{t('registerLink')}</Link>
         </div>
       </form>
     </div>
