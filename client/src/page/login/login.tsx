@@ -13,11 +13,10 @@ import { emailForm, nameForm, passwordForm } from '../../constans/form-values';
 import { storage } from "../../constans/storage";
 import { useTranslation } from 'react-i18next';
 
-
-
 interface LoginProps {
   isDarkTheme: boolean; 
 }
+
 const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
@@ -77,8 +76,6 @@ const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
           onChange={handleFormFieldChange}
           error={formErrors.name}
           customErrorMessage={formErrors.name ? t('nameRequiredError') : undefined}
-          
-            
         />
         <FormField 
           label={t('emailField')}
@@ -87,7 +84,6 @@ const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
           onChange={handleFormFieldChange}
           error={formErrors.email}
           customErrorMessage={formErrors.email ? t('emailRequiredError') : undefined}
-          
         />
         <FormField 
           label={t('passwordField')}

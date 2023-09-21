@@ -24,7 +24,7 @@ const db = mysql.createPool({
   host: "localhost",
   user: "root",
   database: "db",
-  password:'4321'
+  // password:'4321'
 })
 
 db.query(reviews.create, (error, result) => {
