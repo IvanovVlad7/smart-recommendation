@@ -1,13 +1,5 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import CameraIcon from '@mui/icons-material/PhotoCamera';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -29,7 +21,7 @@ export const Dashboard = () => {
     const [likes, setLikes] = useState([]);
 
 
-    const handleCreateReview = () => {
+    const handleOpenForm = () => {
         setShowReviewForm(!showReviewForm);
     }
 
@@ -55,9 +47,7 @@ export const Dashboard = () => {
                         mt: 10
                     }}
                 >
-                    {showReviewForm ? (
-                        <ReviewForm />
-                    ) : (
+                    {showReviewForm ? <ReviewForm onClose={handleOpenForm} /> : (
                         <Container maxWidth="sm">
                             <Typography
                                 component="h1"
@@ -77,11 +67,12 @@ export const Dashboard = () => {
                                 spacing={2}
                                 justifyContent="center"
                             >
-                            <Button variant="contained" onClick={handleCreateReview}>Create Review</Button>
+                            <Button variant="contained" onClick={handleOpenForm}>Create Review</Button>
                             <Button component={Link} variant="outlined" to="/">See each review at the platform</Button>
                             </Stack>
                         </Container>
-                    )} 
+                    )}
+
                    
                 </Box>
                 <Container sx={{ py: 8 }} maxWidth="md">

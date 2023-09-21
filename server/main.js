@@ -171,8 +171,10 @@ app.post(endpoints.login, (req, res) => {
 // Reviews //
 app.post(endpoints.reviews, (req, res) => {
   const { reviewName, category, reviewText , imageSource, rating, userID } = req.body;
+  console.log(reviewName, category, reviewText , imageSource, rating, userID)
   db.query(reviews.insert, [reviewName, category, reviewText , imageSource, rating, userID], (error, result) => {
     if (error) {
+      console.log(error)
       res.status(500).json({ error: errorMessages.internal });
     } else {
       res.status(200).json({ message: successMessages.entityAdded('Review') });

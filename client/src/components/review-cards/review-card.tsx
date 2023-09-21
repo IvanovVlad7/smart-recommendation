@@ -1,17 +1,21 @@
 import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
-import { Likes } from './likes/likes';
-import { Comments } from './comments/comments';
 import { Tooltip } from '@mui/material';
+import React from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  CardActions,
+} from "@mui/material";
+import "./review-card.css";
+import { Likes } from "./likes/likes"; 
+import { Comments } from "./comments/comments";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -49,7 +53,7 @@ export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
         />
       ) : null}
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body1" style={{ wordWrap: 'break-word' }} color="text.secondary">
           {review.reviewText}
         </Typography>
       </CardContent>
