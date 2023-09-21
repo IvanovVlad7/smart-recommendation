@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FormField } from '../form-field';
 import Button from "@mui/material/Button";
-import { Typography } from "@mui/material";
+import { Card, CardHeader, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { Container } from "@mui/material";
-import { Grid } from "@mui/material";
-import Select from '@mui/material/Select';
+import { Grid ,Rating} from "@mui/material";
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { reviewNameForm, categoryForm, reviewTextForm, reviewRatingForm } from '../../constans/form-values';
@@ -13,8 +13,9 @@ import axios from 'axios';
 import { reviewCreateUrl } from '../../constans/api';
 import { useTranslation } from 'react-i18next';
 import { useCurrentUserData } from '../../helpers/useCurrentUserData';
+import CloseIcon from '@mui/icons-material/Close';
 
-export const ReviewForm = () => {
+export const ReviewForm = ({ onClose }: any) => {
   const { t } = useTranslation();
   const { userId } = useCurrentUserData();
   const [categories, setCategories] = useState<any[]>([]);
@@ -24,7 +25,7 @@ export const ReviewForm = () => {
     [reviewNameForm.name]: "",
     [categoryForm.name]: "",
     [reviewTextForm.name]: "",
-    [reviewRatingForm.name]: "",
+    [reviewRatingForm.name]: "0",
   });
   const [formErrors, setFormErrors] = useState({
     [reviewNameForm.name]: false,
@@ -76,13 +77,20 @@ export const ReviewForm = () => {
   }, []);
 
   return (
-    <Container maxWidth="md" >
-      <Box mt={4} >
-        <Typography variant="h5" gutterBottom>
-          Create a Review
-        </Typography>
+    <Container>
+      <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: 2, boxShadow: 3 }}>
+        <CardHeader
+          action={
+            onClose ? (
+              <IconButton onClick={onClose}>
+                <CloseIcon />
+              </IconButton>
+            ) : null
+          }
+          title="Create a Review"
+        />
         <form onSubmit={handleReviewCreation}>
-          <Grid container spacing={3}>
+          <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
               <FormField
                 label={t('ReviewName')}  
@@ -93,32 +101,28 @@ export const ReviewForm = () => {
                 customErrorMessage={reviewNameForm.required}
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormField
-                label={t('Category')}
-                value={formValues.category}
-                name={categoryForm.name}
-                onChange={handleFormFieldChange}
-                error={formErrors.category}
-                customErrorMessage={categoryForm.required}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label">Categories</InputLabel>
+            <Grid item xs={12} />
+            <Grid item xs={2}>
+              <InputLabel id="demo-simple-select-label" className="form-label">{t('Category')}</InputLabel>
               <Select
+                fullWidth
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Categories"
+                className="form-select"
+                onChange={(e) => handleFormFieldChange({ e, name: categoryForm.name })}
               >
                 {categories.map((category: any) => <MenuItem value={category.categoryText}>{category.categoryText}</MenuItem>)}
               </Select>
             </Grid>
-            <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label">Tags</InputLabel>
+            <Grid item xs={2}>
+              <InputLabel id="demo-simple-select-label" className="form-label">Tags</InputLabel>
               <Select
+                fullWidth
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Tags"
+                className="form-select" // TODO: incorrect tags
               >
                 {tags.map((category: any) => <MenuItem value={category.tagText}>{category.tagText}</MenuItem>)}
               </Select>
@@ -134,27 +138,32 @@ export const ReviewForm = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormField
-                label={t('Rating')}
-                value={formValues.reviewRating}
-                name={reviewRatingForm.name}
-                onChange={handleFormFieldChange}
-                error={formErrors.reviewRating}
-                customErrorMessage={reviewRatingForm.required}
+              <InputLabel id="demo-simple-select-label" className="form-label">Rating</InputLabel>
+              <Rating
+                name={reviewRatingForm.name}  
+                value={parseFloat(formValues[reviewRatingForm.name])} 
+                onChange={(event, newValue) => {
+                  if (newValue !== null) { 
+                    handleFormFieldChange({ e: { target: { value: newValue } }, name: reviewRatingForm.name });
+                  }
+                }}
+                defaultValue={2}
+                max={10}
               />
-            </Grid>
+          </Grid>
           </Grid>
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
+            className="form-button"
             sx={{ mt: 2 }}
           >
             {t('CreateReview')}
           </Button>
         </form>
-      </Box>
+      </Card>
     </Container>
   );
 };

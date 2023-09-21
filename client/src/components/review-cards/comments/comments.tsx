@@ -40,17 +40,18 @@ export const Comments = ({ review, oldComments, reviewAuthor }: any) => {
 
     return (
         <>
-            <Paper style={{ maxHeight: 200, overflow: 'auto' }}>
-                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                    {relevantComments.map((comment: any) => 
-                        <UserComment
-                            userName={reviewAuthor.name}
-                            comment={comment.commentText}
-                        />
-                    )}
-                </List>
-            </Paper>
-            
+            {relevantComments.length ? (
+                <Paper style={{ maxHeight: 200, overflow: 'auto' }}>
+                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                        {relevantComments.map((comment: any) => 
+                            <UserComment
+                                userName={reviewAuthor.name}
+                                comment={comment.commentText}
+                            />
+                        )}
+                    </List>
+                </Paper>
+            ) : null}
             {(isAdmin || reviewAuthor?.ID) ? (
                 <TextField
                 sx={{ mt: 2 }}
