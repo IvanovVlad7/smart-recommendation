@@ -6,8 +6,7 @@ import {
   CardActions,
 } from "@mui/material";
 import "./review-card.css";
-import { Likes } from "./likes/likes";
-import { ReviewCardProps } from './review-card-interface'; 
+import { Likes } from "./likes/likes"; 
 import { Comments } from "./comments/comments";
 
 const ReviewCard = ({ review, oldComments, users, likes }: any) => {

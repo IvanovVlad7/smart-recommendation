@@ -65,8 +65,6 @@ export const ReviewForm = () => {
       console.error("Ошибка:", error);
     }
   };
-  
-  
 
   const { t } = useTranslation();
 
@@ -82,9 +80,9 @@ export const ReviewForm = () => {
   }, []);
 
   return (
-    <Container maxWidth="md" >
-      <Box mt={4} >
-        <Typography variant="h5" gutterBottom>
+    <Container maxWidth="md" className="form-container">
+      <Box mt={4}>
+        <Typography variant="h5" className="form-title" gutterBottom>
           Create a Review
         </Typography>
         <form onSubmit={handleReviewCreation}>
@@ -107,7 +105,6 @@ export const ReviewForm = () => {
                 onChange={handleFormFieldChange}
                 error={formErrors.targetName}
                 customErrorMessage={targetNameForm.required}
-                
               />
             </Grid>
             <Grid item xs={12}>
@@ -121,21 +118,23 @@ export const ReviewForm = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label">Categories</InputLabel>
+              <InputLabel id="demo-simple-select-label" className="form-label">Categories</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Categories"
+                className="form-select"
               >
                 {categories.map((category: any) => <MenuItem value={category.categoryText}>{category.categoryText}</MenuItem>)}
               </Select>
             </Grid>
             <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label">Tags</InputLabel>
+              <InputLabel id="demo-simple-select-label" className="form-label">Tags</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Tags"
+                className="form-select"
               >
                 {tags.map((category: any) => <MenuItem value={category.tagText}>{category.tagText}</MenuItem>)}
               </Select>
@@ -166,7 +165,7 @@ export const ReviewForm = () => {
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 2 }}
+            className="form-button"
           >
             {t('CreateReview')}
           </Button>

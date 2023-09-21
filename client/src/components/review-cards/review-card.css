@@ -1,10 +1,12 @@
 .review-card {
-  background-color: #fff; 
-  border: 1px solid #ddd; 
-  border-radius: 8px; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-  padding: 16px; 
-  margin: 16px; 
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 16px auto; 
+  max-width: 400px; 
+  padding: 16px;
+  text-align: left;
 }
 
 .review-card-header {
@@ -15,25 +17,25 @@
 }
 
 .review-card-title {
-  font-size: 1.5rem; 
-  font-weight: bold; 
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .review-card-subtitle {
-  font-size: 1rem; 
-  color: #555; 
+  font-size: 1rem;
+  color: #555;
 }
 
 .review-card-content {
-  padding: 16px; 
+  padding: 16px;
 }
 
 .review-card-actions {
   display: flex;
   justify-content: space-between;
-  padding: 16px; 
+  padding: 16px;
 }
 
 .comment-section {
-  padding: 16px; 
+  padding: 16px;
 }
