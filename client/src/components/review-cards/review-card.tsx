@@ -1,50 +1,77 @@
-import React from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  CardActions,
-} from "@mui/material";
-import "./review-card.css";
-import { Likes } from "./likes/likes";
-import { ReviewCardProps } from './review-card-interface'; 
-import { Comments } from "./comments/comments";
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useState } from 'react';
+import { Likes } from './likes/likes';
+import { Comments } from './comments/comments';
+import { Tooltip } from '@mui/material';
 
-const ReviewCard = ({ review, oldComments, users, likes }: any) => {
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+export const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
+
+export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
+  const [expanded, setExpanded] = useState(false);
   const exactReviewCommentAuthor = users && users.find((user: any) => user.ID === review.userID);
 
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <Card className="review-card">
-      <div className="review-card-header">
-        <Typography
-          className="review-card-title"
-          variant="h6"
-          component="div"
-          gutterBottom
-        >
-          {review.reviewName}
+    <Card sx={{ maxWidth: 345, boxShadow: 3 }}>
+      <CardHeader title={review.reviewName} />
+      {review?.imageSource ? (
+        <CardMedia
+          component="img"
+          height="194"
+          image="/static/images/cards/paella.jpg"
+          alt="Paella dish"
+        />
+      ) : null}
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {review.reviewText}
         </Typography>
-        <Typography
-          className="review-card-subtitle"
-          variant="subtitle2"
-          color="text.secondary"
-          gutterBottom
-        >
-          Target: {review.targetName}
-        </Typography>
-      </div>
-      <CardContent className="review-card-content">
-        <Typography variant="body2">{review.reviewText}</Typography>
       </CardContent>
-      <CardActions className="review-card-actions">
+      <CardActions disableSpacing>
         <Likes review={review} reviewAuthor={exactReviewCommentAuthor} likes={likes} />
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <Tooltip title="Show comments">
+            <ExpandMoreIcon />
+          </Tooltip>
+        </ExpandMore>
       </CardActions>
-      <div className="comment-section">
-        <Comments review={review} oldComments={oldComments} reviewAuthor={exactReviewCommentAuthor} />
-      </div>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Comments review={review} oldComments={oldComments} reviewAuthor={exactReviewCommentAuthor} />
+        </CardContent>
+      </Collapse>
     </Card>
   );
 };
-
-export default ReviewCard;
-

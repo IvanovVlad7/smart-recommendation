@@ -14,7 +14,6 @@ const query = {
             ID INT AUTO_INCREMENT PRIMARY KEY,
             userID INT,
             reviewName VARCHAR(255),
-            targetName VARCHAR(255),
             category VARCHAR(255),
             reviewText TEXT,
             imageSource VARCHAR(255),
@@ -23,7 +22,7 @@ const query = {
             )
         `,
         getAll: "SELECT * FROM reviews",
-        insert: "INSERT INTO reviews (reviewName, targetName, category, reviewText, imageSource, rating, userID) VALUES (?,?,?,?,?,?,?)"
+        insert: "INSERT INTO reviews (reviewName, category, reviewText, imageSource, rating, userID) VALUES (?,?,?,?,?,?,?)"
     },
     [tableNames.users]: {
         create: `
@@ -78,7 +77,8 @@ const query = {
         `,
         getAll: "SELECT * FROM likes",
         insert: "INSERT INTO likes (reviewID, userID) VALUES (?, ?)",
-        deleteById: "DELETE FROM comments WHERE ID = ?"
+        deleteById: "DELETE FROM likes WHERE ID = ?",
+        getAllByIds: "SELECT * FROM likes WHERE reviewID = ? AND userID = ?"
     },
     [tableNames.categories]: {
         create: `

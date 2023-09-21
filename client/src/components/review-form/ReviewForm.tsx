@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { FormField } from '../../components/form-field';
+import { FormField } from '../form-field';
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { Container } from "@mui/material";
 import { Grid } from "@mui/material";
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { reviewNameForm, targetNameForm, categoryForm, reviewTextForm, reviewRatingForm } from '../../constans/form-values';
+import { reviewNameForm, categoryForm, reviewTextForm, reviewRatingForm } from '../../constans/form-values';
 import axios from 'axios';
-import './ReviewForm.css';
 import { reviewCreateUrl } from '../../constans/api';
 import { useTranslation } from 'react-i18next';
+import { useCurrentUserData } from '../../helpers/useCurrentUserData';
 
 export const ReviewForm = () => {
+  const { t } = useTranslation();
+  const { userId } = useCurrentUserData();
   const [categories, setCategories] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
 
   const [formValues, setFormValues] = useState({
     [reviewNameForm.name]: "",
-    [targetNameForm.name]: "",
     [categoryForm.name]: "",
     [reviewTextForm.name]: "",
     [reviewRatingForm.name]: "",
   });
   const [formErrors, setFormErrors] = useState({
     [reviewNameForm.name]: false,
-    [targetNameForm.name]: false,
     [categoryForm.name]: false,
     [reviewTextForm.name]: false,
     [reviewRatingForm.name]: false,
@@ -40,10 +40,9 @@ export const ReviewForm = () => {
 
   const handleReviewCreation = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const { reviewName, targetName, category, reviewText, reviewRating } = formValues;
+    const { reviewName, category, reviewText, reviewRating } = formValues;
 
     if (!reviewName) setFormErrors((prev) => ({ ...prev, reviewName: true }));
-    if (!targetName) setFormErrors((prev) => ({ ...prev, targetName: true }));
     if (!category) setFormErrors((prev) => ({ ...prev, category: true }));
     if (!reviewText) setFormErrors((prev) => ({ ...prev, reviewText: true }));
     if (!reviewRating) setFormErrors((prev) => ({ ...prev, reviewRating: true }));
@@ -52,11 +51,10 @@ export const ReviewForm = () => {
     try {
       const response = await axios.post(reviewCreateUrl, {
         reviewName,
-        targetName,
         category,
         reviewText,
         rating: reviewRating,
-        userID: '1', // TODO: shouldn't be hardcoded, should be the actual user's ID
+        userID: userId
       });
       if (response.data.error) {
         alert(response.data.error);
@@ -65,10 +63,6 @@ export const ReviewForm = () => {
       console.error("Ошибка:", error);
     }
   };
-  
-  
-
-  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchLastData = async () => {
@@ -97,17 +91,6 @@ export const ReviewForm = () => {
                 onChange={handleFormFieldChange}
                 error={formErrors.reviewName}
                 customErrorMessage={reviewNameForm.required}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} >
-              <FormField
-                label={t('TargetName')}
-                value={formValues.targetName}
-                name={targetNameForm.name}
-                onChange={handleFormFieldChange}
-                error={formErrors.targetName}
-                customErrorMessage={targetNameForm.required}
-                
               />
             </Grid>
             <Grid item xs={12}>

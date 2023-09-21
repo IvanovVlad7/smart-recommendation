@@ -1,20 +1,13 @@
-import React, {useState}  from 'react';
+import { useState }  from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import Dashboard from './page/dashboard/dashboard';
 import Registration from './page/registration/registration';
 import Login from './page/login/login';
 import ApiTest from './page/api-test/api-test';
 import MainPage from './page/main/main';
-import { ReviewForm } from './page/review-form/ReviewForm';
 import {Header } from './components/header/header';
 import { RUSSIAN, ENGLISH } from './constans/languages';   
 import { darkTheme, lightTheme } from './components/themes/themes';
-
-
-
-
-
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -24,7 +17,7 @@ const App = () => {
     setIsDarkTheme((prev) => !prev);
   };
 
-const toggleLanguage = () => {
+  const toggleLanguage = () => {
     setLanguage(language === RUSSIAN ? ENGLISH : RUSSIAN);
   };
 
@@ -35,7 +28,6 @@ const toggleLanguage = () => {
     color: isDarkTheme ? '#fff' : '#000', 
   };
 
-  
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <div style={pageStyle}>  
@@ -44,10 +36,9 @@ const toggleLanguage = () => {
           <Routes>
             <Route path="/registration" element={<Registration isDarkTheme={isDarkTheme} />} />
             <Route path="/login" element={<Login isDarkTheme={isDarkTheme} />} />
-            <Route path="/" element={<Dashboard isDarkTheme={isDarkTheme}/>} />
+            <Route path="/" element={<MainPage isDarkTheme={isDarkTheme}/>} />
             <Route path="/test" element={<ApiTest />} />
             <Route path="/main" element={<MainPage isDarkTheme={isDarkTheme} />} />
-            <Route path="/reviewForm" element={<ReviewForm />} />
           </Routes>
         </BrowserRouter>
       </div>

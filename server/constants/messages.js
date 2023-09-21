@@ -10,6 +10,7 @@ const successMessages = {
     entityAdded: (entity) => `${entity} was successfully added`,
     entityUpdated: (entity) => `${entity} was successfully updated`,
     entityDeleted: (entity) => `${entity} was successfully deleted`,
+    entityFound: (entity) => `${entity} was successfully found`,
     login: 'Login was successfyll',
     registration: 'Registration successful',
 };
