@@ -8,6 +8,7 @@ import MainPage from './page/main/main';
 import {Header } from './components/header/header';
 import { RUSSIAN, ENGLISH } from './constans/languages';   
 import { darkTheme, lightTheme } from './components/themes/themes';
+import { Dashboard } from './page/dashboard';
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/" element={<MainPage isDarkTheme={isDarkTheme}/>} />
             <Route path="/test" element={<ApiTest />} />
             <Route path="/main" element={<MainPage isDarkTheme={isDarkTheme} />} />
+            <Route path="/dashboard/:id" element={<Dashboard />} />
           </Routes>
         </BrowserRouter>
       </div>

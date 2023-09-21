@@ -5,7 +5,7 @@ import { useCurrentUserData } from "../../helpers/useCurrentUserData";
 import { ReviewCardsSection } from "../../components/review-cards-section";
 
 const ApiTest = () => {
-    const { isAdmin } = useCurrentUserData();
+    const { isAdmin, userId } = useCurrentUserData();
     const [reviews, setReviews] = useState<any[]>([]);
     const [oldComments, setOldComments] = useState<any[]>([]);
     const [users, setUsers] = useState<any[]>([]);
@@ -96,6 +96,7 @@ const ApiTest = () => {
                 <button onClick={handleAddTag}>POST-Tags</button>
                 <button onClick={handleGetTags}>GET-Tags</button>
             </>
+            Navigate to my home: <a href={`http://localhost:3003/dashboard/${userId}`}>To Home</a>
             <ReviewForm />
             <ReviewCardsSection 
                 cards={reviews}
