@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {ReviewForm} from "../review-form/ReviewForm";
 import ReviewCard from "../../components/review-cards/review-card";
 import { useCurrentUserData } from "../../helpers/useCurrentUserData";
+import { ReviewCardsSection } from "../../components/review-cards-section";
 
 // 1  Likes UI
 // 2 Comment section (delete, edit, create comment) UI
@@ -104,7 +105,13 @@ const ApiTest = () => {
                 <button onClick={handleGetTags}>GET-Tags</button>
             </>
             <ReviewForm />
-            {reviews?.map((review: any) => <ReviewCard review={review} oldComments={oldComments} users={users} likes={likes} />)}
+            <ReviewCardsSection 
+                cards={reviews}
+                oldComments={oldComments}
+                users={users}
+                likes={likes}
+            />
+            {/* {reviews?.map((review: any) => <ReviewCard review={review} oldComments={oldComments} users={users} likes={likes} />)} */}
         </div>
     )
 }
