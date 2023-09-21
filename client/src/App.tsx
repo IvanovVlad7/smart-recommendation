@@ -8,6 +8,7 @@ import MainPage from './page/main/main';
 import {Header } from './components/header/header';
 import { RUSSIAN, ENGLISH } from './constans/languages';   
 import { darkTheme, lightTheme } from './components/themes/themes';
+import { AdminPanel } from './page/admin-panel';
 import { Dashboard } from './page/dashboard';
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
             <Route path="/" element={<MainPage isDarkTheme={isDarkTheme}/>} />
             <Route path="/test" element={<ApiTest />} />
             <Route path="/main" element={<MainPage isDarkTheme={isDarkTheme} />} />
+            <Route path="/admin-panel" element={<AdminPanel/>} />
             <Route path="/dashboard/:id" element={<Dashboard />} />
           </Routes>
         </BrowserRouter>

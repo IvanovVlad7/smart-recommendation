@@ -50,6 +50,7 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
         name,
         email,
         password,
+        role: 'user'
       });
       if (response.data.error) {
         alert(response.data.error);
