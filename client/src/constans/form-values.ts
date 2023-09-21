@@ -22,12 +22,6 @@ export const reviewNameForm = {
     required: "Field is required"
 }
 
-export const targetNameForm = {
-    label: "Target Name",
-    name: "targetName",
-    required: "Field is required"
-}
-
 export const categoryForm = {
     label: "Category",
     name: "category",

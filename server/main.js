@@ -13,9 +13,6 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// TODO: store default categories and use them at UI
-// TODO: store default categories and use them at UI
-
 app.listen(3001,() => {
   console.log("server running on port 3001")
 });
@@ -173,8 +170,8 @@ app.post(endpoints.login, (req, res) => {
 // --- //
 // Reviews //
 app.post(endpoints.reviews, (req, res) => {
-  const { reviewName, targetName, category, reviewText , imageSource, rating, userID } = req.body;
-  db.query(reviews.insert, [reviewName, targetName, category, reviewText , imageSource, rating, userID], (error, result) => {
+  const { reviewName, category, reviewText , imageSource, rating, userID } = req.body;
+  db.query(reviews.insert, [reviewName, category, reviewText , imageSource, rating, userID], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
     } else {
@@ -241,12 +238,19 @@ app.delete(endpoints.comments, (req, res) => {
 
 // Likes //
 app.post(endpoints.likes, (req, res) => {
-  const { reviewID,  userID } = req.body;
-  db.query(likes.insert, [reviewID,  userID], (error, result) => {
+  const { reviewID, userID } = req.body;
+
+  db.query(likes.insert, [reviewID, userID], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
     } else {
-      res.status(200).json({ message: successMessages.entityAdded('Likes') });
+      db.query(likes.getAllByIds, [reviewID, userID], (error, result) => {
+        if (error) {
+          res.status(500).json({ error: errorMessages.internal });
+        } else {
+          res.status(200).json({ message: successMessages.entityFound('Likes'), likes: result });
+        }
+      })
     }
   });
 });
@@ -263,7 +267,7 @@ app.get(endpoints.likes, (req, res) => {
 
 app.delete(endpoints.likes, (req, res) => {
   const { likeID } = req.body;
-  console.log('body:', req.body)
+  
   db.query(likes.deleteById, [likeID], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
