@@ -39,3 +39,9 @@ export const reviewRatingForm = {
     name: "reviewRating",
     required: "Field is required"
 }
+
+export const tagsForm = {
+    label: "Tags",
+    name: "tags",
+    required: "Field is required"
+}
