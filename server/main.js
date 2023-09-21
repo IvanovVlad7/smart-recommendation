@@ -24,7 +24,7 @@ const db = mysql.createPool({
   host: "localhost",
   user: "root",
   database: "db",
-  password:'4321'
+  // password:'4321'
 })
 
 db.query(reviews.create, (error, result) => {
@@ -125,7 +125,7 @@ function queryDatabase(sqlQuery) {
 }
 // Register //
 app.post(endpoints.register, (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   db.query(users.getByEmail, [email], (error, result) => {
     if (error) {
@@ -134,8 +134,7 @@ app.post(endpoints.register, (req, res) => {
       if (result.length > 0) {
         res.status(400).json({ message: errorMessages.userExistsAlready });
       } else {
-        const sqlInsert = users.insert;
-        db.query(sqlInsert, [name, email, password], (error, result) => {
+        db.query(users.insert, [name, email, password, role], (error, result) => {
           if (error) {
             console.log("Error:", error);
             res.status(500).json({ error: errorMessages.internal });

@@ -38,7 +38,7 @@ const query = {
         getAll: "SELECT * FROM users",
         getByEmail: "SELECT * FROM users WHERE email = ?",
         getByAllKeys: "SELECT * FROM users WHERE name = ? AND email = ? AND password = ?",
-        insert: "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+        insert: "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
     },
     [tableNames.tags]: {
         create: `

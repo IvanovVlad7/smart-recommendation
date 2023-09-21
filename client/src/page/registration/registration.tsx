@@ -46,6 +46,7 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
         name,
         email,
         password,
+        role: 'user'
       });
       // TODO: BE should return ID, name of a user
       if (response.data.error) {

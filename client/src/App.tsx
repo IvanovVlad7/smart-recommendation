@@ -10,12 +10,7 @@ import { ReviewForm } from './page/review-form/ReviewForm';
 import {Header } from './components/header/header';
 import { RUSSIAN, ENGLISH } from './constans/languages';   
 import { darkTheme, lightTheme } from './components/themes/themes';
-import UserTable from './page/user-page/user-page';
-
-
-
-
-
+import { AdminPanel } from './page/admin-panel';
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -49,7 +44,7 @@ const toggleLanguage = () => {
             <Route path="/test" element={<ApiTest />} />
             <Route path="/main" element={<MainPage isDarkTheme={isDarkTheme} />} />
             <Route path="/reviewForm" element={<ReviewForm />} />
-            <Route path="/table" element={<UserTable/>} />
+            <Route path="/admin-panel" element={<AdminPanel/>} />
           </Routes>
         </BrowserRouter>
       </div>
