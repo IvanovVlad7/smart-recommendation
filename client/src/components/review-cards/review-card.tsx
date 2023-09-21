@@ -8,7 +8,6 @@ import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import { Likes } from './likes/likes';
 import { Comments } from './comments/comments';
@@ -39,7 +38,7 @@ export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 345, boxShadow: 3 }}>
+    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardHeader title={review.reviewName} />
       {review?.imageSource ? (
         <CardMedia
