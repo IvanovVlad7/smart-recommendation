@@ -1,18 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
-import {ReviewForm} from "../review-form/ReviewForm";
-import ReviewCard from "../../components/review-cards/review-card";
+import { ReviewForm } from "../../components/review-form/ReviewForm";
 import { useCurrentUserData } from "../../helpers/useCurrentUserData";
-
-// 1  Likes UI
-// 2 Comment section (delete, edit, create comment) UI
-// 3 Make sure 2,5,10 reviewe cards look good
-// 4 BUG at one theme at select fileds are white
-// 5 BUG at one theme likes are white
-
+import { ReviewCardsSection } from "../../components/review-cards-section";
 
 const ApiTest = () => {
-    const { isAdmin } = useCurrentUserData();
+    const { isAdmin, userId } = useCurrentUserData();
     const [reviews, setReviews] = useState<any[]>([]);
     const [oldComments, setOldComments] = useState<any[]>([]);
     const [users, setUsers] = useState<any[]>([]);
@@ -103,8 +96,14 @@ const ApiTest = () => {
                 <button onClick={handleAddTag}>POST-Tags</button>
                 <button onClick={handleGetTags}>GET-Tags</button>
             </>
+            Navigate to my home: <a href={`http://localhost:3003/dashboard/${userId}`}>To Home</a>
             <ReviewForm />
-            {reviews?.map((review: any) => <ReviewCard review={review} oldComments={oldComments} users={users} likes={likes} />)}
+            <ReviewCardsSection 
+                cards={reviews}
+                oldComments={oldComments}
+                users={users}
+                likes={likes}
+            />
         </div>
     )
 }

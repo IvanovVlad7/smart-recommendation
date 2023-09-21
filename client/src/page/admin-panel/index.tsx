@@ -30,7 +30,8 @@ export const AdminPanel = () => {
           boxShadow: 3,
           m: 5,
           background: '#fff',
-          // minHeight: 200
+          minHeight: 200,
+          height: 'fit-content'
         }}
         rows={users}
         columns={columns}

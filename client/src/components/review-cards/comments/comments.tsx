@@ -1,11 +1,14 @@
 import { useCurrentUserData } from "../../../helpers/useCurrentUserData";
 import {
-    Button,
+    IconButton,
+    List,
+    Paper,
     TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { UserComment } from "./user-comment";
+import SendIcon from '@mui/icons-material/Send';
 
 export const Comments = ({ review, oldComments, reviewAuthor }: any) => {
     const [newComment, setNewComment] = useState("");
@@ -22,6 +25,7 @@ export const Comments = ({ review, oldComments, reviewAuthor }: any) => {
                 userID: userId
             });
             const responseComments = await axios.get("http://localhost:3001/comments");
+            setNewComment('');
             setRelevantComments(responseComments.data);
         } catch (error) {
             console.error('Error:', error);
@@ -34,23 +38,24 @@ export const Comments = ({ review, oldComments, reviewAuthor }: any) => {
         }
     }, [review.ID, oldComments]);
 
-    console.log('reviewAuthor: ', reviewAuthor);
-    
-    
     return (
         <>
-            {relevantComments.map((comment: any) => <div key={comment.ID} className="newComment">
-                <UserComment
-                    isChangeable={isAdmin || reviewAuthor.ID === userId}
-                    userName={reviewAuthor.name}
-                    userEmail={reviewAuthor.email}
-                    comment={comment.commentText}
-                    commentID={comment.ID}
-                />
-            </div>)}
+            {relevantComments.length ? (
+                <Paper style={{ maxHeight: 200, overflow: 'auto' }}>
+                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                        {relevantComments.map((comment: any) => 
+                            <UserComment
+                                userName={reviewAuthor.name}
+                                comment={comment.commentText}
+                            />
+                        )}
+                    </List>
+                </Paper>
+            ) : null}
             {(isAdmin || reviewAuthor?.ID) ? (
                 <TextField
-                    label="Add a newComment"
+                sx={{ mt: 2 }}
+                    label="Leave a comment"
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     fullWidth
@@ -58,14 +63,12 @@ export const Comments = ({ review, oldComments, reviewAuthor }: any) => {
                     size="small"
                     InputProps={{
                         endAdornment: (
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            onClick={handleCommentSubmit}
-                        >
-                            Comment
-                        </Button>
+                            <IconButton
+                                onClick={handleCommentSubmit}
+                                disabled={!newComment}
+                            >
+                                <SendIcon />
+                            </IconButton>
                         ),
                     }}
                 />
