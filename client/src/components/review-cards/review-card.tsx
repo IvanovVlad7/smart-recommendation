@@ -11,9 +11,9 @@ import { Comments } from "./comments/comments";
 
 const ReviewCard = ({ review, oldComments, users, likes }: any) => {
   const exactReviewCommentAuthor = users && users.find((user: any) => user.ID === review.userID);
-
   return (
-    <Card className="review-card">
+    <div className="card">
+      <Card className="review-card">
       <div className="review-card-header">
         <Typography
           className="review-card-title"
@@ -42,8 +42,8 @@ const ReviewCard = ({ review, oldComments, users, likes }: any) => {
         <Comments review={review} oldComments={oldComments} reviewAuthor={exactReviewCommentAuthor} />
       </div>
     </Card>
+    </div>
   );
-};
-
+}; 
 export default ReviewCard;
 

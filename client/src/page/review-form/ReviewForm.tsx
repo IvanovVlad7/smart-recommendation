@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { Container } from "@mui/material";
-import { Grid } from "@mui/material";
+import { Grid ,Rating} from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -23,7 +23,7 @@ export const ReviewForm = () => {
     [targetNameForm.name]: "",
     [categoryForm.name]: "",
     [reviewTextForm.name]: "",
-    [reviewRatingForm.name]: "",
+    [reviewRatingForm.name]: "0",
   });
   const [formErrors, setFormErrors] = useState({
     [reviewNameForm.name]: false,
@@ -150,15 +150,18 @@ export const ReviewForm = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormField
-                label={t('Rating')}
-                value={formValues.reviewRating}
-                name={reviewRatingForm.name}
-                onChange={handleFormFieldChange}
-                error={formErrors.reviewRating}
-                customErrorMessage={reviewRatingForm.required}
-              />
-            </Grid>
+            <Rating
+              name={reviewRatingForm.name}  
+              value={parseFloat(formValues[reviewRatingForm.name])} 
+              onChange={(event, newValue) => {
+                if (newValue !== null) { 
+                  handleFormFieldChange({ e: { target: { value: newValue } }, name: reviewRatingForm.name });
+                }
+              }}
+              defaultValue={2}
+              max={10}
+            />
+          </Grid>
           </Grid>
           <Button
             type="submit"
