@@ -14,6 +14,8 @@ import { darkTheme, lightTheme } from '../themes/themes';
 import i18n from 'i18next'
 import { useTranslation } from 'react-i18next';
 import { RUSSIAN,ENGLISH } from '../../constans/languages';
+import { useCurrentUserData } from '../../helpers/useCurrentUserData';
+import { storage } from '../../constans/storage';
 
 interface HeaderProps {
   isDarkTheme: boolean;
@@ -23,8 +25,10 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme,toggleLanguage }) => {
   const [language, setLanguage] = useState(RUSSIAN);
-  
   const { t } = useTranslation();
+  const userData = useCurrentUserData();
+
+  
 
   const handleToggleLanguage = () => {
     const newLanguage = language === RUSSIAN ? ENGLISH  : RUSSIAN;
@@ -33,35 +37,57 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme,toggleL
     toggleLanguage();
   };
 
+const handleLogoutClick = () => {
+    sessionStorage.removeItem(storage.userData);
+    window.location.reload();
+  };
+
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <AppBar position='fixed' className={isDarkTheme ? 'darkAppBar' : 'lightAppBar'}>
         <Container fixed>
-          <Toolbar className="container">
-            <Typography variant='h6' className="title">
-              {t('webBlock')}
-            </Typography>
-            <Box mr={2}>
-              <Button
-                component={Link} 
-                to="/login"
-                className="menuButton"
-                color='inherit'
-                variant='outlined'
-              >
-                {t('logIn')}
-              </Button>
-            </Box>
+            <Toolbar className="container">
+          <Button
+            component={Link} 
+            to="/"
+            color='inherit'
+          >
+            {t('webBlock')}
+          </Button>
+          {userData.isLoggedIn ? (
             <Button
-              component={Link} 
-              to="/registration"
               color='secondary'
               variant='contained'
-              className="SignUpButton"
+              className="LogOutButton"
+              onClick={handleLogoutClick}
             >
-              {t('signUp')}
+              Выход
             </Button>
+          ) : (
+            <>
+              <Box mr={2}>
+                <Button
+                  component={Link} 
+                  to="/login"
+                  className="menuButton"
+                  color='inherit'
+                  variant='outlined'
+                >
+                  {t('logIn')}
+                </Button>
+              </Box>
+              <Button
+                component={Link} 
+                to="/registration"
+                color='secondary'
+                variant='contained'
+                className="SignUpButton"
+              >
+                {t('signUp')}
+              </Button>
+            </>
+          )}
             <IconButton color="inherit" onClick={toggleTheme} style={{ marginLeft: '10px' }} >
               {isDarkTheme ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
