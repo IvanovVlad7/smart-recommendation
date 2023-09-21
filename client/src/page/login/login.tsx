@@ -19,6 +19,7 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [formValues, setFormValues] = useState({
     [emailForm.name]: "",
     [nameForm.name]: "",
@@ -62,7 +63,6 @@ const Login: React.FC<LoginProps> = ({ isDarkTheme }) => {
     }
   };
   
-  const { t } = useTranslation();
   return(
     <div className="auth-form" style={{ backgroundColor: isDarkTheme ? 'grey' : '#fff' }}>
       <Typography variant="h3" component="div">

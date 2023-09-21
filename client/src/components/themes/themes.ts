@@ -15,10 +15,10 @@ export const darkTheme = createTheme({
 export const lightTheme = createTheme({
   palette: {
     primary: {
-      main: '#fff',
+      main: '#000',
     },
     secondary: {
-      main: '#ff0000',
+      main: '#fff',
     },
   },
 });

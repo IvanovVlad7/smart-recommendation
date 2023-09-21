@@ -1,5 +1,4 @@
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import { useState } from "react";
@@ -11,6 +10,7 @@ import { storage } from "../../constans/storage";
 import { useTranslation } from 'react-i18next';
 import { FormField } from "../../components/form-field";
 import { emailForm, nameForm, passwordForm } from '../../constans/form-values';
+import './registration.css';
 
 interface RegistrationProps {
   isDarkTheme: boolean; 
@@ -69,7 +69,7 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
         {t('registerButton')}
       </Typography>
       <form className="auth-form__form">
-      <FormField 
+        <FormField 
           label={t('nameField')}
           value={formValues.name}
           name={nameForm.name}

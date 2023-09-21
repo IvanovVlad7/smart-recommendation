@@ -10,13 +10,10 @@ import IconButton from "@mui/material/IconButton";
 import Brightness4Icon from "@mui/icons-material/Brightness4"; 
 import Brightness7Icon from "@mui/icons-material/Brightness7"; 
 import { Link } from "react-router-dom";
-import './header.css';
 import { darkTheme, lightTheme } from '../themes/themes';
 import i18n from 'i18next'
 import { useTranslation } from 'react-i18next';
 import { RUSSIAN,ENGLISH } from '../../constans/languages';
-
-
 
 interface HeaderProps {
   isDarkTheme: boolean;
