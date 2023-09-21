@@ -3,13 +3,11 @@ import {
     Button,
     TextField,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { UserComment } from "./user-comment";
 
-export const Comments = ({ review, oldComments, isReviewAuthor }: any) => {
+export const Comments = ({ review, oldComments, reviewAuthor }: any) => {
     const [newComment, setNewComment] = useState("");
     const [relevantComments, setRelevantComments] = useState([]);
     const { isAdmin, userId } = useCurrentUserData();
@@ -35,19 +33,22 @@ export const Comments = ({ review, oldComments, isReviewAuthor }: any) => {
             setRelevantComments(oldComments.filter((comment: any) => comment.reviewID === review.ID))
         }
     }, [review.ID, oldComments]);
+
+    console.log('reviewAuthor: ', reviewAuthor);
+    
     
     return (
         <>
             {relevantComments.map((comment: any) => <div key={comment.ID} className="newComment">
                 <UserComment
-                    isChangeable={isAdmin || isReviewAuthor.ID === userId}
-                    userName={isReviewAuthor.name}
-                    userEmail={isReviewAuthor.email}
+                    isChangeable={isAdmin || reviewAuthor.ID === userId}
+                    userName={reviewAuthor.name}
+                    userEmail={reviewAuthor.email}
                     comment={comment.commentText}
                     commentID={comment.ID}
                 />
             </div>)}
-            {isAdmin ? (
+            {(isAdmin || reviewAuthor?.ID) ? (
                 <TextField
                     label="Add a newComment"
                     value={newComment}

@@ -7,16 +7,10 @@ import {
 } from "@mui/material";
 import "./review-card.css";
 import { Likes } from "./likes/likes";
-import { ReviewCardProps } from './review-card-interface'; 
 import { Comments } from "./comments/comments";
 
 const ReviewCard = ({ review, oldComments, users, likes }: any) => {
-
-  console.log("users:", users);
-  console.log("review.userID:", review.userID);
-  
   const exactReviewCommentAuthor = users && users.find((user: any) => user.ID === review.userID);
-  
 
   return (
     <Card className="review-card">
@@ -42,13 +36,14 @@ const ReviewCard = ({ review, oldComments, users, likes }: any) => {
         <Typography variant="body2">{review.reviewText}</Typography>
       </CardContent>
       <CardActions className="review-card-actions">
-        <Likes review={review} isReviewAuthor={exactReviewCommentAuthor} likes={likes} />
+        <Likes review={review} reviewAuthor={exactReviewCommentAuthor} likes={likes} />
       </CardActions>
       <div className="comment-section">
-        <Comments review={review} oldComments={oldComments} isReviewAuthor={exactReviewCommentAuthor} />
+        <Comments review={review} oldComments={oldComments} reviewAuthor={exactReviewCommentAuthor} />
       </div>
     </Card>
   );
 };
 
 export default ReviewCard;
+

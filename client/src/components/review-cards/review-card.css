@@ -1,64 +1,39 @@
-body {
-  background-color: #f0f0f0; 
-}
-
 .review-card {
-  width: 1000px;
-  height: 400px;
-  /* max-width: 100%;  */
-  margin-bottom: 16px;
   background-color: #fff; 
   border: 1px solid #ddd; 
   border-radius: 8px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  padding: 16px; 
+  margin: 16px; 
 }
 
 .review-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.review-card-button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: color 0.3s ease; 
-}
-
-.review-card-button.liked {
-  color: #e74c3c; 
+  margin-bottom: 8px;
 }
 
 .review-card-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0;
+  font-size: 1.5rem; 
+  font-weight: bold; 
 }
 
 .review-card-subtitle {
+  font-size: 1rem; 
   color: #555; 
-  font-size: 14px;
 }
 
 .review-card-content {
-  padding: 16px;
-}
-
-.review-card-content p {
-  margin: 0;
+  padding: 16px; 
 }
 
 .review-card-actions {
   display: flex;
-  justify-content: flex-end;
-  padding: 8px;
-  border-top: 1px solid #ddd; 
-  border-bottom-left-radius: 8px; 
-  border-bottom-right-radius: 8px;
+  justify-content: space-between;
+  padding: 16px; 
 }
 
-.review-card-button {
-  margin-left: 8px;
+.comment-section {
+  padding: 16px; 
 }

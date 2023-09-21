@@ -7,7 +7,7 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import axios from "axios";
 
-export const Likes = ({ review, isReviewAuthor, likes }: any) => {
+export const Likes = ({ review, reviewAuthor, likes }: any) => {
     // TODO: there is a bug when light theme, no likes are visible
     const [liked, setLiked] = useState(false);
     const [likeID, setLikeID] = useState(null);
@@ -39,13 +39,16 @@ export const Likes = ({ review, isReviewAuthor, likes }: any) => {
         const filteredLikes = likes.filter((like: any) => like.reviewID === review.ID);
         const findLike = filteredLikes.find((like: any) => like.userID === userId);
         setAmountOfLikes(filteredLikes.length);
-        setLikeID(findLike.ID);
-        setLiked(!!findLike);
+        if (findLike?.ID) {
+          setLikeID(findLike.ID);
+          setLiked(!!findLike);
+        }
+        
     }, [likes, review])
 
     return (
         <CardActions className="review-card-actions">
-            {isAdmin || isReviewAuthor ? (
+            {isAdmin || reviewAuthor ? (
                 <Button
                     className={`review-card-button ${liked ? "liked" : ""}`}
                     size="small"

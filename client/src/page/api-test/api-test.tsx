@@ -4,6 +4,13 @@ import {ReviewForm} from "../review-form/ReviewForm";
 import ReviewCard from "../../components/review-cards/review-card";
 import { useCurrentUserData } from "../../helpers/useCurrentUserData";
 
+// 1  Likes UI
+// 2 Comment section (delete, edit, create comment) UI
+// 3 Make sure 2,5,10 reviewe cards look good
+// 4 BUG at one theme at select fileds are white
+// 5 BUG at one theme likes are white
+
+
 const ApiTest = () => {
     const { isAdmin } = useCurrentUserData();
     const [reviews, setReviews] = useState<any[]>([]);
