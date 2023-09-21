@@ -12,20 +12,21 @@ import { ReviewForm } from '../../components/review-form/ReviewForm';
 import { Link } from 'react-router-dom';
 
 export const Dashboard = () => {
-    const { userId, userName } = useCurrentUserData();
+    const { userName } = useCurrentUserData();
 
     const [showReviewForm, setShowReviewForm] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [oldComments, setOldComments] = useState([]);
     const [users, setUsers] = useState([]);
     const [likes, setLikes] = useState([]);
+    const [isNewReviewCreated, setIsNewReviewCreated] = useState(false);
 
 
     const handleOpenForm = () => {
         setShowReviewForm(!showReviewForm);
     }
 
-    useEffect(() => {
+    const fetchReviews = () => {
         getFullReviews().then((data) => {
             const { fetchedReviews, fetchedComments, fetchedUsers, fetchedLikes } = data;
             setReviews(fetchedReviews);
@@ -33,7 +34,17 @@ export const Dashboard = () => {
             setUsers(fetchedUsers);
             setLikes(fetchedLikes);
         });
-    }, [])
+    }
+
+    useEffect(() => {
+        if (isNewReviewCreated) {
+            fetchReviews();
+        }
+    }, [isNewReviewCreated])
+
+    useEffect(() => {
+        fetchReviews();
+    }, []);
 
     return (
         <>
@@ -47,7 +58,7 @@ export const Dashboard = () => {
                         mt: 10
                     }}
                 >
-                    {showReviewForm ? <ReviewForm onClose={handleOpenForm} /> : (
+                    {showReviewForm ? <ReviewForm onClose={handleOpenForm} setIsNewReviewCreated={setIsNewReviewCreated}/> : (
                         <Container maxWidth="sm">
                             <Typography
                                 component="h1"

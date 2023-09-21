@@ -45,13 +45,6 @@ db.query(tags.create, (error, result) => {
     console.log(errorMessages.tableCreation(tableNames.tags), error);
   } else {
     console.log(successMessages.tableCreation(tableNames.tags));
-    db.query(tags.insert, (error, result) => {
-      if (error) {
-        console.log(errorMessages.internal(tableNames.tags), error);
-      } else {
-        console.log(successMessages.entityAdded(tableNames.tags));
-      }
-    });
   }
 });
 
@@ -68,34 +61,6 @@ db.query(likes.create, (error, result) => {
     console.log(errorMessages.tableCreation(tableNames.likes), error);
   } else {
     console.log(successMessages.tableCreation(tableNames.likes));
-  }
-});
-
-db.query(categories.create, (error, result) => {
-  if (error) {
-    console.log(errorMessages.tableCreation(tableNames.categories), error);
-  } else {
-    console.log(successMessages.tableCreation(tableNames.categories));
-
-    db.query(categories.insert, (error, result) => {
-      if (error) {
-        console.log(errorMessages.internal(tableNames.categories), error);
-      } else {
-        console.log(successMessages.entityAdded(tableNames.categories));
-      }
-    });
-  }
-});
-
-app.get(endpoints.reviews, async (req, res) => {
-  try {
-    const resultReviews = await queryDatabase(reviews.getAll);
-    
-    res.status(200).json({
-      reviews: resultReviews
-    });
-  } catch (error) {
-    res.status(500).json({ error: errorMessages.internal });
   }
 });
 
@@ -168,10 +133,23 @@ app.post(endpoints.login, (req, res) => {
 });
 // --- //
 // Reviews //
+app.get(endpoints.reviews, async (req, res) => {
+  try {
+    const resultReviews = await queryDatabase(reviews.getAll);
+    
+    res.status(200).json({
+      reviews: resultReviews
+    });
+  } catch (error) {
+    res.status(500).json({ error: errorMessages.internal });
+  }
+});
+
+
 app.post(endpoints.reviews, (req, res) => {
-  const { reviewName, category, reviewText , imageSource, rating, userID } = req.body;
-  console.log(reviewName, category, reviewText , imageSource, rating, userID)
-  db.query(reviews.insert, [reviewName, category, reviewText , imageSource, rating, userID], (error, result) => {
+  const { reviewName, category, reviewText , imageSource, rating, userID, tags } = req.body;
+
+  db.query(reviews.insert, [reviewName, category, reviewText , imageSource, rating, userID, tags], (error, result) => {
     if (error) {
       console.log(error)
       res.status(500).json({ error: errorMessages.internal });
@@ -288,6 +266,17 @@ app.get(endpoints.tags, (req, res) => {
     }
   });
 });
+app.post(endpoints.tags, (req, res) => {
+  const { tagText } = req.body;
+
+  db.query(tags.insert, [tagText], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json(result);
+    }
+  });
+})
 // --- ///
 // Categories //
 app.get(endpoints.categories, (req, res) => {
@@ -298,5 +287,28 @@ app.get(endpoints.categories, (req, res) => {
       res.status(200).json(result);
     }
   });
+});
+
+db.query(categories.create, (error, result) => {
+  if (error) {
+    console.log(errorMessages.tableCreation(tableNames.categories), error);
+  } else {
+    db.query(categories.checkIfNotEmpty, (error, result) => {
+      if (error) {
+        console.log(errorMessages.tableCreation(tableNames.categories), error);
+      } else {
+        const amount = Object.values(result[0])[0];
+        if (amount === 0) {
+          db.query(categories.insert, (error, result) => {
+            if (error) {
+              console.log(errorMessages.tableCreation(tableNames.categories), error);
+            } else {
+              console.log(successMessages.entityAdded(tableNames.categories));
+            }
+          });
+        }
+      }
+    })
+  }
 });
 // --- //

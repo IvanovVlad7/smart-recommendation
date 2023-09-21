@@ -18,11 +18,12 @@ const query = {
             reviewText TEXT,
             imageSource VARCHAR(255),
             rating INT,
+            tags VARCHAR(255),
             FOREIGN KEY (userID) REFERENCES users(ID)
             )
         `,
         getAll: "SELECT * FROM reviews",
-        insert: "INSERT INTO reviews (reviewName, category, reviewText, imageSource, rating, userID) VALUES (?,?,?,?,?,?,?)"
+        insert: "INSERT INTO reviews (reviewName, category, reviewText, imageSource, rating, userID, tags) VALUES (?,?,?,?,?,?,?)"
     },
     [tableNames.users]: {
         create: `
@@ -47,7 +48,7 @@ const query = {
             )
         `,
         getAll: "SELECT * FROM tags",
-        insert: "INSERT INTO tags (tagText) VALUES ('Books'),('Film'),('Game')",
+        insert: "INSERT INTO tags (tagText) VALUES (?) ON DUPLICATE KEY UPDATE tagText = tagText",
     },
     [tableNames.comments]: {
         create: `
@@ -88,7 +89,8 @@ const query = {
             )
         `,
         getAll: "SELECT * FROM categories",
-        insert: "INSERT INTO categories (categoryText) VALUES ('Fantasy'),('Action'),('Horror'),('Thriller'),('Comedy'),('History')"
+        insert: "INSERT INTO categories (categoryText) VALUES ('Fantasy'),('Action'),('Horror'),('Thriller'),('Comedy'),('History')",
+        checkIfNotEmpty: "SELECT COUNT(*) FROM categories"
     }
 };
 

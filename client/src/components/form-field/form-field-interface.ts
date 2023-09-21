@@ -1,5 +1,5 @@
 export interface IFormField {
-    label: string,
+    label?: string,
     value: string,
     onChange: ({ e, name }: { e: React.ChangeEvent<HTMLInputElement>, name: string }) => void;
     error: boolean,
