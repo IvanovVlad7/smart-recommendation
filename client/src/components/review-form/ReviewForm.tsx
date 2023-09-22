@@ -5,16 +5,17 @@ import { Card, CardHeader, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { Container } from "@mui/material";
 import { Grid ,Rating} from "@mui/material";
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { reviewNameForm, categoryForm, reviewTextForm, reviewRatingForm, tagsForm } from '../../constans/form-values';
+import { reviewNameForm, categoryForm, reviewTextForm, reviewRatingForm, tagsForm, reviewImageSourceForm } from '../../constans/form-values';
 import axios from 'axios';
 import { reviewCreateUrl } from '../../constans/api';
 import { useTranslation } from 'react-i18next';
 import { useCurrentUserData } from '../../helpers/useCurrentUserData';
 import CloseIcon from '@mui/icons-material/Close';
 import { ChipAutocomplete } from '../chip-autocomplete';
+import { DragAndDrop } from '../drag-and-drop';
 
 export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
   const { t } = useTranslation();
@@ -27,6 +28,7 @@ export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
     [categoryForm.name]: "",
     [reviewTextForm.name]: "",
     [reviewRatingForm.name]: "0",
+    // [reviewImageSourceForm.name]: "",
     [tagsForm.name]: "",
   });
   const [formErrors, setFormErrors] = useState({
@@ -34,6 +36,7 @@ export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
     [categoryForm.name]: false,
     [reviewTextForm.name]: false,
     [reviewRatingForm.name]: false,
+    // [reviewImageSourceForm.name]: false,
     [tagsForm.name]: false,
   });
 
@@ -47,16 +50,21 @@ export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
     setFormValues((prev) => ({ ...prev, [tagsForm.name]: tagTextArray }));
   }
 
+  const handleImageSource = ({ source }: any) => {    
+    setFormValues((prev) => ({ ...prev, [reviewImageSourceForm.name]: source }));
+  }
+
   const handleReviewCreation = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     
-    const { reviewName, category, reviewText, reviewRating, tags } = formValues;
+    const { reviewName, category, reviewText, reviewRating, tags, imageSource } = formValues;
   
     if (!reviewName) setFormErrors((prev) => ({ ...prev, reviewName: true }));
     if (!category) setFormErrors((prev) => ({ ...prev, category: true }));
     if (!reviewText) setFormErrors((prev) => ({ ...prev, reviewText: true }));
     if (!reviewRating) setFormErrors((prev) => ({ ...prev, reviewRating: true }));
     if (!tags) setFormErrors((prev) => ({ ...prev, tagsForm: true }));
+    // if (!imageSource) setFormErrors((prev) => ({ ...prev, imageSource: true }));
     if (Object.values(formValues).includes("")) return;
 
     try {
@@ -66,7 +74,8 @@ export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
         reviewText,
         rating: reviewRating,
         userID: userId,
-        tags
+        tags,
+        // imageSource: "", // TODO: doesnt work upload
       });
       setIsNewReviewCreated(true);
       onClose?.();
@@ -157,6 +166,10 @@ export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
                 max={10}
               />
           </Grid>
+          <Grid item xs={12}>
+            <InputLabel id="demo-simple-select-label" className="form-label" sx={{ mb: 1 }}>{t('FileUpload')}</InputLabel>
+            <DragAndDrop onUpload={handleImageSource} />
+          </Grid>
           </Grid>
           <Button
             type="submit"
@@ -164,7 +177,7 @@ export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
             color="primary"
             fullWidth
             className="form-button"
-            sx={{ mt: 2 }}
+            sx={{ mt: 4 }}
           >
             {t('CreateReview')}
           </Button>

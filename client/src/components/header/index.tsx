@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useCurrentUserData } from '../../helpers/useCurrentUserData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ENGLISH, RUSSIAN } from '../../constans/languages';
 import Brightness4Icon from "@mui/icons-material/Brightness4"; 
 import Brightness7Icon from "@mui/icons-material/Brightness7"; 
@@ -112,7 +112,6 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme, toggle
                 onClick={handleProfileMenuOpen}
                 color="inherit"
             >
-              {t('Search')}
                 <AccountCircle />
             </IconButton>
         </>
