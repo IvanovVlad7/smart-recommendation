@@ -1,5 +1,6 @@
 import React from "react";
 import Chip from "@mui/material/Chip";
+import { Container, Grid, Stack } from "@mui/material";
 
 interface TagsProps {
   tags: string[]; 
@@ -7,11 +8,13 @@ interface TagsProps {
 
 const Tags: React.FC<TagsProps> = ({ tags }) => {
   return (
-    <div className="tags">
+    <Stack direction="row">
       {tags.map((tag) => (
-        <Chip key={tag} label={tag} variant="outlined" color="primary" />
+        <Grid item key={tag} sx={{ p: 1 }}>
+          <Chip label={tag} variant="outlined" color="primary" />
+        </Grid>
       ))}
-    </div>
+    </Stack>
   );
 };
 

@@ -16,6 +16,7 @@ import {
 import "./review-card.css";
 import { Likes } from "./likes/likes"; 
 import { Comments } from "./comments/comments";
+import Tags from '../tags/tags';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -35,6 +36,7 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
   const [expanded, setExpanded] = useState(false);
+  const arrayOfTags = review?.tags.split(',');
   const exactReviewCommentAuthor = users && users.find((user: any) => user.ID === review.userID);
 
   const handleExpandClick = () => {
@@ -56,6 +58,12 @@ export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
         <Typography variant="body1" style={{ wordWrap: 'break-word' }} color="text.secondary">
           {review.reviewText}
         </Typography>
+      </CardContent>
+      <CardContent>
+        <Typography variant="body1" style={{ wordWrap: 'break-word' }} color="text.secondary">
+          Related tags:
+        </Typography>
+        <Tags tags={arrayOfTags}/>
       </CardContent>
       <CardActions disableSpacing>
         <Likes review={review} reviewAuthor={exactReviewCommentAuthor} likes={likes} />

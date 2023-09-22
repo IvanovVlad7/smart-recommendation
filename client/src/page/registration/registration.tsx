@@ -46,7 +46,7 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
     if (Object.values(formValues).includes("")) return;
 
     try {
-      const response = await axios.post(registerUrl ,{
+      const response = await axios.post(registerUrl , {
         name,
         email,
         password,
