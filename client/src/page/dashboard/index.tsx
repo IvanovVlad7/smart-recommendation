@@ -12,7 +12,7 @@ import { ReviewForm } from '../../components/review-form/ReviewForm';
 import { Link } from 'react-router-dom';
 
 export const Dashboard = () => {
-    const { userName } = useCurrentUserData();
+    const { userName, userId } = useCurrentUserData();
 
     const [showReviewForm, setShowReviewForm] = useState(false);
     const [reviews, setReviews] = useState([]);
@@ -29,7 +29,7 @@ export const Dashboard = () => {
     const fetchReviews = () => {
         getFullReviews().then((data) => {
             const { fetchedReviews, fetchedComments, fetchedUsers, fetchedLikes } = data;
-            setReviews(fetchedReviews);
+            setReviews(fetchedReviews.filter((review: any) => review.userID === userId));
             setOldComments(fetchedComments);
             setUsers(fetchedUsers);
             setLikes(fetchedLikes);

@@ -17,6 +17,7 @@ import "./review-card.css";
 import { Likes } from "./likes/likes"; 
 import { Comments } from "./comments/comments";
 import Tags from '../tags/tags';
+import { useCurrentUserData } from '../../helpers/useCurrentUserData';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -35,16 +36,16 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
 
 
 export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
+  const { isLoggedIn } = useCurrentUserData();
   const [expanded, setExpanded] = useState(false);
   const arrayOfTags = review?.tags.split(',');
-  const exactReviewCommentAuthor = users && users.find((user: any) => user.ID === review.userID);
-
+  const exactReviewCommentAuthor = users && isLoggedIn && users.find((user: any) => user.ID === review.userID);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   return (
-    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Card sx={{ display: 'flex', flexDirection: 'column', minWidth: 250, maxWidth: 500 }}>
       <CardHeader title={review.reviewName} />
       {review?.imageSource ? (
         <CardMedia
@@ -80,7 +81,7 @@ export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Comments review={review} oldComments={oldComments} reviewAuthor={exactReviewCommentAuthor} />
+          <Comments review={review} oldComments={oldComments} reviewAuthor={exactReviewCommentAuthor} users={users}/>
         </CardContent>
       </Collapse>
     </Card>

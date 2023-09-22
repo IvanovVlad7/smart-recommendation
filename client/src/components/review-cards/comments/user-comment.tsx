@@ -8,17 +8,17 @@ export const UserComment = ({ userName, comment }: any) => {
         <>
             <ListItem alignItems="flex-start">
                 <ListItemText
-                primary={userName}
-                secondary={
-                    <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                    >
-                        {comment}
-                    </Typography>
-                }
+                    primary={userName}
+                    secondary={
+                        <Typography
+                            sx={{ display: 'inline' }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                        >
+                            {comment}
+                        </Typography>
+                    }
                 />
             </ListItem>
             <Divider component="li" />

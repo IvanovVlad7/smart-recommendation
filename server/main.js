@@ -113,7 +113,7 @@ app.post(endpoints.register, (req, res) => {
 
 // Login //
 app.post(endpoints.login, (req, res) => {
-  const { name, email,password } = req.body;
+  const { name, email, password } = req.body;
   db.query(users.getByAllKeys, [name, email, password], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
@@ -181,9 +181,9 @@ app.get(endpoints.comments, (req, res) => {
 });
 
 app.post(endpoints.comments, (req, res) => {
-  const { reviewID, commentText,  userID } = req.body;
+  const { reviewID, commentText, userID, userName } = req.body;
   
-  db.query(comments.insert, [reviewID, commentText, userID], (error, result) => {
+  db.query(comments.insert, [reviewID, commentText, userID, userName], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
     } else {

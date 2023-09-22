@@ -11,8 +11,8 @@ import axios from "axios";
 export const Likes = ({ review, reviewAuthor, likes }: any) => {
     const [likesSource, setLikeSource] = useState(likes);
     const { isAdmin, userId } = useCurrentUserData();
-    const [amountOfLikes, setAmountOfLikes] = useState(0);
     const filteredLikes = likesSource.filter((like: any) => like.reviewID === review.ID);
+    const [amountOfLikes, setAmountOfLikes] = useState(filteredLikes.length);
     const likeID = filteredLikes.find((like: any) => like.userID === userId)?.ID;
     const [isReviewLiked, setIsReviewLiked] = useState(!!likeID);
 
@@ -23,7 +23,7 @@ export const Likes = ({ review, reviewAuthor, likes }: any) => {
                     data: { likeID }
                 });
                 setIsReviewLiked(false);
-                setAmountOfLikes(prev => prev - 1 || 0);
+                setAmountOfLikes((prev: any) => prev - 1 || 0);
             } else {
                 const response = await axios.post('http://localhost:3001/likes', {
                     reviewID: review.ID,
@@ -31,13 +31,13 @@ export const Likes = ({ review, reviewAuthor, likes }: any) => {
                 });
                 setLikeSource(response.data.likes);
                 setIsReviewLiked(true);
-                setAmountOfLikes(prev => prev + 1);  
+                setAmountOfLikes((prev: any) => prev + 1);  
             }
         } catch (error) {
             console.error('Error:', error);
         }
     };
-
+    
     return (
         <CardActions className="review-card-actions">
             {isAdmin || reviewAuthor ? (
@@ -53,7 +53,9 @@ export const Likes = ({ review, reviewAuthor, likes }: any) => {
                     </Badge>
                 </>
             ) : (
-                <FavoriteIcon color="inherit" />
+                <Badge badgeContent={amountOfLikes}>
+                    <FavoriteIcon color="inherit" />
+                </Badge>
             )}
         </CardActions>
     )

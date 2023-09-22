@@ -67,7 +67,7 @@ interface HeaderProps {
   }
 
 export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme, toggleLanguage }) => {
-    const { isLoggedIn } = useCurrentUserData();
+    const { isLoggedIn, userId } = useCurrentUserData();
     const { t } = useTranslation();
     const [language, setLanguage] = useState(RUSSIAN);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -151,6 +151,10 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme, toggle
             </Button>
         </Box>
     )
+    const handleLogOut = () => {
+        sessionStorage.clear();
+        handleMenuClose();
+    }
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -167,8 +171,27 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme, toggle
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>My dashboard</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            <MenuItem>
+                <Button
+                    sx={{ m: 1 }}
+                    component={Link}
+                    to={`/dashboard/${userId}`}
+                    variant='contained'
+                >
+                    My dashboard
+                </Button>
+            </MenuItem>
+            <MenuItem>
+                <Button
+                    sx={{ m: 1 }}
+                    component={Link}
+                    to="/"
+                    variant='contained'
+                    onClick={handleLogOut}
+                >
+                    Logout
+                </Button>
+            </MenuItem>
         </Menu>
     );
 
@@ -202,14 +225,21 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme, toggle
         <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
             <Toolbar>
-            <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ display: { xs: 'none', sm: 'block' } }}
+            <Button
+                sx={{ m: 1 }}
+                component={Link} 
+                to="/"
+                variant='contained'
             >
-                {t('webBlock')}
-            </Typography>
+                <Typography
+                    variant="h6"
+                    noWrap
+                    component="div"
+                    sx={{ display: { xs: 'none', sm: 'block' } }}
+                >
+                    {t('webBlock')}
+                </Typography>
+            </Button>
             <Search>
                 <SearchIconWrapper><SearchIcon /></SearchIconWrapper>
                 <StyledInputBase

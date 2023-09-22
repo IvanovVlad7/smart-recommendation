@@ -56,13 +56,14 @@ const query = {
             ID INT AUTO_INCREMENT PRIMARY KEY,
             reviewID INT,
             commentText TEXT,
+            userName TEXT,
             userID INT,
             FOREIGN KEY (reviewID) REFERENCES reviews(ID),
             FOREIGN KEY (userID) REFERENCES users(ID)
             )
         `,
         getAll: "SELECT * FROM comments",
-        insert: "INSERT INTO comments (reviewID, commentText, userID) VALUES (?, ?, ?)",
+        insert: "INSERT INTO comments (reviewID, commentText, userID, userName) VALUES (?, ?, ?, ?)",
         updateById: "UPDATE comments SET commentText = ? WHERE ID = ?",
         deleteById: "DELETE FROM comments WHERE ID = ?"
     },
