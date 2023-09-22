@@ -1,5 +1,5 @@
 import React, { useState ,useEffect} from "react";
-import ReviewCard from "../../components/review-cards/review-card";
+import { ReviewCard } from "../../components/review-cards/review-card";
 import TextField from "@mui/material/TextField";
 import { Box, Grid, Container} from "@mui/material";
 import axios from "axios";
@@ -8,7 +8,6 @@ import Tags from "../../components/tags/tags";
 
 type Review = {
   reviewName: string;
-  targetName: string;
   category: string;
   tags: string[];
   reviewText: string;

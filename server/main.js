@@ -13,9 +13,6 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// TODO: store default categories and use them at UI
-// TODO: store default categories and use them at UI
-
 app.listen(3001,() => {
   console.log("server running on port 3001")
 });
@@ -24,7 +21,7 @@ const db = mysql.createPool({
   host: "localhost",
   user: "root",
   database: "db",
-  password:'4321'
+  // password:'4321'
 })
 
 db.query(reviews.create, (error, result) => {
@@ -48,13 +45,6 @@ db.query(tags.create, (error, result) => {
     console.log(errorMessages.tableCreation(tableNames.tags), error);
   } else {
     console.log(successMessages.tableCreation(tableNames.tags));
-    db.query(tags.insert, (error, result) => {
-      if (error) {
-        console.log(errorMessages.internal(tableNames.tags), error);
-      } else {
-        console.log(successMessages.entityAdded(tableNames.tags));
-      }
-    });
   }
 });
 
@@ -71,34 +61,6 @@ db.query(likes.create, (error, result) => {
     console.log(errorMessages.tableCreation(tableNames.likes), error);
   } else {
     console.log(successMessages.tableCreation(tableNames.likes));
-  }
-});
-
-db.query(categories.create, (error, result) => {
-  if (error) {
-    console.log(errorMessages.tableCreation(tableNames.categories), error);
-  } else {
-    console.log(successMessages.tableCreation(tableNames.categories));
-
-    db.query(categories.insert, (error, result) => {
-      if (error) {
-        console.log(errorMessages.internal(tableNames.categories), error);
-      } else {
-        console.log(successMessages.entityAdded(tableNames.categories));
-      }
-    });
-  }
-});
-
-app.get(endpoints.reviews, async (req, res) => {
-  try {
-    const resultReviews = await queryDatabase(reviews.getAll);
-    
-    res.status(200).json({
-      reviews: resultReviews
-    });
-  } catch (error) {
-    res.status(500).json({ error: errorMessages.internal });
   }
 });
 
@@ -125,7 +87,7 @@ function queryDatabase(sqlQuery) {
 }
 // Register //
 app.post(endpoints.register, (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   db.query(users.getByEmail, [email], (error, result) => {
     if (error) {
@@ -134,14 +96,13 @@ app.post(endpoints.register, (req, res) => {
       if (result.length > 0) {
         res.status(400).json({ message: errorMessages.userExistsAlready });
       } else {
-        const sqlInsert = users.insert;
-        db.query(sqlInsert, [name, email, password], (error, result) => {
+        db.query(users.insert, [name, email, password, role], (error, result) => {
           if (error) {
             console.log("Error:", error);
             res.status(500).json({ error: errorMessages.internal });
           } else {
             console.log("Registered:", result);
-            res.status(200).json({ id: result.insertId, name, message: successMessages.registration });
+            res.status(200).json({ id: result.insertId, name, message: successMessages.registration, role });
           }
         });
       }
@@ -172,10 +133,25 @@ app.post(endpoints.login, (req, res) => {
 });
 // --- //
 // Reviews //
+app.get(endpoints.reviews, async (req, res) => {
+  try {
+    const resultReviews = await queryDatabase(reviews.getAll);
+    
+    res.status(200).json({
+      reviews: resultReviews
+    });
+  } catch (error) {
+    res.status(500).json({ error: errorMessages.internal });
+  }
+});
+
+
 app.post(endpoints.reviews, (req, res) => {
-  const { reviewName, targetName, category, reviewText , imageSource, rating, userID } = req.body;
-  db.query(reviews.insert, [reviewName, targetName, category, reviewText , imageSource, rating, userID], (error, result) => {
+  const { reviewName, category, reviewText , imageSource, rating, userID, tags } = req.body;
+
+  db.query(reviews.insert, [reviewName, category, reviewText , imageSource, rating, userID, tags], (error, result) => {
     if (error) {
+      console.log(error)
       res.status(500).json({ error: errorMessages.internal });
     } else {
       res.status(200).json({ message: successMessages.entityAdded('Review') });
@@ -241,12 +217,19 @@ app.delete(endpoints.comments, (req, res) => {
 
 // Likes //
 app.post(endpoints.likes, (req, res) => {
-  const { reviewID,  userID } = req.body;
-  db.query(likes.insert, [reviewID,  userID], (error, result) => {
+  const { reviewID, userID } = req.body;
+
+  db.query(likes.insert, [reviewID, userID], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
     } else {
-      res.status(200).json({ message: successMessages.entityAdded('Likes') });
+      db.query(likes.getAllByIds, [reviewID, userID], (error, result) => {
+        if (error) {
+          res.status(500).json({ error: errorMessages.internal });
+        } else {
+          res.status(200).json({ message: successMessages.entityFound('Likes'), likes: result });
+        }
+      })
     }
   });
 });
@@ -263,7 +246,7 @@ app.get(endpoints.likes, (req, res) => {
 
 app.delete(endpoints.likes, (req, res) => {
   const { likeID } = req.body;
-  console.log('body:', req.body)
+  
   db.query(likes.deleteById, [likeID], (error, result) => {
     if (error) {
       res.status(500).json({ error: errorMessages.internal });
@@ -283,6 +266,17 @@ app.get(endpoints.tags, (req, res) => {
     }
   });
 });
+app.post(endpoints.tags, (req, res) => {
+  const { tagText } = req.body;
+
+  db.query(tags.insert, [tagText], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: errorMessages.internal });
+    } else {
+      res.status(200).json(result);
+    }
+  });
+})
 // --- ///
 // Categories //
 app.get(endpoints.categories, (req, res) => {
@@ -293,5 +287,28 @@ app.get(endpoints.categories, (req, res) => {
       res.status(200).json(result);
     }
   });
+});
+
+db.query(categories.create, (error, result) => {
+  if (error) {
+    console.log(errorMessages.tableCreation(tableNames.categories), error);
+  } else {
+    db.query(categories.checkIfNotEmpty, (error, result) => {
+      if (error) {
+        console.log(errorMessages.tableCreation(tableNames.categories), error);
+      } else {
+        const amount = Object.values(result[0])[0];
+        if (amount === 0) {
+          db.query(categories.insert, (error, result) => {
+            if (error) {
+              console.log(errorMessages.tableCreation(tableNames.categories), error);
+            } else {
+              console.log(successMessages.entityAdded(tableNames.categories));
+            }
+          });
+        }
+      }
+    })
+  }
 });
 // --- //

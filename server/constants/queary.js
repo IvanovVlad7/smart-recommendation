@@ -14,16 +14,16 @@ const query = {
             ID INT AUTO_INCREMENT PRIMARY KEY,
             userID INT,
             reviewName VARCHAR(255),
-            targetName VARCHAR(255),
             category VARCHAR(255),
             reviewText TEXT,
             imageSource VARCHAR(255),
             rating INT,
+            tags VARCHAR(255),
             FOREIGN KEY (userID) REFERENCES users(ID)
             )
         `,
         getAll: "SELECT * FROM reviews",
-        insert: "INSERT INTO reviews (reviewName, targetName, category, reviewText, imageSource, rating, userID) VALUES (?,?,?,?,?,?,?)"
+        insert: "INSERT INTO reviews (reviewName, category, reviewText, imageSource, rating, userID, tags) VALUES (?,?,?,?,?,?,?)"
     },
     [tableNames.users]: {
         create: `
@@ -38,7 +38,7 @@ const query = {
         getAll: "SELECT * FROM users",
         getByEmail: "SELECT * FROM users WHERE email = ?",
         getByAllKeys: "SELECT * FROM users WHERE name = ? AND email = ? AND password = ?",
-        insert: "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+        insert: "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
     },
     [tableNames.tags]: {
         create: `
@@ -48,7 +48,7 @@ const query = {
             )
         `,
         getAll: "SELECT * FROM tags",
-        insert: "INSERT INTO tags (tagText) VALUES ('Books'),('Film'),('Game')",
+        insert: "INSERT INTO tags (tagText) VALUES (?) ON DUPLICATE KEY UPDATE tagText = tagText",
     },
     [tableNames.comments]: {
         create: `
@@ -78,7 +78,8 @@ const query = {
         `,
         getAll: "SELECT * FROM likes",
         insert: "INSERT INTO likes (reviewID, userID) VALUES (?, ?)",
-        deleteById: "DELETE FROM comments WHERE ID = ?"
+        deleteById: "DELETE FROM likes WHERE ID = ?",
+        getAllByIds: "SELECT * FROM likes WHERE reviewID = ? AND userID = ?"
     },
     [tableNames.categories]: {
         create: `
@@ -88,7 +89,8 @@ const query = {
             )
         `,
         getAll: "SELECT * FROM categories",
-        insert: "INSERT INTO categories (categoryText) VALUES ('Fantasy'),('Action'),('Horror'),('Thriller'),('Comedy'),('History')"
+        insert: "INSERT INTO categories (categoryText) VALUES ('Fantasy'),('Action'),('Horror'),('Thriller'),('Comedy'),('History')",
+        checkIfNotEmpty: "SELECT COUNT(*) FROM categories"
     }
 };
 

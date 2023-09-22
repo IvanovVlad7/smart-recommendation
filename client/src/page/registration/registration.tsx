@@ -1,5 +1,4 @@
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import { useState } from "react";
@@ -9,49 +8,53 @@ import { registerUrl  } from "../../constans/api";
 import { MAIN_ENDPOINT}  from "../../constans/api";
 import { storage } from "../../constans/storage";
 import { useTranslation } from 'react-i18next';
-
-
-
+import { FormField } from "../../components/form-field";
+import { emailForm, nameForm, passwordForm } from '../../constans/form-values';
+import './registration.css';
 
 interface RegistrationProps {
   isDarkTheme: boolean; 
 }
 
-
 const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
-  // TODO: refactor registration the same as it is in login
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [nameError, setNameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [formValues, setFormValues] = useState({
+    [emailForm.name]: "",
+    [nameForm.name]: "",
+    [passwordForm.name]: ""
+  });
+  const [formErrors, setFormErrors] = useState({
+    [emailForm.name]: false,
+    [nameForm.name]: false,
+    [passwordForm.name]: false,
+  });
+
+  const handleFormFieldChange = ({ e, name }: any) => {
+    setFormValues(prev => ({ ...prev, [name]: e.target.value }));
+    setFormErrors(prev => ({ ...prev, [name]: false }))
+  }
 
   const handleRegister = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-
-    if (!name || !email || !password) {
-      if (!name) setNameError(true);
-      if (!email) setEmailError(true);
-      if (!password) setPasswordError(true);
-      return;
-    }
+    const { email, name, password } = formValues;
+    
+    if (!email) setFormErrors(prev => ({ ...prev, email: true }));
+    if (!name) setFormErrors(prev => ({ ...prev, name: true }));
+    if (!password) setFormErrors(prev => ({ ...prev, password: true }));
+    if (Object.values(formValues).includes("")) return;
 
     try {
-      const response = await axios.post(registerUrl ,{
+      const response = await axios.post(registerUrl , {
         name,
         email,
         password,
+        role: 'user'
       });
-      // TODO: BE should return ID, name of a user
       if (response.data.error) {
         alert(response.data.error);
       } else {
-        // TODO: store user's ID, name in session storage
         sessionStorage.setItem(storage.userData, JSON.stringify(response.data));
         console.log(response.data);
         navigate(MAIN_ENDPOINT);
@@ -67,84 +70,29 @@ const Registration: React.FC<RegistrationProps> = ({ isDarkTheme }) => {
         {t('registerButton')}
       </Typography>
       <form className="auth-form__form">
-        <TextField
+        <FormField 
           label={t('nameField')}
-          size="small"
-          margin="normal"
-          className="auth-form__input"
-          fullWidth={true}
-          onChange={(e) => {
-            setName(e.target.value);
-            setNameError(false);
-          }}
-          required
-          error={nameError}
-          helperText={nameError ? t('nameRequiredError') : ""}
-          InputProps={{
-          style: {
-            color: isDarkTheme ? 'white' : 'black',
-            borderColor: isDarkTheme ? 'white' : 'rgba(0, 0, 0, 0.42)', 
-            backgroundColor: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'white',
-    },
-  }}
-  InputLabelProps={{
-    style: {
-      color: isDarkTheme ? 'white' : 'black', 
-    },
-  }}
+          value={formValues.name}
+          name={nameForm.name}
+          onChange={handleFormFieldChange}
+          error={formErrors.name}
+          customErrorMessage={formErrors.name ? t('nameRequiredError') : undefined}
         />
-        <TextField
+        <FormField 
           label={t('emailField')}
-          size="small"
-          margin="normal"
-          className="auth-form__input"
-          fullWidth={true}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setEmailError(false);
-          }}
-          required
-          error={emailError}
-          helperText={emailError ? t('emailRequiredError') : ""}
-          InputProps={{
-          style: {
-            color: isDarkTheme ? 'white' : 'black',
-            borderColor: isDarkTheme ? 'white' : 'rgba(0, 0, 0, 0.42)', 
-            backgroundColor: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'white',
-    },
-  }}
-  InputLabelProps={{
-    style: {
-      color: isDarkTheme ? 'white' : 'black', 
-    },
-  }}
+          value={formValues.email}
+          name={emailForm.name}
+          onChange={handleFormFieldChange}
+          error={formErrors.email}
+          customErrorMessage={formErrors.email ? t('emailRequiredError') : undefined}
         />
-        <TextField
+        <FormField 
           label={t('passwordField')}
-          type="password"
-          size="small"
-          margin="normal"
-          className="auth-form__input"
-          fullWidth={true}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setPasswordError(false);
-          }}
-          required
-          error={passwordError}
-          helperText={passwordError ? t('passwordRequiredError') : ""}
-          InputProps={{
-          style: {
-            color: isDarkTheme ? 'white' : 'black',
-            borderColor: isDarkTheme ? 'white' : 'rgba(0, 0, 0, 0.42)', 
-            backgroundColor: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'white',
-    },
-  }}
-  InputLabelProps={{
-    style: {
-      color: isDarkTheme ? 'white' : 'black', 
-    },
-  }}
+          value={formValues.password}
+          name={passwordForm.name}
+          onChange={handleFormFieldChange}
+          error={formErrors.password}
+          customErrorMessage={formErrors.password ? t('passwordRequiredError') : undefined}
         />
         <Button
           type="submit"

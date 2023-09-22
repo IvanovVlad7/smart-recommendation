@@ -1,36 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { FormField } from '../../components/form-field';
+import { FormField } from '../form-field';
 import Button from "@mui/material/Button";
-import { Typography } from "@mui/material";
+import { Card, CardHeader, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { Container } from "@mui/material";
 import { Grid ,Rating} from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { reviewNameForm, targetNameForm, categoryForm, reviewTextForm, reviewRatingForm } from '../../constans/form-values';
+import { reviewNameForm, categoryForm, reviewTextForm, reviewRatingForm, tagsForm } from '../../constans/form-values';
 import axios from 'axios';
-import './ReviewForm.css';
 import { reviewCreateUrl } from '../../constans/api';
 import { useTranslation } from 'react-i18next';
+import { useCurrentUserData } from '../../helpers/useCurrentUserData';
+import CloseIcon from '@mui/icons-material/Close';
+import { ChipAutocomplete } from '../chip-autocomplete';
 
-export const ReviewForm = () => {
+export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
+  const { t } = useTranslation();
+  const { userId } = useCurrentUserData();
   const [categories, setCategories] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
 
   const [formValues, setFormValues] = useState({
     [reviewNameForm.name]: "",
-    [targetNameForm.name]: "",
     [categoryForm.name]: "",
     [reviewTextForm.name]: "",
     [reviewRatingForm.name]: "0",
+    [tagsForm.name]: "",
   });
   const [formErrors, setFormErrors] = useState({
     [reviewNameForm.name]: false,
-    [targetNameForm.name]: false,
     [categoryForm.name]: false,
     [reviewTextForm.name]: false,
     [reviewRatingForm.name]: false,
+    [tagsForm.name]: false,
   });
 
   const handleFormFieldChange = ({ e, name }: any) => {
@@ -38,58 +42,73 @@ export const ReviewForm = () => {
     setFormErrors((prev) => ({ ...prev, [name]: false }));
   };
 
+  const handleFormTags = ({ tags }: any) => {
+    const tagTextArray = tags.map((item: any) => item.tagText).join(', ');
+    setFormValues((prev) => ({ ...prev, [tagsForm.name]: tagTextArray }));
+  }
+
   const handleReviewCreation = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const { reviewName, targetName, category, reviewText, reviewRating } = formValues;
-
+    
+    const { reviewName, category, reviewText, reviewRating, tags } = formValues;
+  
     if (!reviewName) setFormErrors((prev) => ({ ...prev, reviewName: true }));
-    if (!targetName) setFormErrors((prev) => ({ ...prev, targetName: true }));
     if (!category) setFormErrors((prev) => ({ ...prev, category: true }));
     if (!reviewText) setFormErrors((prev) => ({ ...prev, reviewText: true }));
     if (!reviewRating) setFormErrors((prev) => ({ ...prev, reviewRating: true }));
+    if (!tags) setFormErrors((prev) => ({ ...prev, tagsForm: true }));
     if (Object.values(formValues).includes("")) return;
 
     try {
-      const response = await axios.post(reviewCreateUrl, {
+      await axios.post(reviewCreateUrl, {
         reviewName,
-        targetName,
         category,
         reviewText,
         rating: reviewRating,
-        userID: '1', // TODO: shouldn't be hardcoded, should be the actual user's ID
+        userID: userId,
+        tags
       });
-      if (response.data.error) {
-        alert(response.data.error);
-      }
+      setIsNewReviewCreated(true);
+      onClose?.();
     } catch (error) {
-      console.error("Ошибка:", error);
+      setIsNewReviewCreated(false);
     }
   };
 
-  const { t } = useTranslation();
-
   useEffect(() => {
     const fetchLastData = async () => {
-      const responseCategories = await axios.get("http://localhost:3001/categories");
-      const responseTags = await axios.get("http://localhost:3001/tags");
-      console.log('responseCategories.data: ', responseCategories.data)
-      setCategories(responseCategories.data);
-      setTags(responseTags.data);
+      try {
+        const responseCategories = await axios.get("http://localhost:3001/categories");
+        const responseTags = await axios.get("http://localhost:3001/tags");
+        console.log('responseCategories.data: ', responseCategories.data)
+        setCategories(responseCategories?.data);
+        setTags(responseTags?.data);
+      } catch (err) {
+        console.error(err)
+      }
+
     };
     fetchLastData()
   }, []);
 
   return (
-    <Container maxWidth="md" className="form-container">
-      <Box mt={4}>
-        <Typography variant="h5" className="form-title" gutterBottom>
-          Create a Review
-        </Typography>
+    <Container>
+      <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: 2, boxShadow: 3 }}>
+        <CardHeader
+          action={
+            onClose ? (
+              <IconButton onClick={onClose}>
+                <CloseIcon />
+              </IconButton>
+            ) : null
+          }
+          title={t('CreateReview')}
+        />
         <form onSubmit={handleReviewCreation}>
-          <Grid container spacing={3}>
+          <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
+              <InputLabel id="demo-simple-select-label" className="form-label">{t('ReviewName')}</InputLabel>
               <FormField
-                label={t('ReviewName')}  
                 value={formValues.reviewName}
                 name={reviewNameForm.name}
                 onChange={handleFormFieldChange}
@@ -97,51 +116,26 @@ export const ReviewForm = () => {
                 customErrorMessage={reviewNameForm.required}
               />
             </Grid>
-            <Grid item xs={12} sm={6} >
-              <FormField
-                label={t('TargetName')}
-                value={formValues.targetName}
-                name={targetNameForm.name}
-                onChange={handleFormFieldChange}
-                error={formErrors.targetName}
-                customErrorMessage={targetNameForm.required}
-              />
-            </Grid>
+            <Grid item xs={12} />
             <Grid item xs={12}>
-              <FormField
-                label={t('Category')}
-                value={formValues.category}
-                name={categoryForm.name}
-                onChange={handleFormFieldChange}
-                error={formErrors.category}
-                customErrorMessage={categoryForm.required}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label" className="form-label">Categories</InputLabel>
+              <InputLabel id="demo-simple-select-label" className="form-label">{t('Category')}</InputLabel>
               <Select
+                fullWidth
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                label="Categories"
                 className="form-select"
+                onChange={(e) => handleFormFieldChange({ e, name: categoryForm.name })}
               >
                 {categories.map((category: any) => <MenuItem value={category.categoryText}>{category.categoryText}</MenuItem>)}
               </Select>
             </Grid>
             <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label" className="form-label">Tags</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Tags"
-                className="form-select"
-              >
-                {tags.map((category: any) => <MenuItem value={category.tagText}>{category.tagText}</MenuItem>)}
-              </Select>
+              <InputLabel id="demo-simple-select-label" className="form-label">{t('Tags')}</InputLabel>
+              <ChipAutocomplete tags={tags} handleFormTags={handleFormTags}/>
             </Grid>
             <Grid item xs={12}>
+              <InputLabel id="demo-simple-select-label" className="form-label">{t('ReviewText')}</InputLabel>
               <FormField
-                label={t('ReviewText')}
                 value={formValues.reviewText}
                 name={reviewTextForm.name}
                 onChange={handleFormFieldChange}
@@ -150,17 +144,18 @@ export const ReviewForm = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-            <Rating
-              name={reviewRatingForm.name}  
-              value={parseFloat(formValues[reviewRatingForm.name])} 
-              onChange={(event, newValue) => {
-                if (newValue !== null) { 
-                  handleFormFieldChange({ e: { target: { value: newValue } }, name: reviewRatingForm.name });
-                }
-              }}
-              defaultValue={2}
-              max={10}
-            />
+              <InputLabel id="demo-simple-select-label" className="form-label">{t('Rating')}</InputLabel>
+              <Rating
+                name={reviewRatingForm.name}  
+                value={parseFloat(formValues[reviewRatingForm.name])} 
+                onChange={(event, newValue) => {
+                  if (newValue !== null) { 
+                    handleFormFieldChange({ e: { target: { value: newValue } }, name: reviewRatingForm.name });
+                  }
+                }}
+                defaultValue={2}
+                max={10}
+              />
           </Grid>
           </Grid>
           <Button
@@ -169,11 +164,12 @@ export const ReviewForm = () => {
             color="primary"
             fullWidth
             className="form-button"
+            sx={{ mt: 2 }}
           >
             {t('CreateReview')}
           </Button>
         </form>
-      </Box>
+      </Card>
     </Container>
   );
 };
