@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+
 
 const columns: GridColDef[] = [
   { field: 'ID', headerName: 'ID', width: 70 },
@@ -12,6 +14,7 @@ const columns: GridColDef[] = [
 
 export const AdminPanel = () => {
   const [users, setUsers] = useState([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios.get('http://localhost:3001/users') 

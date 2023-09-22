@@ -10,8 +10,10 @@ import { useEffect, useState } from 'react';
 import { ReviewCardsSection } from '../../components/review-cards-section';
 import { ReviewForm } from '../../components/review-form/ReviewForm';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export const Dashboard = () => {
+    const { t } = useTranslation();
     const { userName } = useCurrentUserData();
 
     const [showReviewForm, setShowReviewForm] = useState(false);
@@ -67,10 +69,10 @@ export const Dashboard = () => {
                                 color="text.primary"
                                 gutterBottom
                             >
-                                {userName ? `Dashboard of ${userName}` : 'Dashboard'}
+                                {userName ?  `${t('Dashboard')}  ${userName}` : t('Dashboard')}
                             </Typography>
                             <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                                Here you can manage your reviews
+                                {t('Manage your reviews')}
                             </Typography>
                             <Stack
                                 sx={{ pt: 4 }}
@@ -78,13 +80,13 @@ export const Dashboard = () => {
                                 spacing={2}
                                 justifyContent="center"
                             >
-                            <Button variant="contained" onClick={handleOpenForm}>Create Review</Button>
-                            <Button component={Link} variant="outlined" to="/">See each review at the platform</Button>
+                            <Button variant="contained" onClick={handleOpenForm}>{t('CreateReview')}</Button>
+                            <Button component={Link} variant="outlined" to="/">{t('See each review at the platform')}</Button>
                             </Stack>
                         </Container>
                     )}
 
-                   
+  
                 </Box>
                 <Container sx={{ py: 8 }} maxWidth="md">
                     <ReviewCardsSection 

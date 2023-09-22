@@ -18,5 +18,17 @@
     "Category": "Category",
     "ReviewText": "Review Text",
     "Rating":"Rating",
-    "CreateReview":"Create Review"
+    "CreateReview":"Create Review",
+    "Manage your reviews":"Here you can manage your reviews",
+    "See each review at the platform":"See each review at the platform",
+    "Dashboard": "Dashboard of ",
+    "ID":"ID",
+    "Name":"Name",
+    "Email":"Email",
+    "Role":"Role",
+    "Tags":"Tags",
+    "Logout":"Logout",
+    "My dashboard":"My dashboard",
+    "Search":"Search"
+
 }

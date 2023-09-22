@@ -17,6 +17,8 @@ import "./review-card.css";
 import { Likes } from "./likes/likes"; 
 import { Comments } from "./comments/comments";
 import Tags from '../tags/tags';
+import { useTranslation } from 'react-i18next';
+
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -38,6 +40,7 @@ export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
   const [expanded, setExpanded] = useState(false);
   const arrayOfTags = review?.tags.split(',');
   const exactReviewCommentAuthor = users && users.find((user: any) => user.ID === review.userID);
+  const { t } = useTranslation();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
