@@ -37,7 +37,7 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
 export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
   const { isLoggedIn } = useCurrentUserData();
   const [expanded, setExpanded] = useState(false);
-  const arrayOfTags = review?.tags.split(',');
+  const arrayOfTags = review?.tags?.split(',');
   const exactReviewCommentAuthor = users && isLoggedIn && users.find((user: any) => user.ID === review.userID);
   const handleExpandClick = () => {
     setExpanded(!expanded);
