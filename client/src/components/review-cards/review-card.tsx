@@ -6,7 +6,6 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import { Tooltip } from '@mui/material';
-import React from "react";
 import {
   Card,
   CardContent,

@@ -112,6 +112,7 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme, toggle
                 onClick={handleProfileMenuOpen}
                 color="inherit"
             >
+              {t('Search')}
                 <AccountCircle />
             </IconButton>
         </>
@@ -178,7 +179,7 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme, toggle
                     to={`/dashboard/${userId}`}
                     variant='contained'
                 >
-                    My dashboard
+                   {t('My dashboard')}
                 </Button>
             </MenuItem>
             <MenuItem>
@@ -189,7 +190,7 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme, toggle
                     variant='contained'
                     onClick={handleLogOut}
                 >
-                    Logout
+                   {t('Logout')}
                 </Button>
             </MenuItem>
         </Menu>
