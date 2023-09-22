@@ -5,11 +5,11 @@ import Registration from './page/registration/registration';
 import Login from './page/login/login';
 import ApiTest from './page/api-test/api-test';
 import MainPage from './page/main/main';
-import {Header } from './components/header/header';
 import { RUSSIAN, ENGLISH } from './constans/languages';   
 import { darkTheme, lightTheme } from './components/themes/themes';
 import { AdminPanel } from './page/admin-panel';
 import { Dashboard } from './page/dashboard';
+import { Header } from './components/header';
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -34,7 +34,7 @@ const App = () => {
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <div style={pageStyle}>  
         <BrowserRouter>
-          <Header isDarkTheme={isDarkTheme} toggleTheme={toggleTheme}  toggleLanguage={toggleLanguage}/> 
+          <Header isDarkTheme={isDarkTheme} toggleTheme={toggleTheme}  toggleLanguage={toggleLanguage} />
           <Routes>
             <Route path="/registration" element={<Registration isDarkTheme={isDarkTheme} />} />
             <Route path="/login" element={<Login isDarkTheme={isDarkTheme} />} />

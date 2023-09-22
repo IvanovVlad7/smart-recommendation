@@ -102,7 +102,7 @@ app.post(endpoints.register, (req, res) => {
             res.status(500).json({ error: errorMessages.internal });
           } else {
             console.log("Registered:", result);
-            res.status(200).json({ id: result.insertId, name, message: successMessages.registration });
+            res.status(200).json({ id: result.insertId, name, message: successMessages.registration, role });
           }
         });
       }

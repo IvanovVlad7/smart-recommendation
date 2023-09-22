@@ -38,7 +38,7 @@ export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
   const [expanded, setExpanded] = useState(false);
   const arrayOfTags = review?.tags.split(',');
   const exactReviewCommentAuthor = users && users.find((user: any) => user.ID === review.userID);
-  console.log('review: ', review, arrayOfTags)
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };

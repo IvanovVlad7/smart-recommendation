@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useCurrentUserData } from "../../../helpers/useCurrentUserData";
 import {
+    Badge,
     CardActions,
     IconButton,
 } from "@mui/material";
@@ -41,15 +42,15 @@ export const Likes = ({ review, reviewAuthor, likes }: any) => {
         <CardActions className="review-card-actions">
             {isAdmin || reviewAuthor ? (
                 <>
-                    <IconButton
-                        className={`review-card-button ${isReviewLiked ? "liked" : ""}`}
-                        size="small"
-                        onClick={handleLikeToggle}
-                    >
-                        <FavoriteIcon color={isReviewLiked ? "error" : "inherit"} />
-                    </IconButton>
-
-                    {amountOfLikes >= 1 ? amountOfLikes : null}
+                    <Badge badgeContent={amountOfLikes} color="error">
+                        <IconButton
+                            className={`review-card-button ${isReviewLiked ? "liked" : ""}`}
+                            size="small"
+                            onClick={handleLikeToggle}
+                        >
+                            <FavoriteIcon color={isReviewLiked ? "error" : "inherit"} />
+                        </IconButton>
+                    </Badge>
                 </>
             ) : (
                 <FavoriteIcon color="inherit" />
