@@ -40,6 +40,12 @@ export const reviewRatingForm = {
     required: "Field is required"
 }
 
+export const reviewImageSourceForm = {
+    label: "Image Source",
+    name: "imageSource",
+    required: "Field is required"
+}
+
 export const tagsForm = {
     label: "Tags",
     name: "tags",
