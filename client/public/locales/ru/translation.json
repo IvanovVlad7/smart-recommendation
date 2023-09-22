@@ -28,7 +28,10 @@
     "Role":"Роль",
     "Tags":"Теги",
     "Logout":"Выйти",
-    "My dashboard":"Моя панель управления",
+    "FileUpload":"Загрузить изображение",
+    "My dashboard":"Моя панель приборов",
     "Search":"Поиск",
-    "FileUpload":"Загрузить изображение"
+    "Show comments":"Показать коментарии",
+    "Related tags": "Связанные теги:",
+    "WhatReviewDoYouLike": "Какой обзор вам нравится?"
 }

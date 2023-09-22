@@ -4,6 +4,7 @@ import { getFullReviews } from "../../helpers/requests";
 import { ReviewCardsSection } from "../../components/review-cards-section";
 import { useCurrentUserData } from "../../helpers/useCurrentUserData";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 interface MainProps {
   isDarkTheme: boolean; 
@@ -15,6 +16,7 @@ const MainPage: React.FC<MainProps> = ({ isDarkTheme }) => {
   const [oldComments, setOldComments] = useState([]);
   const [users, setUsers] = useState([]);
   const [likes, setLikes] = useState([]);
+  const { t } = useTranslation();
   
   const fetchReviews = () => {
     getFullReviews().then((data) => {
@@ -32,7 +34,7 @@ const MainPage: React.FC<MainProps> = ({ isDarkTheme }) => {
 
   return(
     <Container sx={{ py: 8 }} maxWidth="md">
-       <Typography variant="h2" align="center" color="primary" sx={{ mb: 10 }}>What review do you like?</Typography>
+      <Typography variant="h2" align="center" color="primary" sx={{ mb: 10 }}>{t('WhatReviewDoYouLike')}</Typography>
       {reviews.length ? (
         <ReviewCardsSection 
           cards={reviews}

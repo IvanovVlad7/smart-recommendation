@@ -30,5 +30,8 @@
     "Logout":"Logout",
     "My dashboard":"My dashboard",
     "Search":"Search",
-    "FileUpload":"Upload Image"
+    "FileUpload":"Upload Image",
+    "Show comments":"Show comments",
+    "Related tags": "Related tags:",
+    "WhatReviewDoYouLike": "What review do you like?"
 }

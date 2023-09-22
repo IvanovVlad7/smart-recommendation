@@ -17,6 +17,7 @@ import { Likes } from "./likes/likes";
 import { Comments } from "./comments/comments";
 import Tags from '../tags/tags';
 import { useCurrentUserData } from '../../helpers/useCurrentUserData';
+import { useTranslation } from 'react-i18next';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -35,6 +36,7 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
 
 
 export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
+  const { t } = useTranslation();
   const { isLoggedIn } = useCurrentUserData();
   const [expanded, setExpanded] = useState(false);
   const arrayOfTags = review?.tags?.split(',');
@@ -61,7 +63,7 @@ export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
       </CardContent>
       <CardContent>
         <Typography variant="body1" style={{ wordWrap: 'break-word' }} color="text.secondary">
-          Related tags:
+          {t('Related tags')}
         </Typography>
         <Tags tags={arrayOfTags}/>
       </CardContent>
@@ -73,7 +75,7 @@ export const ReviewCard = ({ review, oldComments, users, likes }: any) => {
           aria-expanded={expanded}
           aria-label="show more"
         >
-          <Tooltip title="Show comments">
+          <Tooltip title={t('Show comments')}>
             <ExpandMoreIcon />
           </Tooltip>
         </ExpandMore>
