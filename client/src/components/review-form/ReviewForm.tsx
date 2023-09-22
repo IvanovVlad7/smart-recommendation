@@ -102,7 +102,7 @@ export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
               </IconButton>
             ) : null
           }
-          title="Create a Review"
+          title={t('CreateReview')}
         />
         <form onSubmit={handleReviewCreation}>
           <Grid container spacing={1}>
@@ -130,7 +130,7 @@ export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
               </Select>
             </Grid>
             <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label" className="form-label">Tags</InputLabel>
+              <InputLabel id="demo-simple-select-label" className="form-label">{t('Tags')}</InputLabel>
               <ChipAutocomplete tags={tags} handleFormTags={handleFormTags}/>
             </Grid>
             <Grid item xs={12}>
@@ -144,7 +144,7 @@ export const ReviewForm = ({ onClose, setIsNewReviewCreated }: any) => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <InputLabel id="demo-simple-select-label" className="form-label">Rating</InputLabel>
+              <InputLabel id="demo-simple-select-label" className="form-label">{t('Rating')}</InputLabel>
               <Rating
                 name={reviewRatingForm.name}  
                 value={parseFloat(formValues[reviewRatingForm.name])} 

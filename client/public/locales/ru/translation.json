@@ -18,5 +18,13 @@
     "Category": "Категория",
     "ReviewText": "Текст обзора",
     "Rating":"Рейтинг",
-    "CreateReview":"Создать обзор"
+    "CreateReview":"Создать обзор",
+    "Manage your reviews":"Здесь вы можете управлять своими отзывами",
+    "See each review at the platform":"Смотрите каждый отзыв на платформе",
+    "Dashboard ": "Панель управления",
+    "ID":"Идентификатор",
+    "Name":"Имя",
+    "Email":"Электронная почта",
+    "Role":"Роль",
+    "Tags":"Теги"
 }
