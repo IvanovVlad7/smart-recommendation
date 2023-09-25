@@ -30,5 +30,6 @@
     "Logout":"Logout",
     "My dashboard":"My dashboard",
     "Search":"Search",
-    "FileUpload":"Upload Image"
+    "FileUpload":"Upload Image",
+    "AdminPanel": "Admin Panel"
 }

@@ -67,7 +67,7 @@ interface HeaderProps {
   }
 
 export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme, toggleLanguage }) => {
-    const { isLoggedIn, userId } = useCurrentUserData();
+    const { isLoggedIn, userId, isAdmin } = useCurrentUserData();
     const { t } = useTranslation();
     const [language, setLanguage] = useState(RUSSIAN);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -181,6 +181,18 @@ export const Header: React.FC<HeaderProps> = ({ isDarkTheme, toggleTheme, toggle
                    {t('My dashboard')}
                 </Button>
             </MenuItem>
+            {isAdmin ? (
+                <MenuItem>
+                    <Button
+                        sx={{ m: 1 }}
+                        component={Link}
+                        to={`/admin-panel`}
+                        variant='contained'
+                    >
+                        {t('AdminPanel')}
+                    </Button>
+                </MenuItem>
+            ) : null}
             <MenuItem>
                 <Button
                     sx={{ m: 1 }}
