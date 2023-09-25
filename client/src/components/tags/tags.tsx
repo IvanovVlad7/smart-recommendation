@@ -1,6 +1,6 @@
 import React from "react";
 import Chip from "@mui/material/Chip";
-import { Container, Grid, Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 
 interface TagsProps {
   tags: string[]; 

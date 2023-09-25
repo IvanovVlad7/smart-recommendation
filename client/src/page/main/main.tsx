@@ -49,7 +49,7 @@ const MainPage: React.FC<MainProps> = ({ isDarkTheme }) => {
           justifyContent: 'center',
           flexDirection: 'column'
         }}>
-          <Typography variant="h2" align="center" color="primary">Sorry, no reviews are available</Typography>
+          <Typography variant="h2" align="center" color="primary">{t('SorryNoReviewsAreAvailable')}</Typography>
           <Button
             sx={{ m: 1, width: 200 }}
             component={Link} 
@@ -58,7 +58,7 @@ const MainPage: React.FC<MainProps> = ({ isDarkTheme }) => {
             color='success'
             variant='contained'
           >
-            Create one
+            {t('CreateOne')}
           </Button>
         </div>
       )}
@@ -68,4 +68,3 @@ const MainPage: React.FC<MainProps> = ({ isDarkTheme }) => {
 
 export default MainPage
 
-// TODO !important: use real back-end data instead of local reviews

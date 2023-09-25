@@ -33,5 +33,7 @@
     "FileUpload":"Upload Image",
     "Show comments":"Show comments",
     "Related tags": "Related tags:",
-    "WhatReviewDoYouLike": "What review do you like?"
+    "WhatReviewDoYouLike": "What review do you like?",
+    "SorryNoReviewsAreAvailable":"Sorry, no reviews are available",
+    "CreateOne":"Create one"
 }

@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from '@mui/material/Autocomplete';

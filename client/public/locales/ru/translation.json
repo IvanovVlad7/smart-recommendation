@@ -33,5 +33,7 @@
     "Search":"Поиск",
     "Show comments":"Показать коментарии",
     "Related tags": "Связанные теги:",
-    "WhatReviewDoYouLike": "Какой обзор вам нравится?"
+    "WhatReviewDoYouLike": "Какой обзор вам нравится?",
+    "SorryNoReviewsAreAvailable":"К сожалению, отзывов нет",
+    "CreateOne":"Создай"
 }
