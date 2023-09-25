@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { Box } from '@mui/material';
-
+import { useNavigate } from 'react-router-dom';
+import { useCurrentUserData } from '../../helpers/useCurrentUserData';
+import { MAIN_ENDPOINT}  from "../../constans/api";
 
 const columns: GridColDef[] = [
   { field: 'ID', headerName: 'ID', width: 70 },
@@ -13,9 +15,11 @@ const columns: GridColDef[] = [
 
 export const AdminPanel = () => {
   const [users, setUsers] = useState([]);
-
+  const { isAdmin } = useCurrentUserData();
+  const navigate = useNavigate()
 
   useEffect(() => {
+    if (!isAdmin) navigate(MAIN_ENDPOINT);
     axios.get('http://localhost:3001/users') 
       .then((response) => {
         setUsers(response.data);

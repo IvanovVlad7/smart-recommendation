@@ -28,12 +28,13 @@
     "Role":"Роль",
     "Tags":"Теги",
     "Logout":"Выйти",
-    "FileUpload":"Загрузить изображение",
     "My dashboard":"Моя панель приборов",
     "Search":"Поиск",
     "Show comments":"Показать коментарии",
     "Related tags": "Связанные теги:",
     "WhatReviewDoYouLike": "Какой обзор вам нравится?",
     "SorryNoReviewsAreAvailable":"К сожалению, отзывов нет",
-    "CreateOne":"Создай"
+    "CreateOne":"Создай",
+    "FileUpload":"Загрузить изображение",
+    "AdminPanel": "Панель Админа"
 }
